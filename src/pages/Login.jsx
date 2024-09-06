@@ -70,7 +70,7 @@ export const Login = () => {
           )}
         </div>
         <div>
-          <button className="mt-1 w-100 border-2 p-2 rounded" type="submit">
+          <button className="mt-1 w-100 border-2 p-2 rounded hover:bg-white hover:text-black" type="submit">
             Login
           </button>
           <button
@@ -83,11 +83,11 @@ export const Login = () => {
           </button>
         </div>
         <div className="d-flex flex-col gap-2 justify-content-between mt-2">
-          <small className="text-yellow-500">
-            Don't have an account? <Link className="hover:text-opacity-50" to="/register">Register</Link>
+          <small className="text-yellow-500 hover:text-opacity-50">
+            Don't have an account? <Link to="/register">Register</Link>
           </small>
-          <small className="text-yellow-500">
-            Forgot your password? <Link className="hover:text-opacity-50" to="/reset-password">Click here</Link>
+          <small className="text-yellow-500 hover:text-opacity-50">
+            Forgot your password? <Link to="/reset-password">Click here</Link>
           </small>
         </div>
       </form>

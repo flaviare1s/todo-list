@@ -82,12 +82,12 @@ export const Register = () => {
           )}
         </div>
         <div>
-          <button className="mt-1 w-100 border-2 p-2 rounded" type="submit">
+          <button className="mt-1 w-full border-2 p-2 rounded hover:bg-white hover:text-black" type="submit">
             Register
           </button>
           <button
             onClick={handleEntrarGoogle}
-            className="mt-1 w-100 flex justify-center gap-2 items-center border-2 p-2 rounded bg-white text-black hover:bg-inherit hover:text-white"
+            className="mt-1 w-full flex justify-center gap-2 items-center border-2 p-2 rounded bg-white text-black"
             type="button"
           >
             <img className="w-6" src={logoGoogle} alt="Imagem do Google" />
@@ -95,11 +95,11 @@ export const Register = () => {
           </button>
         </div>
         <div className="d-flex flex-col gap-2 justify-content-between mt-2">
-          <small className="text-yellow-500">
-            Don't have an account? <Link className="hover:text-opacity-50" to="/register">Register</Link>
+          <small className="text-yellow-500 hover:text-opacity-50">
+            Do you have an account? <Link to="/login">Login</Link>
           </small>
-          <small className="text-yellow-500">
-            Forgot your password? <Link className="hover:text-opacity-50" to="/reset-password">Click here</Link>
+          <small className="text-yellow-500 hover:text-opacity-50">
+            Forgot your password? <Link to="/reset-password">Click here</Link>
           </small>
         </div>
       </form>
