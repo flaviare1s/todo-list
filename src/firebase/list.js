@@ -26,6 +26,7 @@ export async function shareTodosWithEmail(userId, todos, email) {
         userId: todo.userId,
         createdAt: todo.createdAt || new Date(),
       })),
+      sharedBy: userId,
       sharedAt: new Date(),
     };
 
@@ -49,6 +50,13 @@ export async function getSharedTodos(userId) {
   return sharedTodos;
 }
 
-export function deleteList(userId) {
-    return deleteDoc(listsCol);
-  }
+export async function deleteList(userId) {
+  // Primeiro, busque todos os documentos na coleção "lists"
+  const querySnapshot = await getDocs(listsCol);
+
+  // Exclua cada documento individualmente
+  const deletePromises = querySnapshot.docs.map((doc) => deleteDoc(doc.ref));
+
+  // Aguarde a conclusão de todas as exclusões
+  await Promise.all(deletePromises);
+}

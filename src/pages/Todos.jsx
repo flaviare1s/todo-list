@@ -137,6 +137,7 @@ export const Todos = () => {
     }
   }
 
+
   function openShareModal() {
     setShowModal(true);
   }
@@ -275,6 +276,7 @@ export const Todos = () => {
             {sharedTodos.map((todo) => (
               <div className="flex justify-between p-3 border-b border-gray-500" key={todo.id}>
                 <p className="text-gray-500">{todo.title}</p>
+                <small className="text-gray-500">Shared by:{todo.sharedBy}</small>
               </div>
             ))}
           </div>
