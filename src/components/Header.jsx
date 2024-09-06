@@ -21,7 +21,7 @@ export const Header = () => {
         </Link>
         <nav className="flex gap-3 items-center">
           {user && (
-            <span className="text-gray-400">Hello, {user.displayName}!</span>
+            <span className="text-gray-400">Hi, {user.displayName}!</span>
           )}
           {user && (
             <Link className="hover:text-gray-500" to="todos">

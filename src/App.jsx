@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { Loader } from "./components/Loader";
 import { auth } from "./firebase/config";
+import { PrivateRoute } from "./components/PrivateRoute";
 
 export function App() {
   const [userLogged, setUserLogged] = useState(null);
@@ -35,7 +36,7 @@ export function App() {
           <section className="grow">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/todos" element={<Todos />} />
+              <Route path="/todos" element={<PrivateRoute><Todos /></PrivateRoute>} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/reset-password" element={<ResetPassword />} />
