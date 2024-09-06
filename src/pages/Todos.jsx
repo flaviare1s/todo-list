@@ -11,6 +11,8 @@ import { useEffect, useState, useRef, useContext } from "react";
 import { Loader } from "../components/Loader";
 import { UserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
+import { shareTodosWithEmail } from "../firebase/list";
+import { Modal, Button } from "react-bootstrap";
 
 export const Todos = () => {
   const { register, handleSubmit, reset } = useForm();
@@ -19,6 +21,8 @@ export const Todos = () => {
   const [isEditing, setIsEditing] = useState(null);
   const [editTitle, setEditTitle] = useState("");
   const [originalTitle, setOriginalTitle] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [shareEmail, setShareEmail] = useState("");
   const user = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -110,6 +114,33 @@ export const Todos = () => {
     }
   }
 
+  function openShareModal() {
+    setShowModal(true);
+  }
+
+  function closeShareModal() {
+    setShowModal(false);
+    setShareEmail("");
+  }
+
+  async function handleShareTodos() {
+    if (user?.uid) {
+      try {
+        const result = await shareTodosWithEmail(user.uid, todos, shareEmail);
+        if (result) {
+          toast.success("Todos shared with email!");
+        }
+        closeShareModal();
+      } catch (error) {
+        if (error.message === "User not found") {
+          toast.error("E-mail not found!");
+        } else {
+          toast.error("Failed to share todos!");
+        }
+      }
+    }
+  }
+
   useEffect(() => {
     if (user?.uid) {
       listTodos();
@@ -155,49 +186,81 @@ export const Todos = () => {
         {loading ? (
           <Loader />
         ) : todos.length > 0 ? (
-          <div className="flex flex-col border-2 border-offwhite rounded mx-auto md:w-[40%]">
-            {todos.map((todo) => (
-              <div className="flex justify-between p-3 border-b" key={todo.id}>
-                {isEditing === todo.id ? (
-                  <input
-                    type="text"
-                    value={editTitle}
-                    onChange={(e) => setEditTitle(e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(e, todo.id)}
-                    className="p-2 rounded focus:border-none-sm bg-inherit w-full"
-                    ref={editInputRef}
-                  />
-                ) : (
-                  <p
-                    onClick={() => changeStatus(todo.id, todo.status)}
-                    className={`text-left cursor-pointer ${
-                      todo.status === "completed" ? "line-through" : ""
-                    }`}
-                  >
-                    {todo.title}
-                  </p>
-                )}
-
-                <div className="flex gap-2">
-                  {isEditing !== todo.id && (
-                    <button onClick={() => startEditing(todo)}>
-                      <span className="material-symbols-outlined">edit</span>
-                    </button>
+          <div>
+            <div className="flex flex-col border-2 border-offwhite rounded mx-auto md:w-[40%]">
+              {todos.map((todo) => (
+                <div className="flex justify-between p-3 border-b" key={todo.id}>
+                  {isEditing === todo.id ? (
+                    <input
+                      type="text"
+                      value={editTitle}
+                      onChange={(e) => setEditTitle(e.target.value)}
+                      onKeyDown={(e) => handleKeyDown(e, todo.id)}
+                      className="p-2 rounded focus:border-none-sm bg-inherit w-full"
+                      ref={editInputRef}
+                    />
+                  ) : (
+                    <p
+                      onClick={() => changeStatus(todo.id, todo.status)}
+                      className={`text-left cursor-pointer ${todo.status === "completed" ? "line-through" : ""
+                        }`}
+                    >
+                      {todo.title}
+                    </p>
                   )}
-                  <button onClick={() => removeTodo(todo.id)}>
-                    <span className="material-symbols-outlined">close</span>
-                  </button>
+                  <div className="flex gap-2">
+                    {isEditing !== todo.id && (
+                      <button onClick={() => startEditing(todo)}>
+                        <span className="material-symbols-outlined">edit</span>
+                      </button>
+                    )}
+                    <button onClick={() => removeTodo(todo.id)}>
+                      <span className="material-symbols-outlined">close</span>
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+            <div className="w-full md:w-[40%] flex flex-col justify-center items-end m-auto">
+              <button onClick={openShareModal} className="py-3 px-2 flex items-center justify-center gap-2">
+                <span>Share Todos</span><span className="material-symbols-outlined">send</span>
+              </button>
+            </div>
           </div>
         ) : (
-          <div className="flex flex-col justify-center items-center text-gray-500">
+              <div className="flex flex-col justify-center items-center text-gray-500 cursor-pointer" onClick={handleSubmit(createTodo)}>
             <span className="material-symbols-outlined">receipt_long</span>
             <p>No todos</p>
           </div>
         )}
       </section>
+
+      <Modal show={showModal} onHide={closeShareModal}>
+        <Modal.Header closeButton>
+          <Modal.Title className="text-dark">Share Todos</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form>
+            <label htmlFor="shareEmail" className="text-dark">Enter the email to share with:</label>
+            <input
+              type="email"
+              id="shareEmail"
+              value={shareEmail}
+              onChange={(e) => setShareEmail(e.target.value)}
+              className="form-control"
+              required
+            />
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={closeShareModal}>
+            Close
+          </Button>
+          <Button variant="dark" onClick={handleShareTodos}>
+            Share
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };
