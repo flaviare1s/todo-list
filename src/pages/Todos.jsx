@@ -11,7 +11,7 @@ import { useEffect, useState, useRef, useContext } from "react";
 import { Loader } from "../components/Loader";
 import { UserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
-import { shareTodosWithEmail } from "../firebase/list";
+import { getSharedTodos, shareTodosWithEmail } from "../firebase/list";
 import { Modal, Button } from "react-bootstrap";
 
 export const Todos = () => {
@@ -31,9 +31,15 @@ export const Todos = () => {
   function listTodos() {
     if (user?.uid) {
       setLoading(true);
-      getUserTodos(user.uid)
-        .then((res) => {
-          setTodos(res);
+
+      const userTodosPromise = getUserTodos(user.uid);
+
+      const sharedTodosPromise = getSharedTodos(user.uid);
+
+      Promise.all([userTodosPromise, sharedTodosPromise])
+        .then(([userTodos, sharedTodos]) => {
+          const combinedTodos = [...userTodos, ...sharedTodos.flatMap(todoList => todoList.todos)];
+          setTodos(combinedTodos);
           setLoading(false);
         })
         .catch(() => {
@@ -205,7 +211,7 @@ export const Todos = () => {
                       className={`text-left cursor-pointer ${todo.status === "completed" ? "line-through" : ""
                         }`}
                     >
-                      {todo.title}
+                        {todo.title} {todo.sharedWith ? "(Shared)" : ""}
                     </p>
                   )}
                   <div className="flex gap-2">

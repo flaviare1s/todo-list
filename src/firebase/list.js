@@ -35,3 +35,16 @@ export async function shareTodosWithEmail(userId, todos, email) {
     throw new Error("User not found");
   }
 }
+
+export async function getSharedTodos(userId) {
+  const sharedTodosQuery = query(
+    collection(db, "lists"),
+    where("sharedWith", "==", userId)
+  );
+
+  const sharedTodosSnapshot = await getDocs(sharedTodosQuery);
+
+  const sharedTodos = sharedTodosSnapshot.docs.map((doc) => doc.data());
+
+  return sharedTodos;
+}
