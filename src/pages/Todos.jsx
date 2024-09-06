@@ -277,11 +277,16 @@ export const Todos = () => {
             <p>No shared todos</p>
           </div>
         )}
+        <div className="w-full md:w-[40%] flex flex-col justify-center items-end m-auto">
+          <button onClick={openShareModal} className="py-3 px-2 flex items-center justify-center gap-2">
+            <span>Share Todos</span><span className="material-symbols-outlined">send</span>
+          </button>
+        </div>
       </section>
 
       <Modal show={showModal} onHide={closeShareModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Share Todos</Modal.Title>
+          <Modal.Title className="text-dark">Share Todos</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="flex flex-col gap-3 p-2">
@@ -290,7 +295,7 @@ export const Todos = () => {
               value={shareEmail}
               onChange={(e) => setShareEmail(e.target.value)}
               placeholder="Recipient email"
-              className="p-2 rounded w-full"
+              className="p-2 rounded w-full text-dark"
             />
           </div>
         </Modal.Body>
