@@ -102,7 +102,7 @@ export const Todos = () => {
         <input
           type="text"
           id="title"
-          placeholder="Click to create a new todo"
+          placeholder="Click here to create a new todo"
           className="p-3 rounded-sm bg-inherit w-full placeholder:text-center"
           {...register('title', { required: true })}
         />
