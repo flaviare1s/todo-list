@@ -212,7 +212,7 @@ export const Todos = () => {
           <div className="flex justify-between">
             <h2 className="text-2xl font-bold p-3 text-center">My Todos</h2>
             <button onClick={openShareModal} className="py-3 px-2 flex items-center justify-center gap-2">
-              <span>Share</span><span className="material-symbols-outlined">send</span>
+              <span>Share List</span><span className="material-symbols-outlined">send</span>
             </button>
           </div>
         </div>
@@ -263,9 +263,12 @@ export const Todos = () => {
       <section className="px-3">
         <div className="flex justify-between">
           <h2 className="text-2xl font-bold p-3 text-center mt-3 text-gray-500">Shared Todos</h2>
-          <div className="flex flex-col justify-end items-end p-3">
+          <div className="flex flex-col justify-center items-center p-3">
             <button onClick={delList}>
-              <span className="material-symbols-outlined hover:text-gray-500">close</span>
+              <div className="flex gap-2">
+                <span>Delete List</span>
+                <span className="material-symbols-outlined hover:text-gray-500">close</span>
+              </div>
             </button>
           </div>
         </div>
@@ -274,9 +277,9 @@ export const Todos = () => {
         ) : sharedTodos.length > 0 ? (
           <div className="flex flex-col border-2 border-gray-500 rounded mx-auto md:w-[40%]">
             {sharedTodos.map((todo) => (
-              <div className="flex justify-between p-3 border-b border-gray-500" key={todo.id}>
+              <div className="flex flex-col p-3 border-b border-gray-500" key={todo.id}>
                 <p className="text-gray-500">{todo.title}</p>
-                <small className="text-gray-500">Shared by: {todo.sharedBy || "Unknown"}</small>
+                <small className="text-gray-500 text-right">Shared by: {todo.sharedBy || "Unknown"}</small>
               </div>
             ))}
           </div>
