@@ -11,6 +11,7 @@ export default {
       },
       colors: {
         'offwhite': '#f5f5f5',
+        'dark-gray': '#212529',
       }
     },
   },
