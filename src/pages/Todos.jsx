@@ -132,7 +132,7 @@ export const Todos = () => {
     };
   }, [isEditing, editTitle, originalTitle]);
 
-  if (!user) {
+  if (user === null) {
     navigate("/login");
   }
 
@@ -147,7 +147,7 @@ export const Todos = () => {
           type="text"
           id="title"
           placeholder="Click here to create a new todo"
-          className="p-3 rounded-sm bg-inherit w-full placeholder:text-center"
+          className="p-3 rounded-sm bg-inherit w-full md:w-[40%] placeholder:text-center"
           {...register("title", { required: true })}
         />
       </form>

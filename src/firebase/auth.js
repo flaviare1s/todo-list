@@ -7,17 +7,38 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
-import { auth } from "./config";
+import { auth, db } from "./config";
 import toast from "react-hot-toast";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 export async function registerUser(name, email, password) {
   const { user } = await createUserWithEmailAndPassword(auth, email, password);
   await updateProfile(user, { displayName: name });
-}
 
+   await setDoc(doc(db, "users", user.uid), {
+     uid: user.uid,
+     name: name,
+     email: user.email,
+     createdAt: new Date().toISOString(),
+     provider: "email",
+   });
+}
 export async function loginGoogle() {
   const provider = new GoogleAuthProvider();
-  await signInWithPopup(auth, provider);
+  const { user } = await signInWithPopup(auth, provider);
+
+  const userDocRef = doc(db, "users", user.uid);
+  const docSnap = await getDoc(userDocRef);
+
+  if (!docSnap.exists()) {
+    await setDoc(userDocRef, {
+      uid: user.uid,
+      name: user.displayName,
+      email: user.email,
+      createdAt: new Date().toISOString(),
+      provider: "google",
+    });
+  }
 }
 
 export async function loginUser(email, password) {

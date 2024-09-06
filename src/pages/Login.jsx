@@ -73,7 +73,7 @@ export const Login = () => {
             <small className="text-red-500">{errors.password.message}</small>
           )}
         </div>
-        <div>
+        <div className="mt-4">
           <button
             className="mt-1 w-100 border-2 p-2 rounded hover:bg-white hover:text-black"
             type="submit"
