@@ -276,7 +276,7 @@ export const Todos = () => {
             {sharedTodos.map((todo) => (
               <div className="flex justify-between p-3 border-b border-gray-500" key={todo.id}>
                 <p className="text-gray-500">{todo.title}</p>
-                <small className="text-gray-500">Shared by:{todo.sharedBy}</small>
+                <small className="text-gray-500">Shared by: {todo.sharedBy || "Unknown"}</small>
               </div>
             ))}
           </div>
@@ -307,7 +307,7 @@ export const Todos = () => {
           <Button variant="secondary" onClick={closeShareModal}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleShareTodos}>
+          <Button variant="dark" onClick={handleShareTodos}>
             Share
           </Button>
         </Modal.Footer>
