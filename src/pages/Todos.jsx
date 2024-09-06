@@ -1,115 +1,161 @@
-import { useForm } from "react-hook-form"
-import { addTodo, deleteTodo, getTodos, updateTodo, updateTodoStatus } from "../firebase/todo"
-import toast from "react-hot-toast"
-import { useEffect, useState, useRef } from "react"
-import { Loader } from "../components/Loader"
+import { useForm } from "react-hook-form";
+import {
+  addTodo,
+  deleteTodo,
+  getUserTodos,
+  updateTodo,
+  updateTodoStatus,
+} from "../firebase/todo";
+import toast from "react-hot-toast";
+import { useEffect, useState, useRef, useContext } from "react";
+import { Loader } from "../components/Loader";
+import { UserContext } from "../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 export const Todos = () => {
-  const { register, handleSubmit, reset } = useForm()
-  const [todos, setTodos] = useState([])
-  const [isEditing, setIsEditing] = useState(null)
-  const [editTitle, setEditTitle] = useState('')
-  const [originalTitle, setOriginalTitle] = useState('')
+  const { register, handleSubmit, reset } = useForm();
+  const [todos, setTodos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [originalTitle, setOriginalTitle] = useState("");
+  const user = useContext(UserContext);
+  const navigate = useNavigate();
 
-  const editInputRef = useRef(null)
+  const editInputRef = useRef(null);
+
+  function listTodos() {
+    if (user?.uid) {
+      setLoading(true);
+      getUserTodos(user.uid)
+        .then((res) => {
+          setTodos(res);
+          setLoading(false);
+        })
+        .catch(() => {
+          toast.error("Failed to load todos!");
+          setLoading(false);
+        });
+    }
+  }
 
   function createTodo(data) {
     const todoData = {
       ...data,
-      status: 'active'
-    }
-    setTodos((prevTodos) => [...prevTodos, { ...todoData, id: Date.now().toString() }])
-    addTodo(todoData).then(() => {
-      toast.success('Todo created!')
-      listTodos()
-    }).catch(() => {
-      toast.error('Something went wrong!')
-    })
-    reset()
-  }
+      status: "active",
+      userId: user.uid,
+    };
 
-  function listTodos() {
-    getTodos().then((res) => {
-      setTodos(res)
-    })
+    setTodos((prevTodos) => [
+      ...prevTodos,
+      { ...todoData, id: Date.now().toString() },
+    ]);
+
+    addTodo(todoData)
+      .then(() => {
+        toast.success("Todo created!");
+        listTodos();
+      })
+      .catch(() => {
+        toast.error("Something went wrong!");
+      });
+    reset();
   }
 
   function changeStatus(id, currentStatus) {
-    const newStatus = currentStatus === 'active' ? 'completed' : 'active'
-    updateTodoStatus(id, newStatus).then(() => {
-      toast.success(`Todo marked as ${newStatus}!`)
-      listTodos()
-    }).catch(() => {
-      toast.error('Failed to update todo!')
-    })
+    const newStatus = currentStatus === "active" ? "completed" : "active";
+    updateTodoStatus(id, newStatus)
+      .then(() => {
+        toast.success(`Todo marked as ${newStatus}!`);
+        listTodos();
+      })
+      .catch(() => {
+        toast.error("Failed to update todo!");
+      });
   }
 
   function startEditing(todo) {
-    setIsEditing(todo.id)
-    setOriginalTitle(todo.title)
-    setEditTitle(todo.title)
+    setIsEditing(todo.id);
+    setOriginalTitle(todo.title);
+    setEditTitle(todo.title);
   }
 
   function confirmEdit(id) {
     if (editTitle !== originalTitle) {
-      updateTodo(id, { title: editTitle }).then(() => {
-        toast.success('Todo updated!')
-        listTodos()
-      }).catch(() => {
-        toast.error('Failed to update todo!')
-      })
+      updateTodo(id, { title: editTitle })
+        .then(() => {
+          toast.success("Todo updated!");
+          listTodos();
+        })
+        .catch(() => {
+          toast.error("Failed to update todo!");
+        });
     }
-    setIsEditing(null)
+    setIsEditing(null);
   }
 
   function handleKeyDown(e, id) {
-    if (e.key === 'Enter') {
-      confirmEdit(id)
+    if (e.key === "Enter") {
+      confirmEdit(id);
     }
   }
 
   function removeTodo(id) {
-    const del = confirm('Are you sure you want to delete this todo?')
+    const del = confirm("Are you sure you want to delete this todo?");
     if (del) {
       deleteTodo(id).then(() => {
-        toast.success('Todo deleted!')
-        listTodos()
-      })
+        toast.success("Todo deleted!");
+        listTodos();
+      });
     }
   }
 
   useEffect(() => {
-    listTodos()
-  }, [])
+    if (user?.uid) {
+      listTodos();
+    }
+  }, [user]);
 
   useEffect(() => {
     function handleClickOutside(event) {
-      if (editInputRef.current && !editInputRef.current.contains(event.target)) {
-        confirmEdit(isEditing)
+      if (
+        editInputRef.current &&
+        !editInputRef.current.contains(event.target)
+      ) {
+        confirmEdit(isEditing);
       }
     }
 
-    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [isEditing, editTitle, originalTitle])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isEditing, editTitle, originalTitle]);
+
+  if (!user) {
+    navigate("/login");
+  }
 
   return (
     <>
-      <form className="flex flex-col justify-center items-center m-auto p-3" onSubmit={handleSubmit(createTodo)}>
+      <form
+        className="flex flex-col justify-center items-center m-auto p-3"
+        onSubmit={handleSubmit(createTodo)}
+      >
         <h1 className="text-4xl font-bold p-3">TODO</h1>
         <input
           type="text"
           id="title"
           placeholder="Click here to create a new todo"
           className="p-3 rounded-sm bg-inherit w-full placeholder:text-center"
-          {...register('title', { required: true })}
+          {...register("title", { required: true })}
         />
       </form>
       <section className="px-3">
-        {todos.length > 0 ? (
-          <div className="flex flex-col border-2 border-[#f5f5f5] rounded mx-auto md:w-[40%]">
+        {loading ? (
+          <Loader />
+        ) : todos.length > 0 ? (
+          <div className="flex flex-col border-2 border-offwhite rounded mx-auto md:w-[40%]">
             {todos.map((todo) => (
               <div className="flex justify-between p-3 border-b" key={todo.id}>
                 {isEditing === todo.id ? (
@@ -124,7 +170,9 @@ export const Todos = () => {
                 ) : (
                   <p
                     onClick={() => changeStatus(todo.id, todo.status)}
-                    className={`text-left cursor-pointer ${todo.status === 'completed' ? 'line-through' : ''}`}
+                    className={`text-left cursor-pointer ${
+                      todo.status === "completed" ? "line-through" : ""
+                    }`}
                   >
                     {todo.title}
                   </p>
@@ -143,8 +191,10 @@ export const Todos = () => {
               </div>
             ))}
           </div>
-        ) : <Loader />}
+        ) : (
+          ""
+        )}
       </section>
     </>
-  )
-}
+  );
+};

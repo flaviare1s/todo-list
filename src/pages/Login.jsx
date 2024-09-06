@@ -1,33 +1,34 @@
-import { useForm } from "react-hook-form"
-import { loginGoogle, loginUser } from "../firebase/auth"
-import { Link, useNavigate } from "react-router-dom"
-import toast from "react-hot-toast"
-import logoGoogle from "../assets/logoGoogle.png"
+/* eslint-disable react/no-unescaped-entities */
+import { useForm } from "react-hook-form";
+import { loginGoogle, loginUser } from "../firebase/auth";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import logoGoogle from "../assets/logoGoogle.png";
 
 export const Login = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm()
+  } = useForm();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   function enter(data) {
     loginUser(data.email, data.password)
       .then(() => {
-        toast.success("Welcome")
-        navigate("/todos")
+        toast.success("Welcome");
+        navigate("/todos");
       })
       .catch((error) => {
-        toast.error(`Error: ${error.code}`)
+        toast.error(`Error: ${error.code}`);
       });
   }
 
   function handleEntrarGoogle() {
     loginGoogle().then(() => {
-      toast.success("Welcome!")
-      navigate("/todos")
+      toast.success("Welcome!");
+      navigate("/todos");
     });
   }
 
@@ -62,7 +63,10 @@ export const Login = () => {
             id="password"
             {...register("password", {
               required: "Password required",
-              minLength: { value: 6, message: "Password must be at least 6 characters" },
+              minLength: {
+                value: 6,
+                message: "Password must be at least 6 characters",
+              },
             })}
           />
           {errors.password && (
@@ -70,7 +74,10 @@ export const Login = () => {
           )}
         </div>
         <div>
-          <button className="mt-1 w-100 border-2 p-2 rounded hover:bg-white hover:text-black" type="submit">
+          <button
+            className="mt-1 w-100 border-2 p-2 rounded hover:bg-white hover:text-black"
+            type="submit"
+          >
             Login
           </button>
           <button
@@ -93,4 +100,4 @@ export const Login = () => {
       </form>
     </main>
   );
-}
+};
