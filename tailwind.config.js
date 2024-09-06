@@ -9,6 +9,9 @@ export default {
       fontFamily: {
         'suse': ['SUSE', 'sans-serif'],
       },
+      colors: {
+        'offwhite': '#f5f5f5',
+      }
     },
   },
   plugins: [],

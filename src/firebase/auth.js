@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
-import { GoogleAuthProvider } from "firebase/auth/web-extension";
+import { GoogleAuthProvider } from "firebase/auth";
 import { auth } from "./config";
 import toast from "react-hot-toast";
 
@@ -21,7 +21,7 @@ export async function logout() {
   await signOut(auth)
 }
 
-export async function resetarSenha(email) {
+export async function resetPassword(email) {
   sendPasswordResetEmail(auth, email)
     .then(() => {
       toast.success('Instructions to reset your password have been sent to your email!')
