@@ -1,19 +1,31 @@
+import { useContext } from "react"
 import { Button, Container, Nav, Navbar } from "react-bootstrap"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { UserContext } from "../contexts/UserContext"
+import { logout } from "../firebase/auth"
 
 export const Header = () => {
+  const user = useContext(UserContext)
+  const navigate = useNavigate()
+
+  function handleLogout() {
+    logout().then(() => {
+      navigate('/login')
+    })
+  }
+
   return (
     <header className="w-screen">
-      <Navbar bg="dark" variant="dark" expand="sm">
+      <Navbar bg="dark" variant="dark" expand="sm" className="px-3">
         <Container fluid>
          <Link className="text-xl font-bold" to="/">TODO LIST</Link> 
          <Navbar.Toggle />
          <Navbar.Collapse>
           <Nav className="ms-auto">
-            <Link className="nav-link" to='todos'>Todos</Link>
-            <Link className="nav-link" to='register'>Register</Link>
-            <Link className="nav-link" to='login'>Login</Link>
-            <Button variant="outline-light">Logout</Button>
+              {user && <Link className="nav-link" to='todos'>Todos</Link>}
+              {!user && <Link className="nav-link" to='register'>Register</Link>}
+              {!user && <Link className="nav-link" to='login'>Login</Link>}
+            <Button variant="outline-light" onClick={handleLogout}>Logout</Button>
           </Nav>
          </Navbar.Collapse>
         </Container>
