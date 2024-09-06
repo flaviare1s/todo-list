@@ -206,8 +206,15 @@ export const Todos = () => {
         />
       </form>
 
-      <section className="px-3">
-        <h2 className="text-2xl font-bold p-3 text-center">My Todos</h2>
+      <section className="px-3">  
+        <div className="w-full md:w-[40%] flex flex-col m-auto">
+          <div className="flex justify-between">
+            <h2 className="text-2xl font-bold p-3 text-center">My Todos</h2>
+            <button onClick={openShareModal} className="py-3 px-2 flex items-center justify-center gap-2">
+              <span>Share</span><span className="material-symbols-outlined">send</span>
+            </button>
+          </div>
+        </div>
         {loading ? (
           <Loader />
         ) : todos.length > 0 ? (
@@ -277,11 +284,6 @@ export const Todos = () => {
             <p>No shared todos</p>
           </div>
         )}
-        <div className="w-full md:w-[40%] flex flex-col justify-center items-end m-auto">
-          <button onClick={openShareModal} className="py-3 px-2 flex items-center justify-center gap-2">
-            <span>Share Todos</span><span className="material-symbols-outlined">send</span>
-          </button>
-        </div>
       </section>
 
       <Modal show={showModal} onHide={closeShareModal}>
