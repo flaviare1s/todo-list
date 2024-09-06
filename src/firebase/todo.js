@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, getDocs } from 'firebase/firestore'
 import {db} from './config'
 
 export const todosCol = collection(db, 'todos')
@@ -17,4 +17,7 @@ export async function getTodos() {
   return todos
 }
 
-
+export async function deleteTodo(id) {
+  const todoDoc = doc(todosCol, id)
+  await deleteDoc(todoDoc)
+}

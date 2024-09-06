@@ -8,6 +8,7 @@ import { Login } from './pages/Login'
 import { NotFound } from './pages/NotFound'
 import { Register } from './pages/Register'
 import { ResetPassword } from './pages/ResetPassword'
+import { Toaster } from 'react-hot-toast'
 
 export function App() {
   return (
@@ -26,6 +27,7 @@ export function App() {
           </section>
         <Footer />
       </BrowserRouter>
+      <Toaster position='top-center' />
     </main>
   )
 }

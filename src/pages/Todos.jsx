@@ -1,11 +1,11 @@
 import { Loader } from "../components/Loader"
 import { useForm } from "react-hook-form"
-import { addTodo, getTodos } from "../firebase/todo"
+import { addTodo, deleteTodo, getTodos } from "../firebase/todo"
 import toast from "react-hot-toast"
 import { useEffect, useState } from "react"
 
 export const Todos = () => {
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit, reset } = useForm()
   const [todos, setTodos] = useState(null)
 
   function createTodo(data) {
@@ -13,17 +13,29 @@ export const Todos = () => {
       ...data,
       status: 'active'
     }
+    setTodos((prevTodos) => [...prevTodos, { ...todoData, id: Date.now().toString() }])
     addTodo(todoData).then(() => {
       toast.success('Todo created!')
     }).catch(() => {
       toast.error('Something went wrong!')
     })
+    reset()
   }
 
   function listTodos() {
     getTodos().then((res) => {
       setTodos(res)
     })
+  }
+
+  function removeTodo(id) {
+    const del = confirm('Are you sure you want to delete this todo?')
+    if (del) {
+      deleteTodo(id).then(() => {
+        toast.success('Todo deleted!')
+        listTodos()
+      })
+    }
   }
 
   useEffect(() => {
@@ -39,10 +51,18 @@ export const Todos = () => {
       </form>
       <section className="px-3">
         {todos ?
-          <div className="flex flex-col border-2 border-[#f5f5f5] rounded-sm mx-auto md:w-[40%]">
+          <div className="flex flex-col border-2 border-[#f5f5f5] rounded mx-auto md:w-[40%]">
             {todos.map((todo) => (
-              <div key={todo.id}>
-                <p className="text-left p-2 cursor-pointer">{todo.title}</p>
+              <div className="flex justify-between p-3 border-b" key={todo.id}>
+                <p className="text-left cursor-pointer">{todo.title}</p>
+                <div className="flex gap-2">
+                  <button>
+                    <span className="material-symbols-outlined">edit</span>
+                  </button>
+                  <button onClick={() => removeTodo(todo.id)}>
+                    <span className="material-symbols-outlined">close</span>
+                  </button>
+                </div>
               </div>
             ))} 
           </div>  
