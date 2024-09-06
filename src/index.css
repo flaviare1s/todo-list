@@ -1,8 +1,35 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import 'bootstrap/dist/css/bootstrap.min.css';
 
 * {
   font-family: 'SUSE', sans-serif;
 }
+
+body {
+  background-color: #343a40;
+  color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.animated-title {
+  animation: fadeIn 3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 576px) {
+  .animated-title {
+    font-size: 1.5rem;
+    height: auto;
+  }
+}
+
