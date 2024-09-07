@@ -49,12 +49,15 @@ export const Todos = () => {
     }
   }
 
-  function createTodo(data) {
+  function createTodo(data, sharedWith = []) {
     const todoData = {
       ...data,
       status: "active",
       userId: user.uid,
-   
+      sharedWith: sharedWith.length > 0 ? sharedWith.map(user => ({
+        uid: user.uid || '',
+        permission: user.permission || 'read',
+      })) : [],
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     };
