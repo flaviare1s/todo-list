@@ -49,12 +49,15 @@ export const Todos = () => {
     }
   }
 
-  function createTodo(data) {
+  function createTodo(data, sharedWith = []) {
     const todoData = {
       ...data,
       status: "active",
       userId: user.uid,
-   
+      sharedWith: sharedWith.length > 0 ? sharedWith.map(user => ({
+        uid: user.uid || '',
+        permission: user.permission || 'read',
+      })) : [],
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     };
@@ -252,6 +255,9 @@ export const Todos = () => {
                       <span className="material-symbols-outlined">edit</span>
                     </button>
                   )}
+                  <button>
+                    <span className="material-symbols-outlined">share</span>
+                  </button>
                   <button onClick={() => removeTodo(todo.id)}>
                     <span className="material-symbols-outlined">close</span>
                   </button>
