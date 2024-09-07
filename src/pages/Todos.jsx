@@ -11,14 +11,15 @@ import { useEffect, useState, useRef, useContext } from "react";
 import { Loader } from "../components/Loader";
 import { UserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
-import { deleteList, getSharedTodos, shareTodosWithEmail } from "../firebase/list";
 import { Modal, Button } from "react-bootstrap";
 import { serverTimestamp } from "firebase/firestore";
+import { shareTodoWithEmail } from "../firebase/share";
+import { shareTodosWithEmail } from "../firebase/list";
+
 
 export const Todos = () => {
   const { register, handleSubmit, reset } = useForm();
   const [todos, setTodos] = useState([]);
-  const [sharedTodos, setSharedTodos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(null);
   const [editTitle, setEditTitle] = useState("");
@@ -28,18 +29,17 @@ export const Todos = () => {
   const user = useContext(UserContext);
   const navigate = useNavigate();
   const editInputRef = useRef(null);
+  const [todoToShare, setTodoToShare] = useState(null);
+  const [showShareModal, setShowShareModal] = useState(false);
 
   function listTodos() {
     if (user?.uid) {
       setLoading(true);
 
-      const userTodosPromise = getUserTodos(user.uid);
-      const sharedTodosPromise = getSharedTodos(user.uid);
-
-      Promise.all([userTodosPromise, sharedTodosPromise])
-        .then(([userTodos, sharedTodos]) => {
+      // Obter todos os todos do usuário
+      getUserTodos(user.uid)
+        .then(userTodos => {
           setTodos(userTodos);
-          setSharedTodos(sharedTodos.flatMap(todoList => todoList.todos));
           setLoading(false);
         })
         .catch(() => {
@@ -133,21 +133,6 @@ export const Todos = () => {
     }
   }
 
-  function delList() {
-    const del = confirm("Are you sure you want to delete all todos?");
-    if (del) {
-      deleteList(user.uid)
-        .then(() => {
-          toast.success("All todos deleted!");
-          listTodos();
-        })
-        .catch(() => {
-          toast.error("Failed to delete todos!");
-        });
-    }
-  }
-
-
   function openShareModal() {
     setShowModal(true);
   }
@@ -173,6 +158,28 @@ export const Todos = () => {
         }
       }
     }
+  }
+
+  function shareTodo(todoId) {
+    setTodoToShare(todoId);
+    setShareEmail("");
+    setShowShareModal(true);
+  }
+
+  async function handleShareTodo() {
+    if (!shareEmail) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
+    try {
+      await shareTodoWithEmail(todoToShare, shareEmail, "write");
+      toast.success("Todo shared successfully!");
+    } catch (error) {
+      toast.error(`Failed to share todo: ${error.message}`);
+    }
+
+    setShowShareModal(false);
   }
 
   useEffect(() => {
@@ -255,7 +262,7 @@ export const Todos = () => {
                       <span className="material-symbols-outlined">edit</span>
                     </button>
                   )}
-                  <button>
+                  <button onClick={() => shareTodo(todo.id)}>
                     <span className="material-symbols-outlined">share</span>
                   </button>
                   <button onClick={() => removeTodo(todo.id)}>
@@ -273,40 +280,9 @@ export const Todos = () => {
         )}
       </section>
 
-      <section className="px-3">
-        <div className="flex justify-between md:w-[40%] m-auto">
-          <h2 className="text-2xl font-bold p-3 text-center mt-3 text-gray-500">Shared Todos</h2>
-          <div className="flex flex-col justify-center items-center p-3">
-            <button onClick={delList}>
-              <div className="flex gap-2">
-                <span>Delete List</span>
-                <span className="material-symbols-outlined hover:text-gray-500">close</span>
-              </div>
-            </button>
-          </div>
-        </div>
-        {loading ? (
-          <Loader />
-        ) : sharedTodos.length > 0 ? (
-          <div className="flex flex-col border-2 border-gray-500 rounded mx-auto md:w-[40%]">
-            {sharedTodos.map((todo) => (
-              <div className="flex flex-col p-3 border-b border-gray-500" key={todo.id}>
-                <p className="text-gray-500 cursor-default">{todo.title}</p>
-                <small className="text-gray-500 text-right cursor-default">Shared by: {todo.sharedBy || "Unknown"}</small>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="flex flex-col justify-center items-center text-gray-500 cursor-pointer" onClick={openShareModal}>
-            <span className="material-symbols-outlined">receipt_long</span>
-            <p>No shared todos</p>
-          </div>
-        )}
-      </section>
-
       <Modal show={showModal} onHide={closeShareModal}>
         <Modal.Header closeButton>
-          <Modal.Title className="text-dark">Share Todos</Modal.Title>
+          <Modal.Title className="text-dark">Share Todo List</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="flex flex-col gap-3 p-2">
@@ -324,6 +300,30 @@ export const Todos = () => {
             Close
           </Button>
           <Button variant="dark" onClick={handleShareTodos}>
+            Share
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showShareModal} onHide={() => setShowShareModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title className="text-dark">Share Todo</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="text-dark">
+          <input
+            type="email"
+            value={shareEmail}
+            onChange={(e) => { 
+              setShareEmail(e.target.value)}}
+            placeholder="Recipient email"
+            className="form-control"
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowShareModal(false)}>
+            Close
+          </Button>
+          <Button variant="dark" onClick={handleShareTodo}>
             Share
           </Button>
         </Modal.Footer>
