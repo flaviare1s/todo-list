@@ -29,6 +29,7 @@ export async function shareTodosWithEmail(userId, todos, email) {
       ownerId: userId,
       sharedWith: userToShareWith.uid,
       todos: todos.map((todo) => ({
+        id: todo.id,
         title: todo.title,
         status: todo.status,
         userId: todo.userId,
@@ -58,7 +59,6 @@ export async function getSharedTodos(userId) {
     ...doc.data(),
   }));
 
-  console.log("Shared Todos:", sharedTodos);
   return sharedTodos;
 }
 
