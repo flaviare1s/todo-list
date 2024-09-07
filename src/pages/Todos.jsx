@@ -13,6 +13,7 @@ import { UserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import { deleteList, getSharedTodos, shareTodosWithEmail } from "../firebase/list";
 import { Modal, Button } from "react-bootstrap";
+import { serverTimestamp } from "firebase/firestore";
 
 export const Todos = () => {
   const { register, handleSubmit, reset } = useForm();
@@ -53,6 +54,9 @@ export const Todos = () => {
       ...data,
       status: "active",
       userId: user.uid,
+   
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
     };
 
     setTodos((prevTodos) => [
@@ -91,7 +95,10 @@ export const Todos = () => {
 
   function confirmEdit(id) {
     if (editTitle !== originalTitle) {
-      updateTodo(id, { title: editTitle })
+      updateTodo(id, { 
+        title: editTitle,
+        updatedAt: serverTimestamp(),
+      })
         .then(() => {
           toast.success("Todo updated!");
           listTodos();
