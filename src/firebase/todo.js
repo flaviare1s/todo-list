@@ -43,3 +43,7 @@ export async function deleteTodo(id) {
   const todoDoc = doc(todosCol, id);
   await deleteDoc(todoDoc);
 }
+
+export function getUserTodosQuery(userId) {
+  return query(todosCol, where("userId", "==", userId));
+}

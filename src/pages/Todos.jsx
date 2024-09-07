@@ -3,6 +3,7 @@ import {
   addTodo,
   deleteTodo,
   getUserTodos,
+  getUserTodosQuery,
   updateTodo,
   updateTodoStatus,
 } from "../firebase/todo";
@@ -12,7 +13,7 @@ import { Loader } from "../components/Loader";
 import { UserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import { Modal, Button } from "react-bootstrap";
-import { serverTimestamp } from "firebase/firestore";
+import { onSnapshot, serverTimestamp } from "firebase/firestore";
 import { shareTodoWithEmail } from "../firebase/share";
 import { shareTodosWithEmail } from "../firebase/list";
 
@@ -120,6 +121,7 @@ export const Todos = () => {
 
   function handleKeyDown(e, id) {
     if (e.key === "Enter") {
+      e.preventDefault();
       confirmEdit(id);
     }
   }
@@ -164,6 +166,26 @@ export const Todos = () => {
       }
     }
   }
+
+  useEffect(() => {
+    if (user?.uid) {
+      const todosQuery = getUserTodosQuery(user.uid);
+      const unsubscribe = onSnapshot(todosQuery, (snapshot) => {
+        const userTodos = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setTodos(userTodos);
+        setLoading(false);
+      }, (error) => {
+        toast.error("Failed to load todos!", error);
+        setLoading(false);
+      });
+
+      // Limpeza do listener quando o componente for desmontado
+      return () => unsubscribe();
+    }
+  }, [user]);
 
   function shareTodo(todoId) {
     setTodoToShare(todoId);
