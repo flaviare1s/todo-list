@@ -122,7 +122,7 @@ export const SharedTodos = () => {
     <section className="px-3">
       <div className="w-full md:w-[40%] flex flex-col m-auto">
         <div className="flex justify-center">
-          <h2 className="text-2xl font-bold p-3 text-center">Shared Todos</h2>
+          <h2 className="text-2xl font-bold p-3 text-center mt-3 mb-2">Shared Todos</h2>
         </div>
       </div>
       {sharedTodos.length > 0 ? (
