@@ -80,3 +80,42 @@ export async function shareTodoWithEmail(todoId, email, permission) {
     throw error;
   }
 }
+
+export async function getSharedTodo() {
+  const auth = getAuth();
+  const currentUser = auth.currentUser;
+
+  if (!currentUser) {
+    throw new Error("User not authenticated");
+  }
+
+  try {
+    const todosQuery = query(collection(db, "todos"));
+    const querySnapshot = await getDocs(todosQuery);
+
+    const todos = querySnapshot.docs
+      .map((doc) => {
+        const data = doc.data();
+        const sharedWithArray = Array.isArray(data.sharedWith) ? data.sharedWith : [];
+
+        const isShared = sharedWithArray.some((share) => {
+        const shareUid = String(share.uid);
+        const currentUid = String(currentUser.uid);
+        const match = shareUid === currentUid;
+          return match;
+        });
+
+        return {
+          id: doc.id,
+          ...data,
+          isShared,
+        };
+      })
+      .filter((todo) => todo.isShared);
+      
+    return todos;
+  } catch (error) {
+    console.error("Error fetching shared todos:", error.message);
+    throw error;
+  }
+}

@@ -363,7 +363,6 @@ export const Todos = () => {
             type="email"
             value={shareEmail}
             onChange={(e) => { 
-              console.log("Updated shareEmail:", e.target.value);
               setShareEmail(e.target.value)}}
             placeholder="Recipient email"
             className="form-control"

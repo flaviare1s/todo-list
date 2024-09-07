@@ -15,12 +15,13 @@ export const Header = () => {
   }
   return (
     <header className="w-screen">
-      <Navbar bg="dark" variant="dark" expand="sm" className="px-3">
+      <Navbar bg="dark" variant="dark" expand="md" className="px-3">
         <Container fluid>
           <Link className="text-xl font-bold" to="/">TODO LIST</Link>
           <Navbar.Toggle />
           <Navbar.Collapse>
-            <Nav className="ms-auto">
+            <Nav className="ms-auto flex items-center">
+              {user && (<span className="text-gray-400 cursor-default mr-2">Hi, {user.displayName}!</span>)}
               {user && <Link className="nav-link" to='todos'>Todos</Link>}
               {user && <Link className="nav-link" to='shared-todos'>Shared Todos</Link>}
               {user && <Link className="nav-link" to='lists'>Lists</Link>}
