@@ -41,7 +41,7 @@ export const SharedTodos = () => {
               {sharedTodos.map(todo => (
                 <div key={todo.id} className='p-3 border-b'>
                   <p>{todo.title}</p>
-                  <small className='text-gray-500 flex justify-end'>Shared by: {todo.ownerEmail}</small>
+                  <small className='text-gray-500 flex justify-end'>Shared by: {todo.ownerName}</small>
                 </div>
               ))}
             </div>

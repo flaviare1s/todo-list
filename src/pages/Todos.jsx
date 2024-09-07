@@ -52,6 +52,7 @@ export const Todos = () => {
       status: "active",
       userId: user.uid,
       ownerEmail: user.email,
+      ownerName: user.displayName,
       sharedWith:
         sharedWith.length > 0
           ? sharedWith.map((user) => ({
