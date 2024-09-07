@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import { getSharedTodo } from "../firebase/share";
+import { getFirestore, collection, onSnapshot, serverTimestamp } from "firebase/firestore";
 import { Loader } from "../components/Loader";
 import { deleteTodo, updateTodo, updateTodoStatus } from "../firebase/todo";
 import toast from "react-hot-toast";
-import { serverTimestamp } from "firebase/firestore";
+
+const db = getFirestore();
 
 export const SharedTodos = () => {
   const [sharedTodos, setSharedTodos] = useState([]);
@@ -15,26 +16,26 @@ export const SharedTodos = () => {
   const editInputRef = useRef(null);
 
   useEffect(() => {
-    const fetchSharedTodos = async () => {
-      try {
-        const todos = await getSharedTodo();
-        setSharedTodos(todos);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+    const todosRef = collection(db, 'todos');
 
-    fetchSharedTodos();
+    const unsubscribe = onSnapshot(todosRef, (snapshot) => {
+      const todos = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setSharedTodos(todos);
+      setLoading(false);
+    }, (err) => {
+      setError(err.message);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
     function handleClickOutside(event) {
-      if (
-        editInputRef.current &&
-        !editInputRef.current.contains(event.target)
-      ) {
+      if (editInputRef.current && !editInputRef.current.contains(event.target)) {
         confirmEdit(isEditing);
       }
     }
@@ -58,11 +59,6 @@ export const SharedTodos = () => {
     updateTodoStatus(id, newStatus)
       .then(() => {
         toast.success(`Todo marked as ${newStatus}!`);
-        setSharedTodos((prevTodos) =>
-          prevTodos.map((todo) =>
-            todo.id === id ? { ...todo, status: newStatus } : todo
-          )
-        );
       })
       .catch(() => {
         toast.error("Failed to update todo!");
@@ -75,9 +71,6 @@ export const SharedTodos = () => {
       deleteTodo(id)
         .then(() => {
           toast.success("Todo deleted!");
-          setSharedTodos((prevTodos) =>
-            prevTodos.filter((todo) => todo.id !== id)
-          );
         })
         .catch(() => {
           toast.error("Failed to delete todo!");
@@ -99,11 +92,6 @@ export const SharedTodos = () => {
       })
         .then(() => {
           toast.success("Todo updated!");
-          setSharedTodos((prevTodos) =>
-            prevTodos.map((todo) =>
-              todo.id === id ? { ...todo, title: editTitle } : todo
-            )
-          );
         })
         .catch(() => {
           toast.error("Failed to update todo!");
@@ -125,9 +113,7 @@ export const SharedTodos = () => {
           <h2 className="text-2xl font-bold p-3 text-center">Shared Todos</h2>
         </div>
       </div>
-      {loading ? (
-        <Loader />
-      ) : sharedTodos.length > 0 ? (
+      {sharedTodos.length > 0 ? (
         <div className="flex flex-col border-2 border-offwhite rounded mx-auto md:w-[40%]">
           {sharedTodos.map((todo) => (
             <div key={todo.id} className="p-3 border-b">
@@ -145,11 +131,10 @@ export const SharedTodos = () => {
                   ) : (
                     <p
                       onClick={() => changeStatus(todo.id, todo.status)}
-                      className={`text-left cursor-pointer ${
-                        todo.status === "completed"
+                      className={`text-left cursor-pointer ${todo.status === "completed"
                           ? "line-through text-gray-500"
                           : ""
-                      }`}
+                        }`}
                     >
                       {todo.title}
                     </p>
@@ -166,7 +151,7 @@ export const SharedTodos = () => {
                   </div>
                 </div>
                 <small className="text-gray-500 flex justify-end">
-                  Shared by: {todo.ownerName}
+                  Created by: {todo.ownerName}
                 </small>
               </div>
             </div>
