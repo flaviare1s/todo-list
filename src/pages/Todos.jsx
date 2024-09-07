@@ -11,15 +11,15 @@ import { useEffect, useState, useRef, useContext } from "react";
 import { Loader } from "../components/Loader";
 import { UserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
-import { deleteList, getSharedTodos, shareTodosWithEmail } from "../firebase/list";
 import { Modal, Button } from "react-bootstrap";
 import { serverTimestamp } from "firebase/firestore";
 import { shareTodoWithEmail } from "../firebase/share";
+import { shareTodosWithEmail } from "../firebase/list";
+
 
 export const Todos = () => {
   const { register, handleSubmit, reset } = useForm();
   const [todos, setTodos] = useState([]);
-  const [sharedTodos, setSharedTodos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(null);
   const [editTitle, setEditTitle] = useState("");
@@ -36,13 +36,10 @@ export const Todos = () => {
     if (user?.uid) {
       setLoading(true);
 
-      const userTodosPromise = getUserTodos(user.uid);
-      const sharedTodosPromise = getSharedTodos(user.uid);
-
-      Promise.all([userTodosPromise, sharedTodosPromise])
-        .then(([userTodos, sharedTodos]) => {
+      // Obter todos os todos do usuário
+      getUserTodos(user.uid)
+        .then(userTodos => {
           setTodos(userTodos);
-          setSharedTodos(sharedTodos.flatMap(todoList => todoList.todos));
           setLoading(false);
         })
         .catch(() => {
@@ -135,21 +132,6 @@ export const Todos = () => {
         });
     }
   }
-
-  function delList() {
-    const del = confirm("Are you sure you want to delete all todos?");
-    if (del) {
-      deleteList(user.uid)
-        .then(() => {
-          toast.success("All todos deleted!");
-          listTodos();
-        })
-        .catch(() => {
-          toast.error("Failed to delete todos!");
-        });
-    }
-  }
-
 
   function openShareModal() {
     setShowModal(true);
@@ -294,37 +276,6 @@ export const Todos = () => {
           <div className="flex flex-col justify-center items-center text-gray-500 cursor-pointer" onClick={handleSubmit(createTodo)}>
             <span className="material-symbols-outlined">receipt_long</span>
             <p>No todos</p>
-          </div>
-        )}
-      </section>
-
-      <section className="px-3">
-        <div className="flex justify-between md:w-[40%] m-auto">
-          <h2 className="text-2xl font-bold p-3 text-center mt-3 text-gray-500">Shared Todos</h2>
-          <div className="flex flex-col justify-center items-center p-3">
-            <button onClick={delList}>
-              <div className="flex gap-2">
-                <span>Delete List</span>
-                <span className="material-symbols-outlined hover:text-gray-500">close</span>
-              </div>
-            </button>
-          </div>
-        </div>
-        {loading ? (
-          <Loader />
-        ) : sharedTodos.length > 0 ? (
-          <div className="flex flex-col border-2 border-gray-500 rounded mx-auto md:w-[40%]">
-            {sharedTodos.map((todo) => (
-              <div className="flex flex-col p-3 border-b border-gray-500" key={todo.id}>
-                <p className="text-gray-500 cursor-default">{todo.title}</p>
-                <small className="text-gray-500 text-right cursor-default">Shared by: {todo.sharedBy || "Unknown"}</small>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="flex flex-col justify-center items-center text-gray-500 cursor-pointer" onClick={openShareModal}>
-            <span className="material-symbols-outlined">receipt_long</span>
-            <p>No shared todos</p>
           </div>
         )}
       </section>
