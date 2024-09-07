@@ -17,7 +17,6 @@ import { shareTodoWithEmail } from "../firebase/share";
 import { shareTodosWithEmail } from "../firebase/list";
 
 export const Todos = () => {
-  const { register, handleSubmit, reset } = useForm();
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(null);
@@ -25,11 +24,12 @@ export const Todos = () => {
   const [originalTitle, setOriginalTitle] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [shareEmail, setShareEmail] = useState("");
-  const user = useContext(UserContext);
-  const navigate = useNavigate();
-  const editInputRef = useRef(null);
   const [todoToShare, setTodoToShare] = useState(null);
   const [showShareModal, setShowShareModal] = useState(false);
+  const editInputRef = useRef(null);
+  const { register, handleSubmit, reset } = useForm();
+  const user = useContext(UserContext);
+  const navigate = useNavigate();
 
   function listTodos() {
     if (user?.uid) {
