@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { deleteList, getSharedTodos, shareTodosWithEmail } from "../firebase/list";
 import { Modal, Button } from "react-bootstrap";
 import { serverTimestamp } from "firebase/firestore";
+import { shareTodoWithEmail } from "../firebase/share";
 
 export const Todos = () => {
   const { register, handleSubmit, reset } = useForm();
@@ -28,6 +29,8 @@ export const Todos = () => {
   const user = useContext(UserContext);
   const navigate = useNavigate();
   const editInputRef = useRef(null);
+  const [todoToShare, setTodoToShare] = useState(null);
+  const [showShareModal, setShowShareModal] = useState(false);
 
   function listTodos() {
     if (user?.uid) {
@@ -175,6 +178,23 @@ export const Todos = () => {
     }
   }
 
+  function shareTodo(todoId) {
+    setTodoToShare(todoId);
+    setShareEmail("");
+    setShowShareModal(true);
+  }
+
+  async function handleShareTodo() {
+    try {
+      await shareTodoWithEmail(user.uid, todoToShare, shareEmail, "write");
+      toast.success("Todo shared successfully!");
+    } catch (error) {
+      toast.error(`Failed to share todo: ${error.message}`);
+    }
+    setShowShareModal(false);
+  }
+
+
   useEffect(() => {
     if (user?.uid) {
       listTodos();
@@ -255,7 +275,7 @@ export const Todos = () => {
                       <span className="material-symbols-outlined">edit</span>
                     </button>
                   )}
-                  <button>
+                  <button onClick={() => shareTodo(todo.id)}>
                     <span className="material-symbols-outlined">share</span>
                   </button>
                   <button onClick={() => removeTodo(todo.id)}>
@@ -306,7 +326,7 @@ export const Todos = () => {
 
       <Modal show={showModal} onHide={closeShareModal}>
         <Modal.Header closeButton>
-          <Modal.Title className="text-dark">Share Todos</Modal.Title>
+          <Modal.Title className="text-dark">Share Todo List</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="flex flex-col gap-3 p-2">
@@ -324,6 +344,29 @@ export const Todos = () => {
             Close
           </Button>
           <Button variant="dark" onClick={handleShareTodos}>
+            Share
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showShareModal} onHide={() => setShowShareModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title className="text-dark">Share Todo</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="text-dark">
+          <input
+            type="email"
+            value={shareEmail}
+            onChange={(e) => setShareEmail(e.target.value)}
+            placeholder="Recipient email"
+            className="form-control"
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowShareModal(false)}>
+            Close
+          </Button>
+          <Button variant="dark" onClick={handleShareTodo}>
             Share
           </Button>
         </Modal.Footer>
