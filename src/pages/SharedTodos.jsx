@@ -1,7 +1,8 @@
-// SharedTodos.jsx
 import { useState, useEffect } from 'react';
 import { getSharedTodo } from '../firebase/share';
 import { Loader } from '../components/Loader';
+import { deleteTodo } from '../firebase/todo';
+import toast from 'react-hot-toast';
 
 export const SharedTodos = () => {
   const [sharedTodos, setSharedTodos] = useState([]);
@@ -31,6 +32,20 @@ export const SharedTodos = () => {
     return <div>Error: {error}</div>;
   }
 
+  function removeTodo(id) {
+    const del = confirm("Are you sure you want to delete this todo?");
+    if (del) {
+      deleteTodo(id)
+        .then(() => {
+          toast.success("Todo deleted!");
+          setSharedTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+        })
+        .catch(() => {
+          toast.error("Failed to delete todo!");
+        });
+    }
+  }
+
   return (
     <section className='px-3'>
       <div className="w-full md:w-[40%] flex flex-col m-auto">
@@ -40,7 +55,12 @@ export const SharedTodos = () => {
               <div className="flex flex-col">
               {sharedTodos.map(todo => (
                 <div key={todo.id} className='p-3 border-b'>
-                  <p>{todo.title}</p>
+                  <div className='flex justify-between'>
+                    <p>{todo.title}</p>
+                    <button onClick={() => removeTodo(todo.id)}>
+                      <span className="material-symbols-outlined">close</span>
+                    </button>
+                  </div>
                   <small className='text-gray-500 flex justify-end'>Shared by: {todo.ownerName}</small>
                 </div>
               ))}
