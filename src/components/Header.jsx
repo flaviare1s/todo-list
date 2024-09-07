@@ -30,7 +30,7 @@ export const Header = () => {
               )}
               {user && (
                 <Link className="nav-link" to="todos">
-                  Todos
+                  My Todos
                 </Link>
               )}
               {user && (

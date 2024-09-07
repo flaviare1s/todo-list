@@ -316,9 +316,12 @@ export const Todos = () => {
                 </div>
                 <div className="flex justify-end">
                   {todo.sharedWith.length > 0 && (
-                    <small className="text-gray-500 mt-2">
-                      Shared
-                    </small>
+                    <div className="flex gap-2 items-center justify-center mt-2">
+                      <small className="text-gray-500">
+                        Shared
+                      </small>
+                      <span className="h-2 w-2 bg-red-400 rounded-full block"></span>
+                    </div>
                   )}
                 </div>
               </div>
