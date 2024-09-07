@@ -15,9 +15,6 @@ export async function shareTodoWithEmail(todoId, email, permission) {
   const auth = getAuth();
   const currentUser = auth.currentUser;
 
-  console.log("Current User:", currentUser);
-  console.log("Sharing todo:", todoId, "with email:", email);
-
   if (!currentUser) {
     throw new Error("User not authenticated");
   }

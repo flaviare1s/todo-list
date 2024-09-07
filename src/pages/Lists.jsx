@@ -19,6 +19,7 @@ export const Lists = () => {
 
       Promise.all([userTodosPromise, sharedTodosPromise])
         .then(([userTodos, sharedTodosLists]) => {
+          console.log(userTodos, sharedTodosLists);
           setSharedTodos(sharedTodosLists.flatMap(todoList => todoList.todos));
           setLoading(false);
         })

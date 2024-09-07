@@ -16,7 +16,6 @@ import { serverTimestamp } from "firebase/firestore";
 import { shareTodoWithEmail } from "../firebase/share";
 import { shareTodosWithEmail } from "../firebase/list";
 
-
 export const Todos = () => {
   const { register, handleSubmit, reset } = useForm();
   const [todos, setTodos] = useState([]);
@@ -35,10 +34,8 @@ export const Todos = () => {
   function listTodos() {
     if (user?.uid) {
       setLoading(true);
-
-      // Obter todos os todos do usuário
       getUserTodos(user.uid)
-        .then(userTodos => {
+        .then((userTodos) => {
           setTodos(userTodos);
           setLoading(false);
         })
@@ -54,10 +51,15 @@ export const Todos = () => {
       ...data,
       status: "active",
       userId: user.uid,
-      sharedWith: sharedWith.length > 0 ? sharedWith.map(user => ({
-        uid: user.uid || '',
-        permission: user.permission || 'read',
-      })) : [],
+      sharedWith:
+        sharedWith.length > 0
+          ? sharedWith.map((user) => ({
+              uid: user.uid || "",
+              permission: user.permission || "read",
+              email: user.email || "",
+              displayName: user.displayName || "",
+            }))
+          : [],
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     };
@@ -98,7 +100,7 @@ export const Todos = () => {
 
   function confirmEdit(id) {
     if (editTitle !== originalTitle) {
-      updateTodo(id, { 
+      updateTodo(id, {
         title: editTitle,
         updatedAt: serverTimestamp(),
       })
@@ -224,12 +226,16 @@ export const Todos = () => {
         />
       </form>
 
-      <section className="px-3">  
+      <section className="px-3">
         <div className="w-full md:w-[40%] flex flex-col m-auto">
           <div className="flex justify-between">
             <h2 className="text-2xl font-bold p-3 text-center">My Todos</h2>
-            <button onClick={openShareModal} className="py-3 px-2 flex items-center justify-center gap-2">
-              <span>Share List</span><span className="material-symbols-outlined">send</span>
+            <button
+              onClick={openShareModal}
+              className="py-3 px-2 flex items-center justify-center gap-2"
+            >
+              <span>Share List</span>
+              <span className="material-symbols-outlined">send</span>
             </button>
           </div>
         </div>
@@ -251,7 +257,11 @@ export const Todos = () => {
                 ) : (
                   <p
                     onClick={() => changeStatus(todo.id, todo.status)}
-                    className={`text-left cursor-pointer ${todo.status === "completed" ? "line-through text-gray-500" : ""}`}
+                    className={`text-left cursor-pointer ${
+                      todo.status === "completed"
+                        ? "line-through text-gray-500"
+                        : ""
+                    }`}
                   >
                     {todo.title}
                   </p>
@@ -273,7 +283,10 @@ export const Todos = () => {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col justify-center items-center text-gray-500 cursor-pointer" onClick={handleSubmit(createTodo)}>
+          <div
+            className="flex flex-col justify-center items-center text-gray-500 cursor-pointer"
+            onClick={handleSubmit(createTodo)}
+          >
             <span className="material-symbols-outlined">receipt_long</span>
             <p>No todos</p>
           </div>
@@ -313,8 +326,9 @@ export const Todos = () => {
           <input
             type="email"
             value={shareEmail}
-            onChange={(e) => { 
-              setShareEmail(e.target.value)}}
+            onChange={(e) => {
+              setShareEmail(e.target.value);
+            }}
             placeholder="Recipient email"
             className="form-control"
           />

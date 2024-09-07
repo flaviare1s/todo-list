@@ -35,17 +35,21 @@ export const SharedTodos = () => {
     <section className='px-3'>
       <div className="w-full md:w-[40%] flex flex-col m-auto">
         <h2 className="text-2xl font-bold p-3 text-center">Shared Todos</h2>
-        <div className="flex flex-col border-2 border-offwhite rounded mx-auto w-full">
-          {sharedTodos.length === 0 ? (
-            <p>No todos shared with you.</p>
-          ) : (
+          {sharedTodos.length !== 0 ? (
+          <div className="flex flex-col border-2 border-offwhite rounded mx-auto w-full">
               <div className="flex flex-col">
               {sharedTodos.map(todo => (
                 <p className="p-3 border-b" key={todo.id}>{todo.title}</p>
               ))}
             </div>
+          </div>
+          ) : (
+              <div className="flex flex-col justify-center items-center text-gray-500 cursor-pointer">
+                <span className="material-symbols-outlined">receipt_long</span>
+                <p>No shared todos</p>
+              </div>
           )}
-        </div>
+      
       </div>
     </section>
   );
