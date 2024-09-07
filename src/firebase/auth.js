@@ -15,13 +15,13 @@ export async function registerUser(name, email, password) {
   const { user } = await createUserWithEmailAndPassword(auth, email, password);
   await updateProfile(user, { displayName: name });
 
-   await setDoc(doc(db, "users", user.uid), {
-     uid: user.uid,
-     name: name,
-     email: user.email,
-     createdAt: new Date().toISOString(),
-     provider: "email",
-   });
+  await setDoc(doc(db, "users", user.uid), {
+    uid: user.uid,
+    name: name,
+    email: user.email,
+    createdAt: new Date().toISOString(),
+    provider: "email",
+  });
 }
 export async function loginGoogle() {
   const provider = new GoogleAuthProvider();

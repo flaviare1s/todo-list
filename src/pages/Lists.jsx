@@ -20,7 +20,9 @@ export const Lists = () => {
       Promise.all([userTodosPromise, sharedTodosPromise])
         .then(([userTodos, sharedTodosLists]) => {
           console.log(userTodos, sharedTodosLists);
-          setSharedTodos(sharedTodosLists.flatMap(todoList => todoList.todos));
+          setSharedTodos(
+            sharedTodosLists.flatMap((todoList) => todoList.todos)
+          );
           setLoading(false);
         })
         .catch(() => {
@@ -36,7 +38,6 @@ export const Lists = () => {
       deleteList(user.uid)
         .then(() => {
           toast.success("All todos deleted!");
-          // Update the sharedTodos state directly
           setSharedTodos([]);
         })
         .catch(() => {
@@ -52,12 +53,16 @@ export const Lists = () => {
   return (
     <section className="px-3">
       <div className="flex justify-between md:w-[40%] m-auto">
-        <h2 className="text-2xl font-bold p-3 text-center mt-3 text-gray-500">Shared Lists</h2>
+        <h2 className="text-2xl font-bold p-3 text-center mt-3 text-gray-500">
+          Shared Lists
+        </h2>
         <div className="flex flex-col justify-center items-center p-3">
           <button onClick={delList}>
             <div className="flex gap-2">
               <span>Delete List</span>
-              <span className="material-symbols-outlined hover:text-gray-500">close</span>
+              <span className="material-symbols-outlined hover:text-gray-500">
+                close
+              </span>
             </div>
           </button>
         </div>
@@ -67,9 +72,14 @@ export const Lists = () => {
       ) : sharedTodos.length > 0 ? (
         <div className="flex flex-col border-2 border-gray-500 rounded mx-auto md:w-[40%]">
           {sharedTodos.map((todo) => (
-            <div className="flex flex-col p-3 border-b border-gray-500" key={todo.id}>
+            <div
+              className="flex flex-col p-3 border-b border-gray-500"
+              key={todo.id}
+            >
               <p className="text-gray-500 cursor-default">{todo.title}</p>
-              <small className="text-gray-500 text-right cursor-default">Shared by: {todo.sharedBy || "Unknown"}</small>
+              <small className="text-gray-500 text-right cursor-default">
+                Shared by: {todo.sharedBy || "Unknown"}
+              </small>
             </div>
           ))}
         </div>

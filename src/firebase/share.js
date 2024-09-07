@@ -93,12 +93,14 @@ export async function getSharedTodo() {
     const todos = querySnapshot.docs
       .map((doc) => {
         const data = doc.data();
-        const sharedWithArray = Array.isArray(data.sharedWith) ? data.sharedWith : [];
+        const sharedWithArray = Array.isArray(data.sharedWith)
+          ? data.sharedWith
+          : [];
 
         const isShared = sharedWithArray.some((share) => {
-        const shareUid = String(share.uid);
-        const currentUid = String(currentUser.uid);
-        const match = shareUid === currentUid;
+          const shareUid = String(share.uid);
+          const currentUid = String(currentUser.uid);
+          const match = shareUid === currentUid;
           return match;
         });
 
@@ -109,7 +111,7 @@ export async function getSharedTodo() {
         };
       })
       .filter((todo) => todo.isShared);
-      
+
     return todos;
   } catch (error) {
     console.error("Error fetching shared todos:", error.message);

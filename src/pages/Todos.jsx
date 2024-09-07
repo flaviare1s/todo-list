@@ -58,11 +58,11 @@ export const Todos = () => {
       sharedWith:
         sharedWith.length > 0
           ? sharedWith.map((user) => ({
-            uid: user.uid || "",
-            permission: user.permission || "read",
-            email: user.email || "",
-            displayName: user.displayName || "",
-          }))
+              uid: user.uid || "",
+              permission: user.permission || "read",
+              email: user.email || "",
+              displayName: user.displayName || "",
+            }))
           : [],
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
@@ -170,19 +170,21 @@ export const Todos = () => {
   useEffect(() => {
     if (user?.uid) {
       const todosQuery = getUserTodosQuery(user.uid);
-      const unsubscribe = onSnapshot(todosQuery, (snapshot) => {
-        const userTodos = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setTodos(userTodos);
-        setLoading(false);
-      }, (error) => {
-        toast.error("Failed to load todos!", error);
-        setLoading(false);
-      });
-
-      // Limpeza do listener quando o componente for desmontado
+      const unsubscribe = onSnapshot(
+        todosQuery,
+        (snapshot) => {
+          const userTodos = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          setTodos(userTodos);
+          setLoading(false);
+        },
+        (error) => {
+          toast.error("Failed to load todos!", error);
+          setLoading(false);
+        }
+      );
       return () => unsubscribe();
     }
   }, [user]);
@@ -288,10 +290,11 @@ export const Todos = () => {
                 ) : (
                   <p
                     onClick={() => changeStatus(todo.id, todo.status)}
-                    className={`text-left cursor-pointer ${todo.status === "completed"
+                    className={`text-left cursor-pointer ${
+                      todo.status === "completed"
                         ? "line-through text-gray-500"
                         : ""
-                      }`}
+                    }`}
                   >
                     {todo.title}
                   </p>
@@ -323,11 +326,7 @@ export const Todos = () => {
         )}
       </section>
 
-      <Modal
-        show={showModal}
-        onHide={closeShareModal}
-        className="text-center"
-      >
+      <Modal show={showModal} onHide={closeShareModal} className="text-center">
         <Modal.Header closeButton>
           <Modal.Title className="text-dark">Share Todos</Modal.Title>
         </Modal.Header>
@@ -339,11 +338,7 @@ export const Todos = () => {
             placeholder="Enter email address"
             className="form-control"
           />
-          <Button
-            className="mt-2"
-            variant="dark"
-            onClick={handleShareTodos}
-          >
+          <Button className="mt-2" variant="dark" onClick={handleShareTodos}>
             Share
           </Button>
         </Modal.Body>
@@ -366,11 +361,7 @@ export const Todos = () => {
             className="form-control"
             ref={shareInputRef}
           />
-          <Button
-            className="mt-2"
-            variant="dark"
-            onClick={handleShareTodo}
-          >
+          <Button className="mt-2" variant="dark" onClick={handleShareTodo}>
             Share
           </Button>
         </Modal.Body>

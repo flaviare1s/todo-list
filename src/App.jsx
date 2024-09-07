@@ -38,9 +38,30 @@ export function App() {
           <section className="grow">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/todos" element={<PrivateRoute><Todos /></PrivateRoute>} />
-              <Route path="/shared-todos" element={<PrivateRoute><SharedTodos /></PrivateRoute>} />
-              <Route path="/lists" element={<PrivateRoute><Lists /></PrivateRoute>} />
+              <Route
+                path="/todos"
+                element={
+                  <PrivateRoute>
+                    <Todos />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/shared-todos"
+                element={
+                  <PrivateRoute>
+                    <SharedTodos />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/lists"
+                element={
+                  <PrivateRoute>
+                    <Lists />
+                  </PrivateRoute>
+                }
+              />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/reset-password" element={<ResetPassword />} />

@@ -1,5 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import { getFirestore, collection, onSnapshot, serverTimestamp } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  onSnapshot,
+  serverTimestamp,
+} from "firebase/firestore";
 import { Loader } from "../components/Loader";
 import { deleteTodo, updateTodo, updateTodoStatus } from "../firebase/todo";
 import toast from "react-hot-toast";
@@ -16,26 +21,33 @@ export const SharedTodos = () => {
   const editInputRef = useRef(null);
 
   useEffect(() => {
-    const todosRef = collection(db, 'todos');
+    const todosRef = collection(db, "todos");
 
-    const unsubscribe = onSnapshot(todosRef, (snapshot) => {
-      const todos = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setSharedTodos(todos);
-      setLoading(false);
-    }, (err) => {
-      setError(err.message);
-      setLoading(false);
-    });
+    const unsubscribe = onSnapshot(
+      todosRef,
+      (snapshot) => {
+        const todos = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setSharedTodos(todos);
+        setLoading(false);
+      },
+      (err) => {
+        setError(err.message);
+        setLoading(false);
+      }
+    );
 
     return () => unsubscribe();
   }, []);
 
   useEffect(() => {
     function handleClickOutside(event) {
-      if (editInputRef.current && !editInputRef.current.contains(event.target)) {
+      if (
+        editInputRef.current &&
+        !editInputRef.current.contains(event.target)
+      ) {
         confirmEdit(isEditing);
       }
     }
@@ -131,10 +143,11 @@ export const SharedTodos = () => {
                   ) : (
                     <p
                       onClick={() => changeStatus(todo.id, todo.status)}
-                      className={`text-left cursor-pointer ${todo.status === "completed"
+                      className={`text-left cursor-pointer ${
+                        todo.status === "completed"
                           ? "line-through text-gray-500"
                           : ""
-                        }`}
+                      }`}
                     >
                       {todo.title}
                     </p>
