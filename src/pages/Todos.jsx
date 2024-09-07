@@ -27,6 +27,7 @@ export const Todos = () => {
   const [todoToShare, setTodoToShare] = useState(null);
   const [showShareModal, setShowShareModal] = useState(false);
   const editInputRef = useRef(null);
+  const shareInputRef = useRef(null);
   const { register, handleSubmit, reset } = useForm();
   const user = useContext(UserContext);
   const navigate = useNavigate();
@@ -56,11 +57,11 @@ export const Todos = () => {
       sharedWith:
         sharedWith.length > 0
           ? sharedWith.map((user) => ({
-              uid: user.uid || "",
-              permission: user.permission || "read",
-              email: user.email || "",
-              displayName: user.displayName || "",
-            }))
+            uid: user.uid || "",
+            permission: user.permission || "read",
+            email: user.email || "",
+            displayName: user.displayName || "",
+          }))
           : [],
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
@@ -200,13 +201,19 @@ export const Todos = () => {
       ) {
         confirmEdit(isEditing);
       }
+      if (
+        shareInputRef.current &&
+        !shareInputRef.current.contains(event.target)
+      ) {
+        setShowShareModal(false);
+      }
     }
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isEditing, editTitle, originalTitle]);
+  }, [isEditing, editTitle, originalTitle, shareEmail]);
 
   if (user === null) {
     navigate("/login");
@@ -259,11 +266,10 @@ export const Todos = () => {
                 ) : (
                   <p
                     onClick={() => changeStatus(todo.id, todo.status)}
-                    className={`text-left cursor-pointer ${
-                      todo.status === "completed"
+                    className={`text-left cursor-pointer ${todo.status === "completed"
                         ? "line-through text-gray-500"
                         : ""
-                    }`}
+                      }`}
                   >
                     {todo.title}
                   </p>
@@ -295,32 +301,37 @@ export const Todos = () => {
         )}
       </section>
 
-      <Modal show={showModal} onHide={closeShareModal}>
+      <Modal
+        show={showModal}
+        onHide={closeShareModal}
+        className="text-center"
+      >
         <Modal.Header closeButton>
-          <Modal.Title className="text-dark">Share Todo List</Modal.Title>
+          <Modal.Title className="text-dark">Share Todos</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <div className="flex flex-col gap-3 p-2">
-            <input
-              type="email"
-              value={shareEmail}
-              onChange={(e) => setShareEmail(e.target.value)}
-              placeholder="Recipient email"
-              className="p-2 rounded w-full text-dark"
-            />
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={closeShareModal}>
-            Close
-          </Button>
-          <Button variant="dark" onClick={handleShareTodos}>
+        <Modal.Body className="text-dark">
+          <input
+            type="email"
+            value={shareEmail}
+            onChange={(e) => setShareEmail(e.target.value)}
+            placeholder="Enter email address"
+            className="form-control"
+          />
+          <Button
+            className="mt-2"
+            variant="dark"
+            onClick={handleShareTodos}
+          >
             Share
           </Button>
-        </Modal.Footer>
+        </Modal.Body>
       </Modal>
 
-      <Modal show={showShareModal} onHide={() => setShowShareModal(false)}>
+      <Modal
+        show={showShareModal}
+        onHide={() => setShowShareModal(false)}
+        className="text-center"
+      >
         <Modal.Header closeButton>
           <Modal.Title className="text-dark">Share Todo</Modal.Title>
         </Modal.Header>
@@ -328,21 +339,19 @@ export const Todos = () => {
           <input
             type="email"
             value={shareEmail}
-            onChange={(e) => {
-              setShareEmail(e.target.value);
-            }}
-            placeholder="Recipient email"
+            onChange={(e) => setShareEmail(e.target.value)}
+            placeholder="Enter email address"
             className="form-control"
+            ref={shareInputRef}
           />
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowShareModal(false)}>
-            Close
-          </Button>
-          <Button variant="dark" onClick={handleShareTodo}>
+          <Button
+            className="mt-2"
+            variant="dark"
+            onClick={handleShareTodo}
+          >
             Share
           </Button>
-        </Modal.Footer>
+        </Modal.Body>
       </Modal>
     </>
   );
