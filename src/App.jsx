@@ -14,6 +14,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { Loader } from "./components/Loader";
 import { auth } from "./firebase/config";
 import { PrivateRoute } from "./components/PrivateRoute";
+import { SharedTodos } from "./pages/SharedTodos";
+import { Lists } from "./pages/Lists";
 
 export function App() {
   const [userLogged, setUserLogged] = useState(null);
@@ -37,6 +39,8 @@ export function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/todos" element={<PrivateRoute><Todos /></PrivateRoute>} />
+              <Route path="/shared-todos" element={<PrivateRoute><SharedTodos /></PrivateRoute>} />
+              <Route path="/lists" element={<PrivateRoute><Lists /></PrivateRoute>} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/reset-password" element={<ResetPassword />} />
