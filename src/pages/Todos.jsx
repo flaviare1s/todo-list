@@ -185,15 +185,20 @@ export const Todos = () => {
   }
 
   async function handleShareTodo() {
+    if (!shareEmail) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
     try {
-      await shareTodoWithEmail(user.uid, todoToShare, shareEmail, "write");
+      await shareTodoWithEmail(todoToShare, shareEmail, "write");
       toast.success("Todo shared successfully!");
     } catch (error) {
       toast.error(`Failed to share todo: ${error.message}`);
     }
+
     setShowShareModal(false);
   }
-
 
   useEffect(() => {
     if (user?.uid) {
@@ -357,7 +362,9 @@ export const Todos = () => {
           <input
             type="email"
             value={shareEmail}
-            onChange={(e) => setShareEmail(e.target.value)}
+            onChange={(e) => { 
+              console.log("Updated shareEmail:", e.target.value);
+              setShareEmail(e.target.value)}}
             placeholder="Recipient email"
             className="form-control"
           />
