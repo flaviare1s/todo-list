@@ -6,26 +6,19 @@ import { useContext, useEffect, useState } from "react";
 import { getUserTodos } from "../firebase/todo";
 import { UserContext } from "../contexts/UserContext";
 
-
 export const Lists = () => {
   const [sharedTodos, setSharedTodos] = useState([]);
-  const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
   const user = useContext(UserContext);
 
-
-  
   function listTodos() {
     if (user?.uid) {
       setLoading(true);
-
-      // Obter todos os todos do usuário e todos compartilhados
       const userTodosPromise = getUserTodos(user.uid);
       const sharedTodosPromise = getSharedTodos(user.uid);
 
       Promise.all([userTodosPromise, sharedTodosPromise])
         .then(([userTodos, sharedTodosLists]) => {
-          setTodos(userTodos);
           setSharedTodos(sharedTodosLists.flatMap(todoList => todoList.todos));
           setLoading(false);
         })
@@ -42,7 +35,8 @@ export const Lists = () => {
       deleteList(user.uid)
         .then(() => {
           toast.success("All todos deleted!");
-          listTodos();
+          // Update the sharedTodos state directly
+          setSharedTodos([]);
         })
         .catch(() => {
           toast.error("Failed to delete todos!");
@@ -52,7 +46,7 @@ export const Lists = () => {
 
   useEffect(() => {
     listTodos();
-  }, []);
+  }, [user]);
 
   return (
     <section className="px-3">
@@ -79,11 +73,11 @@ export const Lists = () => {
           ))}
         </div>
       ) : (
-        <div className="flex flex-col justify-center items-center text-gray-500 cursor-pointer" onClick={openShareModal}>
+        <div className="flex flex-col justify-center items-center text-gray-500 cursor-pointer">
           <span className="material-symbols-outlined">receipt_long</span>
           <p>No shared todos</p>
         </div>
       )}
     </section>
-  )
-}
+  );
+};
