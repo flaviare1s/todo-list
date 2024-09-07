@@ -234,7 +234,7 @@ export const Todos = () => {
                 ) : (
                   <p
                     onClick={() => changeStatus(todo.id, todo.status)}
-                    className={`text-left cursor-pointer ${todo.status === "completed" ? "line-through" : ""}`}
+                    className={`text-left cursor-pointer ${todo.status === "completed" ? "line-through text-gray-500" : ""}`}
                   >
                     {todo.title}
                   </p>
@@ -278,8 +278,8 @@ export const Todos = () => {
           <div className="flex flex-col border-2 border-gray-500 rounded mx-auto md:w-[40%]">
             {sharedTodos.map((todo) => (
               <div className="flex flex-col p-3 border-b border-gray-500" key={todo.id}>
-                <p className="text-gray-500">{todo.title}</p>
-                <small className="text-gray-500 text-right">Shared by: {todo.sharedBy || "Unknown"}</small>
+                <p className="text-gray-500 cursor-default">{todo.title}</p>
+                <small className="text-gray-500 text-right cursor-default">Shared by: {todo.sharedBy || "Unknown"}</small>
               </div>
             ))}
           </div>
