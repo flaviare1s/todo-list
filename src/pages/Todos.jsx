@@ -255,6 +255,9 @@ export const Todos = () => {
                       <span className="material-symbols-outlined">edit</span>
                     </button>
                   )}
+                  <button>
+                    <span className="material-symbols-outlined">share</span>
+                  </button>
                   <button onClick={() => removeTodo(todo.id)}>
                     <span className="material-symbols-outlined">close</span>
                   </button>
