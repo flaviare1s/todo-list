@@ -427,6 +427,12 @@ export const Todos = () => {
                     : "N/A"}
                 </span>
               </div>
+              <div className="mb-2">
+                <span className="text-dark_gray mr-2 font-bold">Satus:</span>
+                <span className="text-offwhite font-bold text-lg">
+                  {todoInfo.status}
+                </span>
+              </div>
 
               {user.uid !== todoInfo.userId &&
                 todoInfo.sharedWith &&
