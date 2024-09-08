@@ -235,7 +235,7 @@ export const Todos = () => {
         className="flex flex-col justify-center items-center m-auto p-3"
         onSubmit={handleSubmit(createTodo)}
       >
-        <h1 className="text-4xl font-bold p-3">TODO</h1>
+        <h1 onClick={handleSubmit(createTodo)} className="text-4xl font-bold p-3">TODO</h1>
         <input
           type="text"
           id="title"
@@ -307,7 +307,7 @@ export const Todos = () => {
                   <div className="flex justify-end">
                     {user.uid !== todo.userId && todo.sharedWith.map((shared) => (
                       <small key={shared.uid} className={
-                        shared.permission === "write" ? "text-green" : "text-yellow"
+                        shared.permission === "write" ? "text-green font-bold" : "text-yellow font-bold"
                       }>
                         {shared.permission === "write" ? "Write" : "Read only"}
                       </small>

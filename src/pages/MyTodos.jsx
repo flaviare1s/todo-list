@@ -115,7 +115,8 @@ export const MyTodos = () => {
       updateTodo(id, {
         title: editTitle,
         updatedAt: serverTimestamp(),
-      })
+      },
+      user)
         .then(() => {
           toast.success("Todo updated!");
           listTodos();
@@ -271,12 +272,12 @@ export const MyTodos = () => {
         className="flex flex-col justify-center items-center m-auto p-3"
         onSubmit={handleSubmit(createTodo)}
       >
-        <h1 className="text-4xl font-bold p-3">TODO</h1>
+        <h1 onClick={handleSubmit(createTodo)} className="text-4xl font-bold p-3">TODO</h1>
         <input
           type="text"
           id="title"
           placeholder="Click here to create a new todo"
-          className="p-3 rounded-sm bg-inherit w-full md:w-[40%] sm:w-[60%] sm:w-[60%] placeholder:text-center placeholder:text-very_light_gray"
+          className="p-3 rounded-sm bg-inherit w-full md:w-[40%] sm:w-[60%] placeholder:text-center placeholder:text-very_light_gray"
           {...register("title", { required: true })}
         />
       </form>
@@ -340,7 +341,18 @@ export const MyTodos = () => {
                   {todo.sharedWith.length > 0 && (
                     <div className="flex gap-2 items-center justify-center mt-2">
                       <small className="text-light">Shared</small>
-                      <span className="h-2 w-2 bg-green rounded-full block"></span>
+                      {todo.sharedWith.map((user, index) => {
+                        console.log(user);
+                        return (
+                          <div key={index}>
+                            {user.permission === "read" ? (
+                              <span className="h-2 w-2 bg-yellow rounded-full block"></span>
+                            ) : (
+                              <span className="h-2 w-2 bg-green rounded-full block"></span>
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
                   )}
                 </div>
