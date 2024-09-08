@@ -275,7 +275,7 @@ export const Todos = () => {
             {sharedTodos.map((todo) => (
               <div key={todo.id} className="p-3 border-b">
                 <div>
-                  <div className="flex flex-col sm:flex-row sm:justify-between">
+                  <div className="flex flex-col sm:flex-row sm:justify-between mb-[-15px] sm:mb-0">
                     {isEditing === todo.id ? (
                       <input
                         type="text"
