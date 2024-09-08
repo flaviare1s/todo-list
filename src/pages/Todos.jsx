@@ -82,6 +82,14 @@ export const Todos = () => {
               toast.error(`Task shared with you was removed: ${todo.title}`);
               newNotifiedTodoIds.delete(todoId);
             }
+          } else if (change.type === "modified") {
+            const isSharedWithUser = todo.sharedWith?.some(
+              (shared) => shared.uid === user.uid
+            );
+
+            if (isSharedWithUser) {
+              toast.success(`Task shared with you was updated: ${todo.title}`);
+            }
           }
         });
 
