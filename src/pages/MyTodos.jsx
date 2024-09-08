@@ -112,11 +112,14 @@ export const MyTodos = () => {
 
   function confirmEdit(id) {
     if (editTitle !== originalTitle) {
-      updateTodo(id, {
-        title: editTitle,
-        updatedAt: serverTimestamp(),
-      },
-      user)
+      updateTodo(
+        id,
+        {
+          title: editTitle,
+          updatedAt: serverTimestamp(),
+        },
+        user
+      )
         .then(() => {
           toast.success("Todo updated!");
           listTodos();
@@ -272,18 +275,23 @@ export const MyTodos = () => {
         className="flex flex-col justify-center items-center m-auto p-3"
         onSubmit={handleSubmit(createTodo)}
       >
-        <h1 onClick={handleSubmit(createTodo)} className="text-4xl font-bold p-3">TODO</h1>
+        <h1
+          onClick={handleSubmit(createTodo)}
+          className="text-4xl font-bold p-3"
+        >
+          TODO
+        </h1>
         <input
           type="text"
           id="title"
           placeholder="Click here to create a new todo"
-          className="p-3 rounded-sm bg-inherit w-full md:w-[40%] sm:w-[60%] placeholder:text-center placeholder:text-very_light_gray"
+          className="p-3 rounded-sm bg-inherit w-full sm:w-[60%] md:w-[50%] xl:w-[40%] placeholder:text-center placeholder:text-very_light_gray"
           {...register("title", { required: true })}
         />
       </form>
 
       <section className="px-3">
-        <div className="w-full md:w-[40%] sm:w-[60%] flex flex-col m-auto">
+        <div className="w-full sm:w-[60%] md:w-[50%] xl:w-[40%] flex flex-col m-auto">
           <div className="flex justify-between">
             <h2 className="text-2xl font-bold p-3 text-center">My Todos</h2>
             <button
@@ -298,7 +306,7 @@ export const MyTodos = () => {
         {loading ? (
           <Loader />
         ) : todos.length > 0 ? (
-          <div className="flex flex-col border-2 border-offwhite rounded mx-auto md:w-[40%] sm:w-[60%]">
+          <div className="flex flex-col border-2 border-offwhite rounded mx-auto sm:w-[60%] md:w-[50%] xl:w-[40%]">
             {todos.map((todo) => (
               <div className="p-3 border-b" key={todo.id}>
                 <div className="flex justify-between">

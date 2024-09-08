@@ -34,6 +34,9 @@ export const Todos = () => {
   const [shareEmail, setShareEmail] = useState("");
   const [todoToShare, setTodoToShare] = useState(null);
   const [showShareModal, setShowShareModal] = useState(false);
+  const [showInfoModal, setShowInfoModal] = useState(false);
+  const [selectedTodoInfo, setSelectedTodoInfo] = useState(null);
+  const [todoInfo, setTodoInfo] = useState(null);
   const [selectedPermission, setSelectedPermission] = useState("");
   const {
     register,
@@ -229,23 +232,38 @@ export const Todos = () => {
     }
   }
 
+  function showInfo(todo) {
+    setTodoInfo(todo);
+    setShowInfoModal(true);
+  }
+
+  function handleInfoClick(todo) {
+    setSelectedTodoInfo(todo);
+    setShowInfoModal(true);
+  }
+
   return (
     <section>
       <form
         className="flex flex-col justify-center items-center m-auto p-3"
         onSubmit={handleSubmit(createTodo)}
       >
-        <h1 onClick={handleSubmit(createTodo)} className="text-4xl font-bold p-3">TODO</h1>
+        <h1
+          onClick={handleSubmit(createTodo)}
+          className="text-4xl font-bold p-3"
+        >
+          TODO
+        </h1>
         <input
           type="text"
           id="title"
           placeholder="Click here to create a new todo"
-          className="p-3 rounded-sm bg-inherit w-full md:w-[40%] sm:w-[60%] placeholder:text-center placeholder:text-very_light_gray"
+          className="p-3 rounded-sm bg-inherit w-full sm:w-[60%] md:w-[50%] xl:w-[40%] placeholder:text-center placeholder:text-very_light_gray"
           {...register("title", { required: true })}
         />
       </form>
       <section className="px-3">
-        <div className="w-full md:w-[40%] flex flex-col m-auto">
+        <div className="w-full sm:w-[60%] md:w-[50%] xl:w-[40%]flex flex-col m-auto">
           <div className="flex justify-center">
             <h2 className="text-2xl font-bold p-3 text-center mt-3 mb-2">
               TODOS
@@ -253,11 +271,11 @@ export const Todos = () => {
           </div>
         </div>
         {sharedTodos.length > 0 ? (
-          <div className="flex flex-col border-2 border-offwhite rounded mx-auto md:w-[40%] sm:w-[60%]">
+          <div className="flex flex-col border-2 border-offwhite rounded mx-auto sm:w-[60%] md:w-[50%] xl:w-[40%]">
             {sharedTodos.map((todo) => (
               <div key={todo.id} className="p-3 border-b">
                 <div>
-                  <div className="flex justify-between">
+                  <div className="flex flex-col sm:flex-row sm:justify-between mb-[-15px] sm:mb-0">
                     {isEditing === todo.id ? (
                       <input
                         type="text"
@@ -279,7 +297,7 @@ export const Todos = () => {
                         {todo.title}
                       </p>
                     )}
-                    <div className="flex gap-2">
+                    <div className="flex gap-1 ml-3 justify-end mt-2 sm:mt-0">
                       {isEditing !== todo.id && (
                         <button onClick={() => startEditing(todo)}>
                           <span className="material-symbols-outlined">
@@ -290,28 +308,18 @@ export const Todos = () => {
                       <button onClick={() => shareTodo(todo.id)}>
                         <span className="material-symbols-outlined">share</span>
                       </button>
+                      <button>
+                        <span
+                          onClick={() => showInfo(todo)}
+                          className="material-symbols-outlined"
+                        >
+                          info
+                        </span>
+                      </button>
                       <button onClick={() => removeTodo(todo.id)}>
                         <span className="material-symbols-outlined">close</span>
                       </button>
                     </div>
-                  </div>
-                  <div className="flex justify-end">
-                    <span className="text-very_light_gray text-xs mr-1">
-                      Created by:
-                    </span>
-                    <span className="text-dark_gray font-bold text-xs">
-                      {" "}
-                      {todo.ownerName}
-                    </span>
-                  </div>
-                  <div className="flex justify-end">
-                    {user.uid !== todo.userId && todo.sharedWith.map((shared) => (
-                      <small key={shared.uid} className={
-                        shared.permission === "write" ? "text-green font-bold" : "text-yellow font-bold"
-                      }>
-                        {shared.permission === "write" ? "Write" : "Read only"}
-                      </small>
-                    ))}
                   </div>
                 </div>
               </div>
@@ -374,6 +382,65 @@ export const Todos = () => {
             Share
           </Button>
         </Modal.Footer>
+      </Modal>
+
+      <Modal
+        show={showInfoModal}
+        onHide={() => setShowInfoModal(false)}
+        className="text-center modalInfo"
+      >
+        <Modal.Header closeButton className="modalInfo-header">
+          <Modal.Title className="text-dark modalInfo-title">Info</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="text-dark modalInfo-body">
+          {todoInfo ? (
+            <div key={todoInfo.id} className="text-left">
+              <div>
+                <span className="text-very_light_gray mr-2">Created by:</span>
+                <span className="text-dark_gray font-bold">
+                  {todoInfo.ownerName}
+                </span>
+              </div>
+              <div>
+                <span className="text-very_light_gray mr-2">Created At:</span>
+                <span className="text-dark_gray font-bold">
+                  {todoInfo.createdAt
+                    ? new Date(
+                        todoInfo.createdAt.seconds * 1000
+                      ).toLocaleString()
+                    : "N/A"}
+                </span>
+              </div>
+              <div>
+                <span className="text-very_light_gray mr-2">Updated At:</span>
+                <span className="text-dark_gray font-bold">
+                  {todoInfo.updatedAt
+                    ? new Date(
+                        todoInfo.updatedAt.seconds * 1000
+                      ).toLocaleString()
+                    : "N/A"}
+                </span>
+              </div>
+
+              {user.uid !== todoInfo.userId &&
+                todoInfo.sharedWith &&
+                todoInfo.sharedWith.map((shared) => (
+                  <span
+                    key={shared.uid}
+                    className={
+                      shared.permission === "write"
+                        ? "text-green font-bold"
+                        : "text-yellow font-bold"
+                    }
+                  >
+                    {shared.permission === "write" ? "Write" : "Read only"}
+                  </span>
+                ))}
+            </div>
+          ) : (
+            <Loader />
+          )}
+        </Modal.Body>
       </Modal>
     </section>
   );
