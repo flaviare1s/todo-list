@@ -38,6 +38,7 @@ export const Todos = () => {
   const [selectedTodoInfo, setSelectedTodoInfo] = useState(null);
   const [todoInfo, setTodoInfo] = useState(null);
   const [selectedPermission, setSelectedPermission] = useState("");
+  const [notifiedTodoIds, setNotifiedTodoIds] = useState(new Set());
   const {
     register,
     handleSubmit,
@@ -52,11 +53,36 @@ export const Todos = () => {
   useEffect(() => {
     if (!user) return;
 
+    const storedNotifiedTodoIds =
+      JSON.parse(localStorage.getItem("notifiedTodoIds")) || [];
+    const newNotifiedTodoIds = new Set(storedNotifiedTodoIds);
+
     const todosRef = collection(db, "todos");
 
     const unsubscribe = onSnapshot(
       todosRef,
       (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+          if (change.type === "added") {
+            const todo = change.doc.data();
+
+            const isSharedWithUser = todo.sharedWith?.some(
+              (shared) => shared.uid === user.uid
+            );
+
+            if (isSharedWithUser && !newNotifiedTodoIds.has(change.doc.id)) {
+              toast.success(`New task shared with you: ${todo.title}`);
+              newNotifiedTodoIds.add(change.doc.id);
+            }
+          }
+        });
+
+        localStorage.setItem(
+          "notifiedTodoIds",
+          JSON.stringify([...newNotifiedTodoIds])
+        );
+        setNotifiedTodoIds([...newNotifiedTodoIds]);
+
         const todos = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
@@ -396,7 +422,9 @@ export const Todos = () => {
           {todoInfo ? (
             <div key={todoInfo.id} className="text-left">
               <div className="mb-2">
-                <span className="text-dark_gray mr-2 font-bold">Created by:</span>
+                <span className="text-dark_gray mr-2 font-bold">
+                  Created by:
+                </span>
                 <span className="text-offwhite font-bold text-lg">
                   {todoInfo.ownerName}
                 </span>
@@ -408,7 +436,9 @@ export const Todos = () => {
                 </span>
               </div>
               <div className="mb-2">
-                <span className="text-dark_gray mr-2 font-bold">Created At:</span>
+                <span className="text-dark_gray mr-2 font-bold">
+                  Created At:
+                </span>
                 <span className="text-offwhite font-bold text-lg">
                   {todoInfo.createdAt
                     ? new Date(
@@ -418,7 +448,9 @@ export const Todos = () => {
                 </span>
               </div>
               <div className="mb-2">
-                <span className="text-dark_gray mr-2 font-bold">Updated At:</span>
+                <span className="text-dark_gray mr-2 font-bold">
+                  Updated At:
+                </span>
                 <span className="text-offwhite font-bold text-lg">
                   {todoInfo.updatedAt
                     ? new Date(
