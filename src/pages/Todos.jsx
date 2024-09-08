@@ -473,7 +473,7 @@ export const Todos = () => {
               </div>
               <div className="mb-2">
                 <span className="text-dark_gray mr-2 font-bold">
-                  Updated At:
+                  Last Updated:
                 </span>
                 <span className="text-offwhite font-bold text-lg">
                   {todoInfo.updatedAt
