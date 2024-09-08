@@ -297,7 +297,7 @@ export const Todos = () => {
                         {todo.title}
                       </p>
                     )}
-                    <div className="flex gap-1 ml-3 justify-end mt-2 sm:mt-0">
+                    <div className="flex gap-1 ml-3 justify-end mt-4 sm:mt-0">
                       {isEditing !== todo.id && (
                         <button onClick={() => startEditing(todo)}>
                           <span className="material-symbols-outlined">
@@ -395,15 +395,15 @@ export const Todos = () => {
         <Modal.Body className="text-dark modalInfo-body">
           {todoInfo ? (
             <div key={todoInfo.id} className="text-left">
-              <div>
-                <span className="text-very_light_gray mr-2">Created by:</span>
-                <span className="text-dark_gray font-bold">
+              <div className="mb-2">
+                <span className="text-dark_gray mr-2 font-bold">Created by:</span>
+                <span className="text-offwhite font-bold text-lg">
                   {todoInfo.ownerName}
                 </span>
               </div>
-              <div>
-                <span className="text-very_light_gray mr-2">Created At:</span>
-                <span className="text-dark_gray font-bold">
+              <div className="mb-2">
+                <span className="text-dark_gray mr-2 font-bold">Created At:</span>
+                <span className="text-offwhite font-bold text-lg">
                   {todoInfo.createdAt
                     ? new Date(
                         todoInfo.createdAt.seconds * 1000
@@ -411,9 +411,9 @@ export const Todos = () => {
                     : "N/A"}
                 </span>
               </div>
-              <div>
-                <span className="text-very_light_gray mr-2">Updated At:</span>
-                <span className="text-dark_gray font-bold">
+              <div className="mb-2">
+                <span className="text-dark_gray mr-2 font-bold">Updated At:</span>
+                <span className="text-offwhite font-bold text-lg">
                   {todoInfo.updatedAt
                     ? new Date(
                         todoInfo.updatedAt.seconds * 1000
