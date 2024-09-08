@@ -3,12 +3,15 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   query,
+  serverTimestamp,
   updateDoc,
   where,
 } from "firebase/firestore";
 import { db } from "./config";
+import toast from "react-hot-toast";
 
 export const todosCol = collection(db, "todos");
 
@@ -32,12 +35,12 @@ export async function updateTodo(id, data) {
   await updateDoc(todoDoc, data);
 }
 
-export async function updateTodoStatus(id, status) {
-  const todoDoc = doc(todosCol, id);
-  await updateDoc(todoDoc, {
-    status,
-  });
-}
+// export async function updateTodoStatus(id, status) {
+//   const todoDoc = doc(todosCol, id);
+//   await updateDoc(todoDoc, {
+//     status,
+//   });
+// }
 
 export async function deleteTodo(id) {
   const todoDoc = doc(todosCol, id);
@@ -46,4 +49,33 @@ export async function deleteTodo(id) {
 
 export function getUserTodosQuery(userId) {
   return query(todosCol, where("userId", "==", userId));
+}
+
+export async function updateTodoStatus(id, status, user) {
+  try {
+    const todoDoc = doc(todosCol, id);
+
+    const todoSnapshot = await getDoc(todoDoc);
+    if (!todoSnapshot.exists()) {
+      throw new Error("Todo not found.");
+    }
+
+    const todoData = todoSnapshot.data();
+    if (
+      todoData.userId !== user.uid &&
+      !todoData.sharedWith.some(
+        (shared) => shared.uid === user.uid && shared.permission === "write"
+      )
+    ) {
+      throw new Error("You do not have permission to update this todo.");
+    }
+
+    await updateDoc(todoDoc, {
+      status,
+      updatedAt: serverTimestamp(),
+    });
+  } catch (error) {
+    console.error("Error updating todo:", error.message);
+    throw error;
+  }
 }

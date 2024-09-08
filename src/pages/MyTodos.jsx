@@ -88,13 +88,13 @@ export const MyTodos = () => {
 
   function changeStatus(id, currentStatus) {
     const newStatus = currentStatus === "active" ? "completed" : "active";
-    updateTodoStatus(id, newStatus)
+    updateTodoStatus(id, newStatus, user)
       .then(() => {
         toast.success(`Todo marked as ${newStatus}!`);
         listTodos();
       })
       .catch(() => {
-        toast.error("Failed to update todo!");
+        toast.error("You do not have permission to update this todo.")
       });
   }
 
