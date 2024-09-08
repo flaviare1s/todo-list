@@ -34,6 +34,18 @@ body {
   color: #B7AEB4 !important;
 }
 
+.modalInfo-header {
+  background-color: #312B2D !important;
+}
+
+.modalInfo-title {
+   color: #f5f5f5 !important;
+}
+
+.modalInfo-body {
+  background-color: #6E5C62 !important;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

@@ -52,7 +52,7 @@ export const Lists = () => {
 
   return (
     <section className="px-3">
-      <div className="flex justify-between md:w-[40%] sm:w-[60%] m-auto">
+      <div className="flex justify-between m-auto sm:w-[60%] md:w-[50%] xl:w-[40%]">
         <h2 className="text-2xl font-bold p-3 text-center mt-3 text-offwhite">
           Shared Lists
         </h2>
@@ -70,7 +70,7 @@ export const Lists = () => {
       {loading ? (
         <Loader />
       ) : sharedTodos.length > 0 ? (
-          <div className="flex flex-col border-2 border-very_light_gray rounded mx-auto md:w-[40%] sm:w-[60%]">
+          <div className="flex flex-col border-2 border-very_light_gray rounded mx-auto sm:w-[60%] md:w-[50%] xl:w-[40%]">
           {sharedTodos.map((todo) => (
             <div
               className="flex flex-col p-3 border-b border-very_light_gray"
