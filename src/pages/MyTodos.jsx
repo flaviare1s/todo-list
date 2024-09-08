@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import {
   addTodo,
   deleteTodo,
@@ -28,9 +28,10 @@ export const MyTodos = () => {
   const [shareEmail, setShareEmail] = useState("");
   const [todoToShare, setTodoToShare] = useState(null);
   const [showShareModal, setShowShareModal] = useState(false);
+  const [selectedPermission, setSelectedPermission] = useState("");
   const editInputRef = useRef(null);
   const shareInputRef = useRef(null);
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, control,  formState: { errors } } = useForm();
   const user = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -193,6 +194,7 @@ export const MyTodos = () => {
   function shareTodo(todoId) {
     setTodoToShare(todoId);
     setShareEmail("");
+    setSelectedPermission("");
     setShowShareModal(true);
   }
 
@@ -202,9 +204,15 @@ export const MyTodos = () => {
       return;
     }
 
+    if (!selectedPermission) {
+      toast.error("Please select a permission.");
+      return;
+    }
+
     try {
-      await shareTodoWithEmail(todoToShare, shareEmail, "write");
+      await shareTodoWithEmail(todoToShare, shareEmail, selectedPermission);
       toast.success("Todo shared successfully!");
+      setShowShareModal(false);
     } catch (error) {
       toast.error(`Failed to share todo: ${error.message}`);
     }
@@ -226,9 +234,11 @@ export const MyTodos = () => {
       ) {
         confirmEdit(isEditing);
       }
+      const isInteractingWithSelect = event.target.closest('select') !== null;
       if (
         shareInputRef.current &&
-        !shareInputRef.current.contains(event.target)
+        !shareInputRef.current.contains(event.target) &&
+        !isInteractingWithSelect
       ) {
         setShowShareModal(false);
       }
@@ -372,10 +382,37 @@ export const MyTodos = () => {
             className="form-control"
             ref={shareInputRef}
           />
+          <label htmlFor="permission" className="mt-2">Select Access Level: </label>
+          <Controller
+            name="permission"
+            control={control}
+            defaultValue=""
+            rules={{ required: "Please choose a permission" }}
+            render={({ field }) => (
+              <select
+                {...field}
+                value={selectedPermission}
+                onChange={(e) => setSelectedPermission(e.target.value)}
+                className="form-control mt-2 select"
+              >
+                <option disabled value="">
+                  Please select a permission
+                </option>
+                <option value="read">Read</option>
+                <option value="write">Write</option>
+              </select>
+            )}
+          />
+          {!selectedPermission && errors.permission && (
+            <small className="text-red-500">{errors.permission.message}</small>
+          )}
+          
+        </Modal.Body>
+        <Modal.Footer>
           <Button className="mt-2" variant="dark" onClick={handleShareTodo}>
             Share
           </Button>
-        </Modal.Body>
+        </Modal.Footer>
       </Modal>
     </>
   );
