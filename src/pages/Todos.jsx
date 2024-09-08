@@ -62,33 +62,38 @@ export const Todos = () => {
     const unsubscribe = onSnapshot(
       todosRef,
       (snapshot) => {
+        const newTodos = [];
+        let hasNewNotification = false;
+
         snapshot.docChanges().forEach((change) => {
           if (change.type === "added") {
             const todo = change.doc.data();
+            const todoId = change.doc.id;
 
             const isSharedWithUser = todo.sharedWith?.some(
               (shared) => shared.uid === user.uid
             );
 
-            if (isSharedWithUser && !newNotifiedTodoIds.has(change.doc.id)) {
+            if (isSharedWithUser && !newNotifiedTodoIds.has(todoId)) {
               toast.success(`New task shared with you: ${todo.title}`);
-              newNotifiedTodoIds.add(change.doc.id);
+              newNotifiedTodoIds.add(todoId);
             }
+
+            newTodos.push({
+              id: todoId,
+              ...todo,
+            });
           }
         });
 
-        localStorage.setItem(
-          "notifiedTodoIds",
-          JSON.stringify([...newNotifiedTodoIds])
-        );
-        setNotifiedTodoIds([...newNotifiedTodoIds]);
+        if (hasNewNotification) {
+          localStorage.setItem(
+            "notifiedTodoIds",
+            JSON.stringify([...newNotifiedTodoIds])
+          );
+        }
 
-        const todos = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-
-        const filteredTodos = todos.filter((todo) => {
+        const filteredTodos = newTodos.filter((todo) => {
           const isOwner = todo.userId === user.uid;
           const isSharedWithUser = todo.sharedWith?.some(
             (shared) => shared.uid === user.uid
