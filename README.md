@@ -41,11 +41,8 @@ O aplicativo TODO List é uma solução colaborativa para gerenciamento de taref
   - **Compartilhamento de Lista de Tarefas:** Permite compartilhar toda a lista de tarefas em modo somente leitura com outros usuários, sem permitir alterações.
 
 - **Atualização em Tempo Real:**
-  - **Notificações de Alterações:** As tarefas compartilhadas são atualizadas em tempo real, renderizando adições ou modificações feitas por outros participantes da lista.
-  Real**
-
-- **Firestore com Listeners:** Implementar notificações em tempo real para alterações em listas compartilhadas usando Firestore com listeners.
-
+  - **Notificações de Alterações:** As tarefas compartilhadas são atualizadas em tempo real, renderizando adições ou modificações feitas por outros participantes da lista e implementando notificações em tempo real.
+  
 Essas funcionalidades garantem uma experiência colaborativa e dinâmica, facilitando a gestão e o compartilhamento de tarefas entre os usuários.
 
 
