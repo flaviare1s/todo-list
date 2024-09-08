@@ -297,7 +297,7 @@ export const Todos = () => {
                         {todo.title}
                       </p>
                     )}
-                    <div className="flex gap-2 sm:gap-1 ml-3 justify-end mt-4 sm:mt-0">
+                    <div className="flex gap-3 sm:gap-1 ml-3 justify-end mt-4 sm:mt-0">
                       {isEditing !== todo.id && (
                         <button onClick={() => startEditing(todo)}>
                           <span className="material-symbols-outlined">
