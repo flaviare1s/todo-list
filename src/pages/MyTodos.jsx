@@ -112,11 +112,14 @@ export const MyTodos = () => {
 
   function confirmEdit(id) {
     if (editTitle !== originalTitle) {
-      updateTodo(id, {
-        title: editTitle,
-        updatedAt: serverTimestamp(),
-      },
-      user)
+      updateTodo(
+        id,
+        {
+          title: editTitle,
+          updatedAt: serverTimestamp(),
+        },
+        user
+      )
         .then(() => {
           toast.success("Todo updated!");
           listTodos();
@@ -272,7 +275,12 @@ export const MyTodos = () => {
         className="flex flex-col justify-center items-center m-auto p-3"
         onSubmit={handleSubmit(createTodo)}
       >
-        <h1 onClick={handleSubmit(createTodo)} className="text-4xl font-bold p-3">TODO</h1>
+        <h1
+          onClick={handleSubmit(createTodo)}
+          className="text-4xl font-bold p-3"
+        >
+          TODO
+        </h1>
         <input
           type="text"
           id="title"
@@ -298,7 +306,7 @@ export const MyTodos = () => {
         {loading ? (
           <Loader />
         ) : todos.length > 0 ? (
-            <div className="flex flex-col border-2 border-offwhite rounded mx-auto sm:w-[60%] md:w-[50%] xl:w-[40%]">
+          <div className="flex flex-col border-2 border-offwhite rounded mx-auto sm:w-[60%] md:w-[50%] xl:w-[40%]">
             {todos.map((todo) => (
               <div className="p-3 border-b" key={todo.id}>
                 <div className="flex justify-between">

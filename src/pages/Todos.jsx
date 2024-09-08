@@ -242,14 +242,18 @@ export const Todos = () => {
     setShowInfoModal(true);
   }
 
-
   return (
     <section>
       <form
         className="flex flex-col justify-center items-center m-auto p-3"
         onSubmit={handleSubmit(createTodo)}
       >
-        <h1 onClick={handleSubmit(createTodo)} className="text-4xl font-bold p-3">TODO</h1>
+        <h1
+          onClick={handleSubmit(createTodo)}
+          className="text-4xl font-bold p-3"
+        >
+          TODO
+        </h1>
         <input
           type="text"
           id="title"
@@ -305,7 +309,12 @@ export const Todos = () => {
                         <span className="material-symbols-outlined">share</span>
                       </button>
                       <button>
-                        <span onClick={() => showInfo(todo)} className="material-symbols-outlined">info</span>
+                        <span
+                          onClick={() => showInfo(todo)}
+                          className="material-symbols-outlined"
+                        >
+                          info
+                        </span>
                       </button>
                       <button onClick={() => removeTodo(todo.id)}>
                         <span className="material-symbols-outlined">close</span>
@@ -392,9 +401,30 @@ export const Todos = () => {
                   {todoInfo.ownerName}
                 </span>
               </div>
-
               <div>
-                {user.uid !== todoInfo.userId && todoInfo.sharedWith && todoInfo.sharedWith.map((shared) => (
+                <span className="text-very_light_gray mr-2">Created At:</span>
+                <span className="text-dark_gray font-bold">
+                  {todoInfo.createdAt
+                    ? new Date(
+                        todoInfo.createdAt.seconds * 1000
+                      ).toLocaleString()
+                    : "N/A"}
+                </span>
+              </div>
+              <div>
+                <span className="text-very_light_gray mr-2">Updated At:</span>
+                <span className="text-dark_gray font-bold">
+                  {todoInfo.updatedAt
+                    ? new Date(
+                        todoInfo.updatedAt.seconds * 1000
+                      ).toLocaleString()
+                    : "N/A"}
+                </span>
+              </div>
+
+              {user.uid !== todoInfo.userId &&
+                todoInfo.sharedWith &&
+                todoInfo.sharedWith.map((shared) => (
                   <span
                     key={shared.uid}
                     className={
@@ -406,14 +436,12 @@ export const Todos = () => {
                     {shared.permission === "write" ? "Write" : "Read only"}
                   </span>
                 ))}
-              </div>
             </div>
           ) : (
-            <p>No info available.</p>
+            <Loader />
           )}
         </Modal.Body>
       </Modal>
-
     </section>
   );
 };
