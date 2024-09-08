@@ -21,7 +21,7 @@ body {
   animation: fadeIn 3s ease-in-out;
 }
 
-header {
+.header {
   background-color: #312B2D !important;
 }
 
