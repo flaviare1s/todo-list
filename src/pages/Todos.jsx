@@ -19,6 +19,7 @@ import { Controller, useForm } from "react-hook-form";
 import { UserContext } from "../contexts/UserContext";
 import { shareTodoWithEmail } from "../firebase/share";
 import { Button, Modal } from "react-bootstrap";
+import { getAuth } from "firebase/auth";
 
 const db = getFirestore();
 
@@ -34,7 +35,13 @@ export const Todos = () => {
   const [todoToShare, setTodoToShare] = useState(null);
   const [showShareModal, setShowShareModal] = useState(false);
   const [selectedPermission, setSelectedPermission] = useState("");
-  const { register, handleSubmit, reset, control, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { errors },
+  } = useForm();
   const editInputRef = useRef(null);
   const shareInputRef = useRef(null);
   const user = useContext(UserContext);
@@ -135,11 +142,11 @@ export const Todos = () => {
       sharedWith:
         sharedWith.length > 0
           ? sharedWith.map((user) => ({
-            uid: user.uid || "",
-            permission: user.permission || "read",
-            email: user.email || "",
-            displayName: user.displayName || "",
-          }))
+              uid: user.uid || "",
+              permission: user.permission || "read",
+              email: user.email || "",
+              displayName: user.displayName || "",
+            }))
           : [],
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
@@ -172,14 +179,20 @@ export const Todos = () => {
   }
 
   function removeTodo(id) {
+    if (!user) {
+      console.error("User is not defined.");
+      return;
+    }
+
     const del = confirm("Are you sure you want to delete this todo?");
     if (del) {
-      deleteTodo(id)
+      deleteTodo(id, user)
         .then(() => {
           toast.success("Todo deleted!");
         })
-        .catch(() => {
-          toast.error("Failed to delete todo!");
+        .catch((error) => {
+          console.error("Error deleting todo:", error.message);
+          toast.error("You do not have permission to delete this todo.");
         });
     }
   }
@@ -192,10 +205,14 @@ export const Todos = () => {
 
   function confirmEdit(id) {
     if (editTitle !== originalTitle) {
-      updateTodo(id, {
-        title: editTitle,
-        updatedAt: serverTimestamp(),
-      }, user)
+      updateTodo(
+        id,
+        {
+          title: editTitle,
+          updatedAt: serverTimestamp(),
+        },
+        user
+      )
         .then(() => {
           toast.success("Todo updated!");
         })
@@ -253,10 +270,11 @@ export const Todos = () => {
                     ) : (
                       <p
                         onClick={() => changeStatus(todo.id, todo.status)}
-                        className={`text-left cursor-pointer ${todo.status === "completed"
+                        className={`text-left cursor-pointer ${
+                          todo.status === "completed"
                             ? "line-through text-very_light_gray"
                             : ""
-                          }`}
+                        }`}
                       >
                         {todo.title}
                       </p>
@@ -315,7 +333,9 @@ export const Todos = () => {
             className="form-control"
             ref={shareInputRef}
           />
-          <label htmlFor="permission" className="mt-2">Select Access Level: </label>
+          <label htmlFor="permission" className="mt-2">
+            Select Access Level:{" "}
+          </label>
           <Controller
             name="permission"
             control={control}
@@ -339,7 +359,6 @@ export const Todos = () => {
           {!selectedPermission && errors.permission && (
             <small className="text-red-500">{errors.permission.message}</small>
           )}
-
         </Modal.Body>
         <Modal.Footer>
           <Button className="mt-2" variant="dark" onClick={handleShareTodo}>

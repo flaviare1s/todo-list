@@ -31,7 +31,13 @@ export const MyTodos = () => {
   const [selectedPermission, setSelectedPermission] = useState("");
   const editInputRef = useRef(null);
   const shareInputRef = useRef(null);
-  const { register, handleSubmit, reset, control,  formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { errors },
+  } = useForm();
   const user = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -129,14 +135,19 @@ export const MyTodos = () => {
   }
 
   function removeTodo(id) {
+    if (!user) {
+      console.error("User is not defined.");
+      return;
+    }
+
     const del = confirm("Are you sure you want to delete this todo?");
     if (del) {
-      deleteTodo(id)
+      deleteTodo(id, user)
         .then(() => {
           toast.success("Todo deleted!");
-          listTodos();
         })
-        .catch(() => {
+        .catch((error) => {
+          console.error("Error deleting todo:", error.message);
           toast.error("Failed to delete todo!");
         });
     }
@@ -234,7 +245,7 @@ export const MyTodos = () => {
       ) {
         confirmEdit(isEditing);
       }
-      const isInteractingWithSelect = event.target.closest('select') !== null;
+      const isInteractingWithSelect = event.target.closest("select") !== null;
       if (
         shareInputRef.current &&
         !shareInputRef.current.contains(event.target) &&
@@ -286,7 +297,7 @@ export const MyTodos = () => {
         {loading ? (
           <Loader />
         ) : todos.length > 0 ? (
-            <div className="flex flex-col border-2 border-offwhite rounded mx-auto md:w-[40%] sm:w-[60%]">
+          <div className="flex flex-col border-2 border-offwhite rounded mx-auto md:w-[40%] sm:w-[60%]">
             {todos.map((todo) => (
               <div className="p-3 border-b" key={todo.id}>
                 <div className="flex justify-between">
@@ -382,7 +393,9 @@ export const MyTodos = () => {
             className="form-control"
             ref={shareInputRef}
           />
-          <label htmlFor="permission" className="mt-2">Select Access Level: </label>
+          <label htmlFor="permission" className="mt-2">
+            Select Access Level:{" "}
+          </label>
           <Controller
             name="permission"
             control={control}
@@ -406,7 +419,6 @@ export const MyTodos = () => {
           {!selectedPermission && errors.permission && (
             <small className="text-red-500">{errors.permission.message}</small>
           )}
-          
         </Modal.Body>
         <Modal.Footer>
           <Button className="mt-2" variant="dark" onClick={handleShareTodo}>

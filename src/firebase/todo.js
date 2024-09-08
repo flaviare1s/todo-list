@@ -29,16 +29,6 @@ export async function getUserTodos(userId) {
   return todos;
 }
 
-// export async function updateTodo(id, data) {
-//   const todoDoc = doc(todosCol, id);
-//   await updateDoc(todoDoc, data);
-// }
-
-export async function deleteTodo(id) {
-  const todoDoc = doc(todosCol, id);
-  await deleteDoc(todoDoc);
-}
-
 export function getUserTodosQuery(userId) {
   return query(todosCol, where("userId", "==", userId));
 }
@@ -101,3 +91,34 @@ export async function updateTodo(id, data, user) {
   }
 }
 
+export async function deleteTodo(id, user) {
+  try {
+    const todoDoc = doc(db, "todos", id);
+
+    const hasPermission = await checkPermission(todoDoc, user);
+    if (!hasPermission) {
+      console.error("Permission denied for delete operation.");
+      throw new Error("Permission denied.");
+    }
+
+    await deleteDoc(todoDoc);
+  } catch (error) {
+    console.error("Error in deleteTodo function:", error.message);
+    throw error;
+  }
+}
+
+async function checkPermission(todoDoc, user) {
+  const docSnap = await getDoc(todoDoc);
+  if (!docSnap.exists()) {
+    throw new Error("Todo not found.");
+  }
+
+  const todoData = docSnap.data();
+  return (
+    todoData.userId === user.uid ||
+    todoData.sharedWith.some(
+      (shared) => shared.uid === user.uid && shared.permission === "write"
+    )
+  );
+}
