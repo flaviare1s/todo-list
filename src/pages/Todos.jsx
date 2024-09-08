@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { useState, useEffect, useRef, useContext } from "react";
 import {
@@ -7,7 +8,12 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { Loader } from "../components/Loader";
-import { addTodo, deleteTodo, updateTodo, updateTodoStatus } from "../firebase/todo";
+import {
+  addTodo,
+  deleteTodo,
+  updateTodo,
+  updateTodoStatus,
+} from "../firebase/todo";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { UserContext } from "../contexts/UserContext";
@@ -32,7 +38,6 @@ export const Todos = () => {
   const shareInputRef = useRef(null);
   const user = useContext(UserContext);
 
-
   useEffect(() => {
     if (!user) return;
 
@@ -45,7 +50,6 @@ export const Todos = () => {
           id: doc.id,
           ...doc.data(),
         }));
-
 
         const filteredTodos = todos.filter((todo) => {
           const isOwner = todo.userId === user.uid;
@@ -66,7 +70,6 @@ export const Todos = () => {
 
     return () => unsubscribe();
   }, [user]);
-
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -124,11 +127,11 @@ export const Todos = () => {
       sharedWith:
         sharedWith.length > 0
           ? sharedWith.map((user) => ({
-            uid: user.uid || "",
-            permission: user.permission || "read",
-            email: user.email || "",
-            displayName: user.displayName || "",
-          }))
+              uid: user.uid || "",
+              permission: user.permission || "read",
+              email: user.email || "",
+              displayName: user.displayName || "",
+            }))
           : [],
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
@@ -204,22 +207,24 @@ export const Todos = () => {
   return (
     <section>
       <form
-          className="flex flex-col justify-center items-center m-auto p-3"
-          onSubmit={handleSubmit(createTodo)}
-        >
-          <h1 className="text-4xl font-bold p-3">TODO</h1>
-          <input
-            type="text"
-            id="title"
-            placeholder="Click here to create a new todo"
-            className="p-3 rounded-sm bg-inherit w-full md:w-[40%] placeholder:text-center"
-            {...register("title", { required: true })}
-          />
-        </form>
+        className="flex flex-col justify-center items-center m-auto p-3"
+        onSubmit={handleSubmit(createTodo)}
+      >
+        <h1 className="text-4xl font-bold p-3">TODO</h1>
+        <input
+          type="text"
+          id="title"
+          placeholder="Click here to create a new todo"
+          className="p-3 rounded-sm bg-inherit w-full md:w-[40%] placeholder:text-center"
+          {...register("title", { required: true })}
+        />
+      </form>
       <section className="px-3">
         <div className="w-full md:w-[40%] flex flex-col m-auto">
           <div className="flex justify-center">
-            <h2 className="text-2xl font-bold p-3 text-center mt-3 mb-2">TODOS</h2>
+            <h2 className="text-2xl font-bold p-3 text-center mt-3 mb-2">
+              TODOS
+            </h2>
           </div>
         </div>
         {sharedTodos.length > 0 ? (
@@ -252,7 +257,9 @@ export const Todos = () => {
                     <div className="flex gap-2">
                       {isEditing !== todo.id && (
                         <button onClick={() => startEditing(todo)}>
-                          <span className="material-symbols-outlined">edit</span>
+                          <span className="material-symbols-outlined">
+                            edit
+                          </span>
                         </button>
                       )}
                       <button onClick={() => shareTodo(todo.id)}>
@@ -264,8 +271,13 @@ export const Todos = () => {
                     </div>
                   </div>
                   <div className="flex justify-end">
-                    <span className="text-gray-500 text-xs mr-1">Created by:</span>
-                    <span className="text-yellow-600 text-xs"> {todo.ownerName}</span>
+                    <span className="text-gray-500 text-xs mr-1">
+                      Created by:
+                    </span>
+                    <span className="text-yellow-600 text-xs">
+                      {" "}
+                      {todo.ownerName}
+                    </span>
                   </div>
                 </div>
               </div>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useForm } from "react-hook-form";
 import {
   addTodo,
@@ -317,9 +318,7 @@ export const MyTodos = () => {
                 <div className="flex justify-end">
                   {todo.sharedWith.length > 0 && (
                     <div className="flex gap-2 items-center justify-center mt-2">
-                      <small className="text-gray-500">
-                        Shared
-                      </small>
+                      <small className="text-gray-500">Shared</small>
                       <span className="h-2 w-2 bg-red-400 rounded-full block"></span>
                     </div>
                   )}
