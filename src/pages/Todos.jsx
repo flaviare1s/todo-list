@@ -297,7 +297,7 @@ export const Todos = () => {
                         {todo.title}
                       </p>
                     )}
-                    <div className="flex gap-1 ml-3 justify-end mt-4 sm:mt-0">
+                    <div className="flex gap-2 sm:gap-1 ml-3 justify-end mt-4 sm:mt-0">
                       {isEditing !== todo.id && (
                         <button onClick={() => startEditing(todo)}>
                           <span className="material-symbols-outlined">
@@ -398,7 +398,13 @@ export const Todos = () => {
               <div className="mb-2">
                 <span className="text-dark_gray mr-2 font-bold">Created by:</span>
                 <span className="text-offwhite font-bold text-lg">
-                  {todoInfo.ownerName} - {todoInfo.ownerEmail}
+                  {todoInfo.ownerName}
+                </span>
+              </div>
+              <div className="mb-2">
+                <span className="text-dark_gray mr-2 font-bold">Email:</span>
+                <span className="text-offwhite font-bold text-lg">
+                  {todoInfo.ownerEmail}
                 </span>
               </div>
               <div className="mb-2">
