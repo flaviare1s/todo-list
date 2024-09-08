@@ -398,7 +398,7 @@ export const Todos = () => {
               <div className="mb-2">
                 <span className="text-dark_gray mr-2 font-bold">Created by:</span>
                 <span className="text-offwhite font-bold text-lg">
-                  {todoInfo.ownerName}
+                  {todoInfo.ownerName} - {todoInfo.ownerEmail}
                 </span>
               </div>
               <div className="mb-2">
