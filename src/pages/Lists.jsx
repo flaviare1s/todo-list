@@ -53,7 +53,7 @@ export const Lists = () => {
   return (
     <section className="px-3">
       <div className="flex justify-between m-auto sm:w-[60%] md:w-[50%] xl:w-[40%]">
-        <h2 className="text-2xl font-bold p-3 text-center mt-3 text-offwhite">
+        <h2 className="text-2xl font-bold p-3 text-center mt-3 text-offwhite cursor-default">
           Shared Lists
         </h2>
         <div className="flex flex-col justify-center items-center p-3">
@@ -84,9 +84,9 @@ export const Lists = () => {
           ))}
         </div>
       ) : (
-        <div className="flex flex-col justify-center items-center text-very_light_gray cursor-pointer">
+        <div className="flex flex-col justify-center items-center text-very_light_gray">
           <span className="material-symbols-outlined">receipt_long</span>
-          <p>No shared lists</p>
+          <p className="cursor-default">No shared lists</p>
         </div>
       )}
     </section>
