@@ -63,16 +63,24 @@ export const Todos = () => {
       todosRef,
       (snapshot) => {
         snapshot.docChanges().forEach((change) => {
-          if (change.type === "added") {
-            const todo = change.doc.data();
+          const todo = change.doc.data();
+          const todoId = change.doc.id;
 
+          if (change.type === "added") {
             const isSharedWithUser = todo.sharedWith?.some(
               (shared) => shared.uid === user.uid
             );
 
-            if (isSharedWithUser && !newNotifiedTodoIds.has(change.doc.id)) {
+            if (isSharedWithUser && !newNotifiedTodoIds.has(todoId)) {
               toast.success(`New task shared with you: ${todo.title}`);
-              newNotifiedTodoIds.add(change.doc.id);
+              newNotifiedTodoIds.add(todoId);
+            }
+          } else if (change.type === "removed") {
+            const wasNotified = newNotifiedTodoIds.has(todoId);
+
+            if (wasNotified) {
+              toast.error(`Task shared with you was removed: ${todo.title}`);
+              newNotifiedTodoIds.delete(todoId);
             }
           }
         });
@@ -348,12 +356,17 @@ export const Todos = () => {
                     </div>
                   </div>
                   <div className="flex justify-end">
-                    {user.uid !== todo.userId && todo.sharedWith.map((shared) => (
-                      <span key={shared.uid} className={
-                        shared.permission === "write" ? "h-2 w-2 bg-green rounded mb-[-10px] mr-[-10px]" : "h-2 w-2 bg-yellow rounded mb-[-10px] mr-[-10px]"
-                      }>
-                      </span>
-                    ))}
+                    {user.uid !== todo.userId &&
+                      todo.sharedWith.map((shared) => (
+                        <span
+                          key={shared.uid}
+                          className={
+                            shared.permission === "write"
+                              ? "h-2 w-2 bg-green rounded mb-[-10px] mr-[-10px]"
+                              : "h-2 w-2 bg-yellow rounded mb-[-10px] mr-[-10px]"
+                          }
+                        ></span>
+                      ))}
                   </div>
                 </div>
               </div>
