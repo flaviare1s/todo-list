@@ -347,6 +347,14 @@ export const Todos = () => {
                       </button>
                     </div>
                   </div>
+                  <div className="flex justify-end">
+                    {user.uid !== todo.userId && todo.sharedWith.map((shared) => (
+                      <span key={shared.uid} className={
+                        shared.permission === "write" ? "h-2 w-2 bg-green rounded mb-[-10px] mr-[-10px]" : "h-2 w-2 bg-yellow rounded mb-[-10px] mr-[-10px]"
+                      }>
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
             ))}
