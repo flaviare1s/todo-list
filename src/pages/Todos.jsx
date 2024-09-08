@@ -455,15 +455,10 @@ export const Todos = () => {
                   Created by:
                 </span>
                 <span className="text-offwhite font-bold text-lg">
-                  {todoInfo.ownerName}
+                  {todoInfo.ownerName} - {todoInfo.ownerEmail}
                 </span>
               </div>
-              <div className="mb-2">
-                <span className="text-dark_gray mr-2 font-bold">Email:</span>
-                <span className="text-offwhite font-bold text-lg">
-                  {todoInfo.ownerEmail}
-                </span>
-              </div>
+
               <div className="mb-2">
                 <span className="text-dark_gray mr-2 font-bold">
                   Created At:
@@ -495,19 +490,29 @@ export const Todos = () => {
                 </span>
               </div>
 
-              {user.uid !== todoInfo.userId &&
-                todoInfo.sharedWith &&
+              {todoInfo.sharedWith &&
                 todoInfo.sharedWith.map((shared) => (
-                  <span
-                    key={shared.uid}
-                    className={
-                      shared.permission === "write"
-                        ? "text-green font-bold"
-                        : "text-yellow font-bold"
-                    }
-                  >
-                    {shared.permission === "write" ? "Write" : "Read only"}
-                  </span>
+                  <div key={shared.uid} className="mb-2">
+                    <div>
+                      <span className="text-dark_gray mr-2 font-bold">
+                        Shared With:{" "}
+                      </span>
+                      <span className="text-offwhite font-bold text-lg">
+                        {shared.displayName} - {shared.email}
+                      </span>
+                    </div>
+                    <div>
+                      <span
+                        className={
+                          shared.permission === "write"
+                            ? "text-green font-bold"
+                            : "text-yellow font-bold"
+                        }
+                      >
+                        {shared.permission === "write" ? "Write" : "Read only"}
+                      </span>
+                    </div>
+                  </div>
                 ))}
             </div>
           ) : (
