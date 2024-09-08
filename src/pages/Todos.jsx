@@ -305,7 +305,7 @@ export const Todos = () => {
                     </span>
                   </div>
                   <div className="flex justify-end">
-                    {todo.sharedWith.map((shared) => (
+                    {user.uid !== todo.userId && todo.sharedWith.map((shared) => (
                       <small key={shared.uid} className={
                         shared.permission === "write" ? "text-green" : "text-yellow"
                       }>
