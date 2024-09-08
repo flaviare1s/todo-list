@@ -1,11 +1,11 @@
 # TODO List
 
-Esse projeto é uma Todo List Colaborativa criada para o desafio que oferece um ingresso para o Front End Day 2024.
+Esse projeto é uma Todo List Colaborativa criada para o desafio que oferece Ingresso para Iniciantes na Carreira de Desenvolvimento
 
 
 ## **Visão Geral**
 
-O aplicativo TODO List é uma solução colaborativa para gerenciamento de tarefas, permitindo a criação, edição e exclusão de tarefas por múltiplos usuários. A autenticação segura é gerenciada pelo Firebase, e a aplicação oferece uma interface responsiva construída com React e Tailwind. As tarefas são armazenadas no Firebase Firestore e a funcionalidade de compartilhamento permite que usuários monitorem alterações em tempo real.
+O aplicativo TODO List é uma solução colaborativa para gerenciamento de tarefas, permitindo a criação, edição e exclusão de tarefas por múltiplos usuários. A autenticação segura é gerenciada pelo Firebase, e a aplicação oferece uma interface responsiva construída com React e Tailwind. As tarefas são armazenadas no Firebase Firestore e a funcionalidade de compartilhamento permite que usuários monitorem alterações e recebam notificações em tempo real. 
 
 
 ## **Tecnologias Utilizadas**
@@ -42,6 +42,9 @@ O aplicativo TODO List é uma solução colaborativa para gerenciamento de taref
 
 - **Atualização em Tempo Real:**
   - **Notificações de Alterações:** As tarefas compartilhadas são atualizadas em tempo real, renderizando adições ou modificações feitas por outros participantes da lista.
+  Real**
+
+- **Firestore com Listeners:** Implementar notificações em tempo real para alterações em listas compartilhadas usando Firestore com listeners.
 
 Essas funcionalidades garantem uma experiência colaborativa e dinâmica, facilitando a gestão e o compartilhamento de tarefas entre os usuários.
 
