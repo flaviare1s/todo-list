@@ -58,10 +58,21 @@ export async function shareTodoWithEmail(todoId, email, permission) {
         const userIndex = sharedWith.findIndex(
           (user) => user.uid === userToShareWith.uid
         );
+
         if (userIndex > -1) {
-          sharedWith[userIndex].permission = permission;
+          sharedWith[userIndex] = {
+            ...sharedWith[userIndex],
+            permission: permission,
+            email: userToShareWith.email,
+            displayName: userToShareWith.name,
+          };
         } else {
-          sharedWith.push({ uid: userToShareWith.uid, permission });
+          sharedWith.push({
+            uid: userToShareWith.uid,
+            permission,
+            email: userToShareWith.email,
+            displayName: userToShareWith.name,
+          });
         }
 
         await updateDoc(todoDoc, { sharedWith });
