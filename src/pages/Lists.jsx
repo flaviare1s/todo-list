@@ -53,14 +53,14 @@ export const Lists = () => {
   return (
     <section className="px-3">
       <div className="flex justify-between md:w-[40%] m-auto">
-        <h2 className="text-2xl font-bold p-3 text-center mt-3 text-gray-500">
+        <h2 className="text-2xl font-bold p-3 text-center mt-3 text-offwhite">
           Shared Lists
         </h2>
         <div className="flex flex-col justify-center items-center p-3">
           <button onClick={delList}>
             <div className="flex gap-2">
-              <span>Delete List</span>
-              <span className="material-symbols-outlined hover:text-gray-500">
+              <span className="text-offwhite hover:text-very_light_gray">Delete List</span>
+              <span className="material-symbols-outlined hover:text-very_light_gray">
                 close
               </span>
             </div>
@@ -70,21 +70,21 @@ export const Lists = () => {
       {loading ? (
         <Loader />
       ) : sharedTodos.length > 0 ? (
-        <div className="flex flex-col border-2 border-gray-500 rounded mx-auto md:w-[40%]">
+        <div className="flex flex-col border-2 border-very_light_gray rounded mx-auto md:w-[40%]">
           {sharedTodos.map((todo) => (
             <div
-              className="flex flex-col p-3 border-b border-gray-500"
+              className="flex flex-col p-3 border-b border-very_light_gray"
               key={todo.id}
             >
-              <p className="text-gray-500 cursor-default">{todo.title}</p>
-              <small className="text-gray-500 text-right cursor-default">
+              <p className="text-very_light_gray cursor-default">{todo.title}</p>
+              <small className="text-very_light_gray text-right cursor-default">
                 Shared by: {todo.sharedBy || "Unknown"}
               </small>
             </div>
           ))}
         </div>
       ) : (
-        <div className="flex flex-col justify-center items-center text-gray-500 cursor-pointer">
+        <div className="flex flex-col justify-center items-center text-very_light_gray cursor-pointer">
           <span className="material-symbols-outlined">receipt_long</span>
           <p>No shared lists</p>
         </div>

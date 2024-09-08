@@ -8,7 +8,7 @@
 }
 
 body {
-  background-color: #343a40;
+  background-color: #6E5C62;
   color: #f5f5f5;
   display: flex;
   flex-direction: column;
@@ -19,6 +19,18 @@ body {
 
 .animated-title {
   animation: fadeIn 3s ease-in-out;
+}
+
+header {
+  background-color: #312B2D !important;
+}
+
+.logout {
+  color: #C7C8C9 !important;
+}
+
+.logout:hover {
+  color: #B7AEB4 !important;
 }
 
 @keyframes fadeIn {

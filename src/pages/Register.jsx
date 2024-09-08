@@ -39,7 +39,7 @@ export const Register = () => {
         <div className="my-2 flex flex-col">
           <label htmlFor="name">Name</label>
           <input
-            className="p-2 rounded bg-offwhite text-black"
+            className="p-2 rounded bg-inherit text-offwhite border border-offwhitek"
             type="text"
             id="name"
             {...register("name", {
@@ -53,7 +53,7 @@ export const Register = () => {
         <div className="my-2 flex flex-col">
           <label htmlFor="email">E-mail</label>
           <input
-            className="p-2 rounded bg-offwhite text-black"
+            className="p-2 rounded bg-inherit text-offwhite border border-offwhite"
             type="email"
             id="email"
             {...register("email", {
@@ -71,7 +71,7 @@ export const Register = () => {
         <div className="mb-2 flex flex-col">
           <label htmlFor="password">Password</label>
           <input
-            className="p-2 rounded bg-offwhite text-black"
+            className="p-2 rounded bg-inherit text-offwhite border border-offwhitek"
             type="password"
             id="password"
             {...register("password", {
@@ -86,16 +86,16 @@ export const Register = () => {
             <small className="text-red-500">{errors.password.message}</small>
           )}
         </div>
-        <div className="mt-4">
+        <div className="mt-4 sm:flex sm:gap-2">
           <button
-            className="mt-1 w-full border-2 p-2 rounded hover:bg-white hover:text-black"
+            className="mt-1 w-100 p-2 rounded bg-dark_gray text-offwhite hover:bg-inherit hover:text-offwhite hover:border-2" 
             type="submit"
           >
             Register
           </button>
           <button
             onClick={handleEntrarGoogle}
-            className="mt-1 w-full flex justify-center gap-2 items-center border-2 p-2 rounded bg-white text-black"
+            className="mt-1 w-100 flex justify-center gap-2 items-center border-2 p-2 rounded bg-offwhite text-black hover:bg-inherit hover:text-white"
             type="button"
           >
             <img className="w-6" src={logoGoogle} alt="Imagem do Google" />
@@ -103,10 +103,10 @@ export const Register = () => {
           </button>
         </div>
         <div className="d-flex flex-col gap-2 justify-content-between mt-2">
-          <small className="text-yellow-500 hover:text-opacity-50">
+          <small className="text-very_light_gray hover:text-offwhite">
             Do you have an account? <Link to="/login">Login</Link>
           </small>
-          <small className="text-yellow-500 hover:text-opacity-50">
+          <small className="text-very_light_gray hover:text-offwhite">
             Forgot your password? <Link to="/reset-password">Click here</Link>
           </small>
         </div>

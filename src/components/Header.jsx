@@ -14,7 +14,7 @@ export const Header = () => {
     });
   }
   return (
-    <header className="w-screen">
+    <header className="w-screen bg-dark_gray">
       <Navbar bg="dark" variant="dark" expand="md" className="px-3">
         <Container fluid>
           <Link className="text-xl font-bold" to="/">
@@ -55,7 +55,7 @@ export const Header = () => {
               )}
               {user && (
                 <button
-                  className="block hover:text-gray-500 ml-2"
+                  className="block logout hover:text-light ml-2"
                   onClick={handleLogout}
                 >
                   Logout

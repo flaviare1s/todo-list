@@ -255,7 +255,7 @@ export const MyTodos = () => {
           type="text"
           id="title"
           placeholder="Click here to create a new todo"
-          className="p-3 rounded-sm bg-inherit w-full md:w-[40%] placeholder:text-center"
+          className="p-3 rounded-sm bg-inherit w-full md:w-[40%] placeholder:text-center placeholder:text-very_light_gray"
           {...register("title", { required: true })}
         />
       </form>
@@ -294,7 +294,7 @@ export const MyTodos = () => {
                       onClick={() => changeStatus(todo.id, todo.status)}
                       className={`text-left cursor-pointer ${
                         todo.status === "completed"
-                          ? "line-through text-gray-500"
+                          ? "line-through text-very_light_gray"
                           : ""
                       }`}
                     >
@@ -318,8 +318,8 @@ export const MyTodos = () => {
                 <div className="flex justify-end">
                   {todo.sharedWith.length > 0 && (
                     <div className="flex gap-2 items-center justify-center mt-2">
-                      <small className="text-gray-500">Shared</small>
-                      <span className="h-2 w-2 bg-red-400 rounded-full block"></span>
+                      <small className="text-light">Shared</small>
+                      <span className="h-2 w-2 bg-green rounded-full block"></span>
                     </div>
                   )}
                 </div>
@@ -328,7 +328,7 @@ export const MyTodos = () => {
           </div>
         ) : (
           <div
-            className="flex flex-col justify-center items-center text-gray-500 cursor-pointer"
+            className="flex flex-col justify-center items-center text-very_light_gray cursor-pointer"
             onClick={handleSubmit(createTodo)}
           >
             <span className="material-symbols-outlined">receipt_long</span>

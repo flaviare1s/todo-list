@@ -127,11 +127,11 @@ export const Todos = () => {
       sharedWith:
         sharedWith.length > 0
           ? sharedWith.map((user) => ({
-              uid: user.uid || "",
-              permission: user.permission || "read",
-              email: user.email || "",
-              displayName: user.displayName || "",
-            }))
+            uid: user.uid || "",
+            permission: user.permission || "read",
+            email: user.email || "",
+            displayName: user.displayName || "",
+          }))
           : [],
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
@@ -215,7 +215,7 @@ export const Todos = () => {
           type="text"
           id="title"
           placeholder="Click here to create a new todo"
-          className="p-3 rounded-sm bg-inherit w-full md:w-[40%] placeholder:text-center"
+          className="p-3 rounded-sm bg-inherit w-full md:w-[40%] placeholder:text-center placeholder:text-very_light_gray"
           {...register("title", { required: true })}
         />
       </form>
@@ -245,11 +245,10 @@ export const Todos = () => {
                     ) : (
                       <p
                         onClick={() => changeStatus(todo.id, todo.status)}
-                        className={`text-left cursor-pointer ${
-                          todo.status === "completed"
-                            ? "line-through text-gray-500"
+                        className={`text-left cursor-pointer ${todo.status === "completed"
+                            ? "line-through text-very_light_gray"
                             : ""
-                        }`}
+                          }`}
                       >
                         {todo.title}
                       </p>
@@ -271,10 +270,10 @@ export const Todos = () => {
                     </div>
                   </div>
                   <div className="flex justify-end">
-                    <span className="text-gray-500 text-xs mr-1">
+                    <span className="text-very_light_gray text-xs mr-1">
                       Created by:
                     </span>
-                    <span className="text-yellow-600 text-xs">
+                    <span className="text-yellow text-xs">
                       {" "}
                       {todo.ownerName}
                     </span>
@@ -284,7 +283,7 @@ export const Todos = () => {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col justify-center items-center text-gray-500 cursor-pointer">
+          <div className="flex flex-col justify-center items-center text-very_light_gray cursor-pointer">
             <span className="material-symbols-outlined">receipt_long</span>
             <p>No todos</p>
           </div>
