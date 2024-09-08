@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Header } from "./components/Header";
 import { Home } from "./pages/Home";
 import { Footer } from "./components/Footer";
-import { Todos } from "./pages/Todos";
+import { MyTodos } from "./pages/MyTodos";
 import { Login } from "./pages/Login";
 import { NotFound } from "./pages/NotFound";
 import { Register } from "./pages/Register";
@@ -14,8 +14,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { Loader } from "./components/Loader";
 import { auth } from "./firebase/config";
 import { PrivateRoute } from "./components/PrivateRoute";
-import { SharedTodos } from "./pages/SharedTodos";
 import { Lists } from "./pages/Lists";
+import { Todos } from "./pages/Todos";
 
 export function App() {
   const [userLogged, setUserLogged] = useState(null);
@@ -47,10 +47,10 @@ export function App() {
                 }
               />
               <Route
-                path="/shared-todos"
+                path="/mytodos"
                 element={
                   <PrivateRoute>
-                    <SharedTodos />
+                    <MyTodos />
                   </PrivateRoute>
                 }
               />

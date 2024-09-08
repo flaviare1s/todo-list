@@ -30,12 +30,12 @@ export const Header = () => {
               )}
               {user && (
                 <Link className="nav-link" to="todos">
-                  My Todos
+                  Todos
                 </Link>
               )}
               {user && (
-                <Link className="nav-link" to="shared-todos">
-                  Shared Todos
+                <Link className="nav-link" to="mytodos">
+                  My Todos
                 </Link>
               )}
               {user && (
