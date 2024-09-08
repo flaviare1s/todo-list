@@ -471,18 +471,30 @@ export const Todos = () => {
                     : "N/A"}
                 </span>
               </div>
-              <div className="mb-2">
-                <span className="text-dark_gray mr-2 font-bold">
-                  Last Updated:
-                </span>
-                <span className="text-offwhite font-bold text-lg">
-                  {todoInfo.updatedAt
-                    ? new Date(
-                        todoInfo.updatedAt.seconds * 1000
-                      ).toLocaleString()
-                    : "N/A"}
-                </span>
-              </div>
+             
+              {todoInfo.updatedBy && (
+                <div className="mb-2">
+                  <div className="mb-2">
+                    <span className="text-dark_gray mr-2 font-bold">
+                      Updated By:
+                    </span>
+                    <span className="text-offwhite font-bold text-lg">
+                      {todoInfo.updatedBy.name}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-dark_gray mr-2 font-bold">
+                      Updated At:
+                    </span>
+                    <span className="text-offwhite font-bold text-lg">
+                      {todoInfo.updatedBy.timestamp
+                        ? new Date(todoInfo.updatedBy.timestamp.seconds * 1000).toLocaleString()
+                        : "N/A"}
+                    </span>
+                  </div>
+                </div>
+              )}
+
               <div className="mb-2">
                 <span className="text-dark_gray mr-2 font-bold">Satus:</span>
                 <span className="text-offwhite font-bold text-lg">
