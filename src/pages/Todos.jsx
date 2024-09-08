@@ -253,7 +253,7 @@ export const Todos = () => {
           </div>
         </div>
         {sharedTodos.length > 0 ? (
-          <div className="flex flex-col border-2 border-offwhite rounded mx-auto md:w-[40%] sm:w-[60%] sm:w-[60%]">
+          <div className="flex flex-col border-2 border-offwhite rounded mx-auto md:w-[40%] sm:w-[60%]">
             {sharedTodos.map((todo) => (
               <div key={todo.id} className="p-3 border-b">
                 <div>
@@ -299,10 +299,19 @@ export const Todos = () => {
                     <span className="text-very_light_gray text-xs mr-1">
                       Created by:
                     </span>
-                    <span className="text-yellow text-xs">
+                    <span className="text-dark_gray font-bold text-xs">
                       {" "}
                       {todo.ownerName}
                     </span>
+                  </div>
+                  <div className="flex justify-end">
+                    {todo.sharedWith.map((shared) => (
+                      <small key={shared.uid} className={
+                        shared.permission === "write" ? "text-green" : "text-yellow"
+                      }>
+                        {shared.permission === "write" ? "Write" : "Read only"}
+                      </small>
+                    ))}
                   </div>
                 </div>
               </div>
