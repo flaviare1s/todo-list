@@ -15,10 +15,11 @@ import {
   updateTodoStatus,
 } from "../firebase/todo";
 import toast from "react-hot-toast";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { UserContext } from "../contexts/UserContext";
 import { shareTodoWithEmail } from "../firebase/share";
 import { Button, Modal } from "react-bootstrap";
+import { getAuth } from "firebase/auth";
 
 const db = getFirestore();
 
@@ -33,7 +34,14 @@ export const Todos = () => {
   const [shareEmail, setShareEmail] = useState("");
   const [todoToShare, setTodoToShare] = useState(null);
   const [showShareModal, setShowShareModal] = useState(false);
-  const { register, handleSubmit, reset } = useForm();
+  const [selectedPermission, setSelectedPermission] = useState("");
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { errors },
+  } = useForm();
   const editInputRef = useRef(null);
   const shareInputRef = useRef(null);
   const user = useContext(UserContext);
@@ -98,6 +106,7 @@ export const Todos = () => {
   function shareTodo(todoId) {
     setTodoToShare(todoId);
     setShareEmail("");
+    setSelectedPermission("");
     setShowShareModal(true);
   }
 
@@ -107,9 +116,15 @@ export const Todos = () => {
       return;
     }
 
+    if (!selectedPermission) {
+      toast.error("Please select a permission.");
+      return;
+    }
+
     try {
-      await shareTodoWithEmail(todoToShare, shareEmail, "write");
+      await shareTodoWithEmail(todoToShare, shareEmail, selectedPermission);
       toast.success("Todo shared successfully!");
+      setShowShareModal(false);
     } catch (error) {
       toast.error(`Failed to share todo: ${error.message}`);
     }
@@ -127,11 +142,11 @@ export const Todos = () => {
       sharedWith:
         sharedWith.length > 0
           ? sharedWith.map((user) => ({
-            uid: user.uid || "",
-            permission: user.permission || "read",
-            email: user.email || "",
-            displayName: user.displayName || "",
-          }))
+              uid: user.uid || "",
+              permission: user.permission || "read",
+              email: user.email || "",
+              displayName: user.displayName || "",
+            }))
           : [],
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
@@ -154,24 +169,30 @@ export const Todos = () => {
 
   function changeStatus(id, currentStatus) {
     const newStatus = currentStatus === "active" ? "completed" : "active";
-    updateTodoStatus(id, newStatus)
+    updateTodoStatus(id, newStatus, user)
       .then(() => {
         toast.success(`Todo marked as ${newStatus}!`);
       })
       .catch(() => {
-        toast.error("Failed to update todo!");
+        toast.error("You do not have permission to update this todo.");
       });
   }
 
   function removeTodo(id) {
+    if (!user) {
+      console.error("User is not defined.");
+      return;
+    }
+
     const del = confirm("Are you sure you want to delete this todo?");
     if (del) {
-      deleteTodo(id)
+      deleteTodo(id, user)
         .then(() => {
           toast.success("Todo deleted!");
         })
-        .catch(() => {
-          toast.error("Failed to delete todo!");
+        .catch((error) => {
+          console.error("Error deleting todo:", error.message);
+          toast.error("You do not have permission to delete this todo.");
         });
     }
   }
@@ -184,15 +205,19 @@ export const Todos = () => {
 
   function confirmEdit(id) {
     if (editTitle !== originalTitle) {
-      updateTodo(id, {
-        title: editTitle,
-        updatedAt: serverTimestamp(),
-      })
+      updateTodo(
+        id,
+        {
+          title: editTitle,
+          updatedAt: serverTimestamp(),
+        },
+        user
+      )
         .then(() => {
           toast.success("Todo updated!");
         })
         .catch(() => {
-          toast.error("Failed to update todo!");
+          toast.error("You do not have permission to update this todo.");
         });
     }
     setIsEditing(null);
@@ -245,10 +270,11 @@ export const Todos = () => {
                     ) : (
                       <p
                         onClick={() => changeStatus(todo.id, todo.status)}
-                        className={`text-left cursor-pointer ${todo.status === "completed"
+                        className={`text-left cursor-pointer ${
+                          todo.status === "completed"
                             ? "line-through text-very_light_gray"
                             : ""
-                          }`}
+                        }`}
                       >
                         {todo.title}
                       </p>
@@ -307,10 +333,38 @@ export const Todos = () => {
             className="form-control"
             ref={shareInputRef}
           />
+          <label htmlFor="permission" className="mt-2">
+            Select Access Level:{" "}
+          </label>
+          <Controller
+            name="permission"
+            control={control}
+            defaultValue=""
+            rules={{ required: "Please choose a permission" }}
+            render={({ field }) => (
+              <select
+                {...field}
+                value={selectedPermission}
+                onChange={(e) => setSelectedPermission(e.target.value)}
+                className="form-control mt-2 select"
+              >
+                <option disabled value="">
+                  Please select a permission
+                </option>
+                <option value="read">Read</option>
+                <option value="write">Write</option>
+              </select>
+            )}
+          />
+          {!selectedPermission && errors.permission && (
+            <small className="text-red-500">{errors.permission.message}</small>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
           <Button className="mt-2" variant="dark" onClick={handleShareTodo}>
             Share
           </Button>
-        </Modal.Body>
+        </Modal.Footer>
       </Modal>
     </section>
   );

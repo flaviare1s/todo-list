@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import {
   addTodo,
   deleteTodo,
@@ -28,9 +28,16 @@ export const MyTodos = () => {
   const [shareEmail, setShareEmail] = useState("");
   const [todoToShare, setTodoToShare] = useState(null);
   const [showShareModal, setShowShareModal] = useState(false);
+  const [selectedPermission, setSelectedPermission] = useState("");
   const editInputRef = useRef(null);
   const shareInputRef = useRef(null);
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { errors },
+  } = useForm();
   const user = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -87,7 +94,7 @@ export const MyTodos = () => {
 
   function changeStatus(id, currentStatus) {
     const newStatus = currentStatus === "active" ? "completed" : "active";
-    updateTodoStatus(id, newStatus)
+    updateTodoStatus(id, newStatus, user)
       .then(() => {
         toast.success(`Todo marked as ${newStatus}!`);
         listTodos();
@@ -128,14 +135,19 @@ export const MyTodos = () => {
   }
 
   function removeTodo(id) {
+    if (!user) {
+      console.error("User is not defined.");
+      return;
+    }
+
     const del = confirm("Are you sure you want to delete this todo?");
     if (del) {
-      deleteTodo(id)
+      deleteTodo(id, user)
         .then(() => {
           toast.success("Todo deleted!");
-          listTodos();
         })
-        .catch(() => {
+        .catch((error) => {
+          console.error("Error deleting todo:", error.message);
           toast.error("Failed to delete todo!");
         });
     }
@@ -193,6 +205,7 @@ export const MyTodos = () => {
   function shareTodo(todoId) {
     setTodoToShare(todoId);
     setShareEmail("");
+    setSelectedPermission("");
     setShowShareModal(true);
   }
 
@@ -202,9 +215,15 @@ export const MyTodos = () => {
       return;
     }
 
+    if (!selectedPermission) {
+      toast.error("Please select a permission.");
+      return;
+    }
+
     try {
-      await shareTodoWithEmail(todoToShare, shareEmail, "write");
+      await shareTodoWithEmail(todoToShare, shareEmail, selectedPermission);
       toast.success("Todo shared successfully!");
+      setShowShareModal(false);
     } catch (error) {
       toast.error(`Failed to share todo: ${error.message}`);
     }
@@ -226,9 +245,11 @@ export const MyTodos = () => {
       ) {
         confirmEdit(isEditing);
       }
+      const isInteractingWithSelect = event.target.closest("select") !== null;
       if (
         shareInputRef.current &&
-        !shareInputRef.current.contains(event.target)
+        !shareInputRef.current.contains(event.target) &&
+        !isInteractingWithSelect
       ) {
         setShowShareModal(false);
       }
@@ -276,7 +297,7 @@ export const MyTodos = () => {
         {loading ? (
           <Loader />
         ) : todos.length > 0 ? (
-            <div className="flex flex-col border-2 border-offwhite rounded mx-auto md:w-[40%] sm:w-[60%]">
+          <div className="flex flex-col border-2 border-offwhite rounded mx-auto md:w-[40%] sm:w-[60%]">
             {todos.map((todo) => (
               <div className="p-3 border-b" key={todo.id}>
                 <div className="flex justify-between">
@@ -372,10 +393,38 @@ export const MyTodos = () => {
             className="form-control"
             ref={shareInputRef}
           />
+          <label htmlFor="permission" className="mt-2">
+            Select Access Level:{" "}
+          </label>
+          <Controller
+            name="permission"
+            control={control}
+            defaultValue=""
+            rules={{ required: "Please choose a permission" }}
+            render={({ field }) => (
+              <select
+                {...field}
+                value={selectedPermission}
+                onChange={(e) => setSelectedPermission(e.target.value)}
+                className="form-control mt-2 select"
+              >
+                <option disabled value="">
+                  Please select a permission
+                </option>
+                <option value="read">Read</option>
+                <option value="write">Write</option>
+              </select>
+            )}
+          />
+          {!selectedPermission && errors.permission && (
+            <small className="text-red-500">{errors.permission.message}</small>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
           <Button className="mt-2" variant="dark" onClick={handleShareTodo}>
             Share
           </Button>
-        </Modal.Body>
+        </Modal.Footer>
       </Modal>
     </>
   );
