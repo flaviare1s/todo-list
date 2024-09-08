@@ -54,11 +54,10 @@ export async function updateTodoStatus(id, status, user) {
 
     await updateDoc(todoDoc, {
       status,
-      updatedAt: serverTimestamp(),
       updatedBy: {
         name: user.displayName,
         email: user.email,
-        timestamp: serverTimestamp(),
+        timestamp: new Date(),
       },
     });
   } catch (error) {
@@ -88,11 +87,10 @@ export async function updateTodo(id, data, user) {
 
     await updateDoc(todoDoc, {
       ...data,
-      updatedAt: serverTimestamp(),
       updatedBy: {
         name: user.displayName,
         email: user.email,
-        timestamp: serverTimestamp(),
+        timestamp: new Date(),
       },
     });
   } catch (error) {

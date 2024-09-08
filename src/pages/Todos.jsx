@@ -194,7 +194,6 @@ export const Todos = () => {
             }))
           : [],
       createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
     };
 
     setTodos((prevTodos) => [
