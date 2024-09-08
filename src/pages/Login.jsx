@@ -34,7 +34,7 @@ export const Login = () => {
 
   return (
     <main className="mt-3 mb-5 flex flex-col justify-center items-center m-auto p-3">
-      <form className="w-full md:w-[40%]" onSubmit={handleSubmit(enter)}>
+      <form className="w-full md:w-[40%] sm:w-[60%]" onSubmit={handleSubmit(enter)}>
         <h1 className="text-3xl mb-2">Login</h1>
         <hr />
         <div className="my-2 flex flex-col">

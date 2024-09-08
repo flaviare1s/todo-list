@@ -215,7 +215,7 @@ export const Todos = () => {
           type="text"
           id="title"
           placeholder="Click here to create a new todo"
-          className="p-3 rounded-sm bg-inherit w-full md:w-[40%] placeholder:text-center placeholder:text-very_light_gray"
+          className="p-3 rounded-sm bg-inherit w-full md:w-[40%] sm:w-[60%] placeholder:text-center placeholder:text-very_light_gray"
           {...register("title", { required: true })}
         />
       </form>
@@ -228,7 +228,7 @@ export const Todos = () => {
           </div>
         </div>
         {sharedTodos.length > 0 ? (
-          <div className="flex flex-col border-2 border-offwhite rounded mx-auto md:w-[40%]">
+          <div className="flex flex-col border-2 border-offwhite rounded mx-auto md:w-[40%] sm:w-[60%] sm:w-[60%]">
             {sharedTodos.map((todo) => (
               <div key={todo.id} className="p-3 border-b">
                 <div>
