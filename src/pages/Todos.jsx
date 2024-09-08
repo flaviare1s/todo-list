@@ -415,8 +415,8 @@ export const Todos = () => {
                 <option disabled value="">
                   Please select a permission
                 </option>
-                <option value="read">Read</option>
                 <option value="write">Write</option>
+                <option value="read">Read</option>
               </select>
             )}
           />
