@@ -263,9 +263,10 @@ export const Todos = () => {
                       </button>
                     </div>
                   </div>
-                  <small className="text-gray-500 flex justify-end">
-                    Created by: {todo.ownerName}
-                  </small>
+                  <div className="flex justify-end">
+                    <span className="text-gray-500 text-xs mr-1">Created by:</span>
+                    <span className="text-yellow-600 text-xs"> {todo.ownerName}</span>
+                  </div>
                 </div>
               </div>
             ))}
