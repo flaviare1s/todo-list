@@ -94,7 +94,7 @@ export const MyTodos = () => {
         listTodos();
       })
       .catch(() => {
-        toast.error("You do not have permission to update this todo.")
+        toast.error("Failed to update todo!");
       });
   }
 

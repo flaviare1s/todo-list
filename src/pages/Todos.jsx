@@ -195,12 +195,12 @@ export const Todos = () => {
       updateTodo(id, {
         title: editTitle,
         updatedAt: serverTimestamp(),
-      })
+      }, user)
         .then(() => {
           toast.success("Todo updated!");
         })
         .catch(() => {
-          toast.error("Failed to update todo!");
+          toast.error("You do not have permission to update this todo.");
         });
     }
     setIsEditing(null);
