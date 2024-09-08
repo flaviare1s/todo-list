@@ -55,6 +55,11 @@ export async function updateTodoStatus(id, status, user) {
     await updateDoc(todoDoc, {
       status,
       updatedAt: serverTimestamp(),
+      updatedBy: {
+        name: user.displayName,
+        email: user.email,
+        timestamp: serverTimestamp(),
+      },
     });
   } catch (error) {
     console.error("Error updating todo:", error.message);
@@ -84,6 +89,11 @@ export async function updateTodo(id, data, user) {
     await updateDoc(todoDoc, {
       ...data,
       updatedAt: serverTimestamp(),
+      updatedBy: {
+        name: user.displayName,
+        email: user.email,
+        timestamp: serverTimestamp(),
+      },
     });
   } catch (error) {
     console.error("Error updating todo:", error.message);
