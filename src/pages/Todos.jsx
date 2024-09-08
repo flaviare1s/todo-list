@@ -79,7 +79,7 @@ export const Todos = () => {
             const wasNotified = newNotifiedTodoIds.has(todoId);
 
             if (wasNotified) {
-              toast.error(`Task shared with you was removed: ${todo.title}`);
+              toast.success(`Task shared with you was removed: ${todo.title}`);
               newNotifiedTodoIds.delete(todoId);
             }
           } else if (change.type === "modified") {
