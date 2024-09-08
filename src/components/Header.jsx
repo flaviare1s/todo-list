@@ -15,7 +15,7 @@ export const Header = () => {
   }
   return (
     <header className="w-screen header">
-      <Navbar bg="dark" variant="dark" expand="md" className="px-3">
+      <Navbar variant="dark" expand="md" className="px-3">
         <Container fluid>
           <Link className="text-xl font-bold" to="/">
             TODO LIST
