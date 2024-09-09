@@ -15,11 +15,11 @@ import {
   updateTodoStatus,
 } from "../firebase/todo";
 import toast from "react-hot-toast";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { UserContext } from "../contexts/UserContext";
 import { shareTodoWithEmail } from "../firebase/share";
-import { Button, Modal } from "react-bootstrap";
-import { getAuth } from "firebase/auth";
+import { ShareModal } from "../components/ShareModal";
+import { InfoModal } from "../components/InfoModal";
 
 const db = getFirestore();
 
@@ -386,151 +386,22 @@ export const Todos = () => {
           </div>
         )}
       </section>
-
-      <Modal
+      <ShareModal
+        title='Share Todo'
         show={showShareModal}
-        onHide={() => setShowShareModal(false)}
-        className="text-center"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title className="text-dark">Share Todo</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="text-dark">
-          <input
-            type="email"
-            value={shareEmail}
-            onChange={(e) => setShareEmail(e.target.value)}
-            placeholder="Enter email address"
-            className="form-control"
-            ref={shareInputRef}
-          />
-          <label htmlFor="permission" className="mt-2">
-            Select Access Level:{" "}
-          </label>
-          <Controller
-            name="permission"
-            control={control}
-            defaultValue=""
-            rules={{ required: "Please choose a permission" }}
-            render={({ field }) => (
-              <select
-                {...field}
-                value={selectedPermission}
-                onChange={(e) => setSelectedPermission(e.target.value)}
-                className="form-control mt-2 select"
-              >
-                <option disabled value="">
-                  Please select a permission
-                </option>
-                <option value="write">Write</option>
-                <option value="read">Read</option>
-              </select>
-            )}
-          />
-          {!selectedPermission && errors.permission && (
-            <small className="text-red-500">{errors.permission.message}</small>
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button className="mt-2" variant="dark" onClick={handleShareTodo}>
-            Share
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      <Modal
+        onClose={() => setShowShareModal(false)}
+        shareEmail={shareEmail}
+        setShareEmail={setShareEmail}
+        selectedPermission={selectedPermission}
+        setSelectedPermission={setSelectedPermission}
+        handleShareTodo={handleShareTodo}
+      />
+      <InfoModal
+        title='Info'
         show={showInfoModal}
-        onHide={() => setShowInfoModal(false)}
-        className="text-center modalInfo"
-      >
-        <Modal.Header closeButton className="modalInfo-header">
-          <Modal.Title className="text-dark modalInfo-title">Info</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="text-dark modalInfo-body">
-          {todoInfo ? (
-            <div key={todoInfo.id} className="text-left">
-              <div className="mb-2">
-                <span className="text-dark_gray mr-2 font-bold">
-                  Created by:
-                </span>
-                <span className="text-offwhite font-bold text-lg">
-                  {todoInfo.ownerName} - {todoInfo.ownerEmail}
-                </span>
-              </div>
-
-              <div className="mb-2">
-                <span className="text-dark_gray mr-2 font-bold">
-                  Created At:
-                </span>
-                <span className="text-offwhite font-bold text-lg">
-                  {todoInfo.createdAt
-                    ? new Date(
-                        todoInfo.createdAt.seconds * 1000
-                      ).toLocaleString()
-                    : "N/A"}
-                </span>
-              </div>
-             
-              {todoInfo.updatedBy && (
-                <div className="mb-2">
-                  <div className="mb-2">
-                    <span className="text-dark_gray mr-2 font-bold">
-                      Updated By:
-                    </span>
-                    <span className="text-offwhite font-bold text-lg">
-                      {todoInfo.updatedBy.name}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-dark_gray mr-2 font-bold">
-                      Updated At:
-                    </span>
-                    <span className="text-offwhite font-bold text-lg">
-                      {todoInfo.updatedBy.timestamp
-                        ? new Date(todoInfo.updatedBy.timestamp.seconds * 1000).toLocaleString()
-                        : "N/A"}
-                    </span>
-                  </div>
-                </div>
-              )}
-
-              <div className="mb-2">
-                <span className="text-dark_gray mr-2 font-bold">Satus:</span>
-                <span className="text-offwhite font-bold text-lg">
-                  {todoInfo.status}
-                </span>
-              </div>
-
-              {todoInfo.sharedWith &&
-                todoInfo.sharedWith.map((shared) => (
-                  <div key={shared.uid} className="mb-2">
-                    <div>
-                      <span className="text-dark_gray mr-2 font-bold">
-                        Shared With:{" "}
-                      </span>
-                      <span className="text-offwhite font-bold text-lg">
-                        {shared.displayName} - {shared.email}
-                      </span>
-                    </div>
-                    <div>
-                      <span
-                        className={
-                          shared.permission === "write"
-                            ? "text-green font-bold"
-                            : "text-yellow font-bold"
-                        }
-                      >
-                        {shared.permission === "write" ? "Write" : "Read only"}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-            </div>
-          ) : (
-            <Loader />
-          )}
-        </Modal.Body>
-      </Modal>
+        onClose={() => setShowInfoModal(false)}
+        todoInfo={todoInfo}
+      />
     </section>
   );
 };

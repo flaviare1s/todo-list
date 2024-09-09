@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import {
   addTodo,
   deleteTodo,
@@ -17,6 +17,7 @@ import { Modal, Button } from "react-bootstrap";
 import { onSnapshot, serverTimestamp } from "firebase/firestore";
 import { shareTodoWithEmail } from "../firebase/share";
 import { shareTodosWithEmail } from "../firebase/list";
+import { ShareModal } from "../components/ShareModal";
 
 export const MyTodos = () => {
   const [todos, setTodos] = useState([]);
@@ -35,8 +36,6 @@ export const MyTodos = () => {
     register,
     handleSubmit,
     reset,
-    control,
-    formState: { errors },
   } = useForm();
   const user = useContext(UserContext);
   const navigate = useNavigate();
@@ -396,56 +395,16 @@ export const MyTodos = () => {
         </Modal.Body>
       </Modal>
 
-      <Modal
+      <ShareModal
+        title='Share Todo'
         show={showShareModal}
-        onHide={() => setShowShareModal(false)}
-        className="text-center"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title className="text-dark">Share Todo</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="text-dark">
-          <input
-            type="email"
-            value={shareEmail}
-            onChange={(e) => setShareEmail(e.target.value)}
-            placeholder="Enter email address"
-            className="form-control"
-            ref={shareInputRef}
-          />
-          <label htmlFor="permission" className="mt-2">
-            Select Access Level:{" "}
-          </label>
-          <Controller
-            name="permission"
-            control={control}
-            defaultValue=""
-            rules={{ required: "Please choose a permission" }}
-            render={({ field }) => (
-              <select
-                {...field}
-                value={selectedPermission}
-                onChange={(e) => setSelectedPermission(e.target.value)}
-                className="form-control mt-2 select"
-              >
-                <option disabled value="">
-                  Please select a permission
-                </option>
-                <option value="write">Write</option>
-                <option value="read">Read</option>
-              </select>
-            )}
-          />
-          {!selectedPermission && errors.permission && (
-            <small className="text-red-500">{errors.permission.message}</small>
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button className="mt-2" variant="dark" onClick={handleShareTodo}>
-            Share
-          </Button>
-        </Modal.Footer>
-      </Modal>
+        onClose={() => setShowShareModal(false)}
+        shareEmail={shareEmail}
+        setShareEmail={setShareEmail}
+        selectedPermission={selectedPermission}
+        setSelectedPermission={setSelectedPermission}
+        handleShareTodo={handleShareTodo}
+      />
     </>
   );
 };
