@@ -1,7 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useForm } from "react-hook-form";
 import {
-  addTodo,
   deleteTodo,
   getUserTodos,
   getUserTodosQuery,
@@ -19,6 +16,7 @@ import { shareTodosWithEmail } from "../firebase/list";
 import { ShareModal } from "../components/ShareModal";
 import { ShareListModal } from "../components/ShareListModal";
 import { NewTodo } from "../components/NewTodo";
+import { NoTodos } from "../components/NoTodos";
 
 export const MyTodos = () => {
   const [todos, setTodos] = useState([]);
@@ -33,7 +31,6 @@ export const MyTodos = () => {
   const [selectedPermission, setSelectedPermission] = useState("");
   const editInputRef = useRef(null);
   const shareInputRef = useRef(null);
-  const { handleSubmit, reset } = useForm();
   const user = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -50,54 +47,6 @@ export const MyTodos = () => {
           setLoading(false);
         });
     }
-  }
-
-  function createTodo(data, sharedWith = []) {
-    const todoData = {
-      ...data,
-      status: "active",
-      userId: user.uid,
-      ownerEmail: user.email,
-      ownerName: user.displayName,
-      sharedWith:
-        sharedWith.length > 0
-          ? sharedWith.map((user) => ({
-              uid: user.uid || "",
-              permission: user.permission || "read",
-              email: user.email || "",
-              displayName: user.displayName || "",
-            }))
-          : [],
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
-    };
-
-    setTodos((prevTodos) => [
-      ...prevTodos,
-      { ...todoData, id: Date.now().toString() },
-    ]);
-
-    addTodo(todoData)
-      .then(() => {
-        toast.success("Todo created!");
-        listTodos();
-      })
-      .catch(() => {
-        toast.error("Something went wrong!");
-      });
-    reset();
-  }
-
-  function changeStatus(id, currentStatus) {
-    const newStatus = currentStatus === "active" ? "completed" : "active";
-    updateTodoStatus(id, newStatus, user)
-      .then(() => {
-        toast.success(`Todo marked as ${newStatus}!`);
-        listTodos();
-      })
-      .catch(() => {
-        toast.error("Failed to update todo!");
-      });
   }
 
   function startEditing(todo) {
@@ -132,6 +81,17 @@ export const MyTodos = () => {
       e.preventDefault();
       confirmEdit(id);
     }
+  }
+
+  function changeStatus(id, currentStatus) {
+    const newStatus = currentStatus === "active" ? "completed" : "active";
+    updateTodoStatus(id, newStatus, user)
+      .then(() => {
+        toast.success(`Todo marked as ${newStatus}!`);
+      })
+      .catch(() => {
+        toast.error("You do not have permission to update this todo.");
+      });
   }
 
   function removeTodo(id) {
@@ -346,13 +306,7 @@ export const MyTodos = () => {
             ))}
           </div>
         ) : (
-          <div
-            className="flex flex-col justify-center items-center text-very_light_gray cursor-pointer"
-            onClick={handleSubmit(createTodo)}
-          >
-            <span className="material-symbols-outlined">receipt_long</span>
-            <p>No todos</p>
-          </div>
+          <NoTodos />
         )}
       </section>
 

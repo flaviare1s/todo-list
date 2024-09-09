@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { useState, useEffect, useRef, useContext } from "react";
 import {
@@ -8,14 +7,8 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { Loader } from "../components/Loader";
-import {
-  addTodo,
-  deleteTodo,
-  updateTodo,
-  updateTodoStatus,
-} from "../firebase/todo";
+import { deleteTodo, updateTodo, updateTodoStatus } from "../firebase/todo";
 import toast from "react-hot-toast";
-import { useForm } from "react-hook-form";
 import { UserContext } from "../contexts/UserContext";
 import { shareTodoWithEmail } from "../firebase/share";
 import { ShareModal } from "../components/ShareModal";
@@ -43,11 +36,6 @@ export const Todos = () => {
   const [todoInfo, setTodoInfo] = useState(null);
   const [selectedPermission, setSelectedPermission] = useState("");
   const [notifiedTodoIds, setNotifiedTodoIds] = useState(new Set());
-  const {
-    reset,
-    control,
-    formState: { errors },
-  } = useForm();
   const editInputRef = useRef(null);
   const shareInputRef = useRef(null);
   const user = useContext(UserContext);
@@ -179,40 +167,6 @@ export const Todos = () => {
     setShowShareModal(false);
   }
 
-  function createTodo(data, sharedWith = []) {
-    const todoData = {
-      ...data,
-      status: "active",
-      userId: user.uid,
-      ownerEmail: user.email,
-      ownerName: user.displayName,
-      sharedWith:
-        sharedWith.length > 0
-          ? sharedWith.map((user) => ({
-              uid: user.uid || "",
-              permission: user.permission || "read",
-              email: user.email || "",
-              displayName: user.displayName || "",
-            }))
-          : [],
-      createdAt: serverTimestamp(),
-    };
-
-    setTodos((prevTodos) => [
-      ...prevTodos,
-      { ...todoData, id: Date.now().toString() },
-    ]);
-
-    addTodo(todoData)
-      .then(() => {
-        toast.success("Todo created!");
-      })
-      .catch(() => {
-        toast.error("Something went wrong!");
-      });
-    reset();
-  }
-
   function changeStatus(id, currentStatus) {
     const newStatus = currentStatus === "active" ? "completed" : "active";
     updateTodoStatus(id, newStatus, user)
@@ -300,6 +254,7 @@ export const Todos = () => {
           showInfo={showInfo}
           removeTodo={removeTodo}
           shareTodo={shareTodo}
+          changeStatus={changeStatus}
         />
       ) : (
         <NoTodos />

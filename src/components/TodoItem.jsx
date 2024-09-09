@@ -9,7 +9,8 @@ export const TodoItem = ({
   confirmEdit,
   showInfo,
   removeTodo,
-  shareTodo
+  shareTodo,
+  changeStatus,
 }) => {
   return (
     <div className="p-3 border-b">

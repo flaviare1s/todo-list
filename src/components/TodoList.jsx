@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { TodoItem } from './TodoItem';
 
-export const TodoList = ({ todos, isEditing, editTitle, setEditTitle, startEditing, confirmEdit, showInfo, removeTodo, shareTodo }) => {
+export const TodoList = ({ todos, isEditing, editTitle, setEditTitle, startEditing, confirmEdit, showInfo, removeTodo, shareTodo, changeStatus }) => {
   return (
     <div className="flex flex-col border-2 border-offwhite rounded mx-auto sm:w-[60%] md:w-[50%] xl:w-[40%]">
       {todos.map((todo) => (
@@ -16,6 +16,7 @@ export const TodoList = ({ todos, isEditing, editTitle, setEditTitle, startEditi
           showInfo={showInfo}
           removeTodo={removeTodo}
           shareTodo={shareTodo}
+          changeStatus={changeStatus}
         />
       ))}
     </div>
