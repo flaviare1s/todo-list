@@ -18,6 +18,7 @@ import { shareTodoWithEmail } from "../firebase/share";
 import { shareTodosWithEmail } from "../firebase/list";
 import { ShareModal } from "../components/ShareModal";
 import { ShareListModal } from "../components/ShareListModal";
+import { NewTodo } from "../components/NewTodo";
 
 export const MyTodos = () => {
   const [todos, setTodos] = useState([]);
@@ -32,7 +33,7 @@ export const MyTodos = () => {
   const [selectedPermission, setSelectedPermission] = useState("");
   const editInputRef = useRef(null);
   const shareInputRef = useRef(null);
-  const { register, handleSubmit, reset } = useForm();
+  const { handleSubmit, reset } = useForm();
   const user = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -266,25 +267,7 @@ export const MyTodos = () => {
 
   return (
     <>
-      <form
-        className="flex flex-col justify-center items-center m-auto p-3"
-        onSubmit={handleSubmit(createTodo)}
-      >
-        <h1
-          onClick={handleSubmit(createTodo)}
-          className="text-4xl font-bold p-3"
-        >
-          TODO
-        </h1>
-        <input
-          type="text"
-          id="title"
-          placeholder="Click here to create a new todo"
-          className="p-3 rounded-sm bg-inherit w-full sm:w-[60%] md:w-[50%] xl:w-[40%] placeholder:text-center placeholder:text-very_light_gray"
-          {...register("title", { required: true })}
-        />
-      </form>
-
+      <NewTodo title="TODO" setTodos={setTodos} />
       <section className="px-3">
         <div className="w-full sm:w-[60%] md:w-[50%] xl:w-[40%] flex flex-col m-auto">
           <div className="flex justify-between">
