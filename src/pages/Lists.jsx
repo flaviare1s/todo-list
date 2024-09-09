@@ -5,6 +5,7 @@ import { getSharedTodos } from "../firebase/list";
 import { useContext, useEffect, useState } from "react";
 import { getUserTodos } from "../firebase/todo";
 import { UserContext } from "../contexts/UserContext";
+import { NoTodos } from "../components/NoTodos";
 
 export const Lists = () => {
   const [sharedTodos, setSharedTodos] = useState([]);
@@ -59,7 +60,9 @@ export const Lists = () => {
         <div className="flex flex-col justify-center items-center p-3">
           <button onClick={delList}>
             <div className="flex gap-2">
-              <span className="text-offwhite hover:text-very_light_gray">Delete List</span>
+              <span className="text-offwhite hover:text-very_light_gray">
+                Delete List
+              </span>
               <span className="material-symbols-outlined hover:text-very_light_gray">
                 close
               </span>
@@ -70,13 +73,15 @@ export const Lists = () => {
       {loading ? (
         <Loader />
       ) : sharedTodos.length > 0 ? (
-          <div className="flex flex-col border-2 border-very_light_gray rounded mx-auto sm:w-[60%] md:w-[50%] xl:w-[40%]">
+        <div className="flex flex-col border-2 border-very_light_gray rounded mx-auto sm:w-[60%] md:w-[50%] xl:w-[40%]">
           {sharedTodos.map((todo) => (
             <div
               className="flex flex-col p-3 border-b border-very_light_gray"
               key={todo.id}
             >
-              <p className="text-very_light_gray cursor-default">{todo.title}</p>
+              <p className="text-very_light_gray cursor-default">
+                {todo.title}
+              </p>
               <small className="text-very_light_gray text-right cursor-default">
                 Shared by: {todo.sharedBy || "Unknown"}
               </small>
@@ -84,10 +89,7 @@ export const Lists = () => {
           ))}
         </div>
       ) : (
-        <div className="flex flex-col justify-center items-center text-very_light_gray">
-          <span className="material-symbols-outlined">receipt_long</span>
-          <p className="cursor-default">No shared lists</p>
-        </div>
+        <NoTodos title="No shared lists" />
       )}
     </section>
   );

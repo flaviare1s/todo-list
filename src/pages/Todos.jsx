@@ -258,7 +258,7 @@ export const Todos = () => {
           handleKeyDown={handleKeyDown}
         />
       ) : (
-        <NoTodos />
+        <NoTodos title="No Todos" />
       )}
       <ShareModal
         title="Share Todo"

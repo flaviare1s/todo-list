@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 export const ShareListComponent = ({ openShareModal }) => {
   return (
     <div className="w-full sm:w-[60%] md:w-[50%] xl:w-[40%] flex flex-col m-auto">

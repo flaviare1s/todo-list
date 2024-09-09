@@ -249,7 +249,7 @@ export const MyTodos = () => {
             handleKeyDown={handleKeyDown}
           />
         ) : (
-          <NoTodos />
+          <NoTodos title='No Todos' />
         )}
       </section>
 
