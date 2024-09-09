@@ -1,9 +1,21 @@
+/* eslint-disable react/prop-types */
 import { Modal, Button } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
 
-export const ShareModal = ({title, show, onClose, shareEmail, setShareEmail, selectedPermission, setSelectedPermission, handleShareTodo }) => {
-  
-  const { control, formState: { errors } } = useForm();
+export const ShareModal = ({
+  title,
+  show,
+  onClose,
+  shareEmail,
+  setShareEmail,
+  selectedPermission,
+  setSelectedPermission,
+  handleShareTodo,
+}) => {
+  const {
+    control,
+    formState: { errors },
+  } = useForm();
   return (
     <Modal show={show} onHide={onClose} className="text-center">
       <Modal.Header closeButton>

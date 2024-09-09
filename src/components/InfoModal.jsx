@@ -1,33 +1,28 @@
-import { Modal, Button } from "react-bootstrap";
+/* eslint-disable react/prop-types */
+import { Modal } from "react-bootstrap";
 import { Loader } from "./Loader";
 
 export const InfoModal = ({ title, show, onClose, todoInfo }) => {
   return (
     <Modal show={show} onHide={onClose} className="text-center">
       <Modal.Header closeButton className="modalInfo-header">
-        <Modal.Title className="text-dark modalInfo-title">{ title }</Modal.Title>
+        <Modal.Title className="text-dark modalInfo-title">{title}</Modal.Title>
       </Modal.Header>
       <Modal.Body className="text-dark modalInfo-body">
         {todoInfo ? (
           <div key={todoInfo.id} className="text-left">
             <div className="mb-2">
-              <span className="text-dark_gray mr-2 font-bold">
-                Created by:
-              </span>
+              <span className="text-dark_gray mr-2 font-bold">Created by:</span>
               <span className="text-offwhite font-bold text-lg">
                 {todoInfo.ownerName} - {todoInfo.ownerEmail}
               </span>
             </div>
 
             <div className="mb-2">
-              <span className="text-dark_gray mr-2 font-bold">
-                Created At:
-              </span>
+              <span className="text-dark_gray mr-2 font-bold">Created At:</span>
               <span className="text-offwhite font-bold text-lg">
                 {todoInfo.createdAt
-                  ? new Date(
-                    todoInfo.createdAt.seconds * 1000
-                  ).toLocaleString()
+                  ? new Date(todoInfo.createdAt.seconds * 1000).toLocaleString()
                   : "N/A"}
               </span>
             </div>
@@ -48,7 +43,9 @@ export const InfoModal = ({ title, show, onClose, todoInfo }) => {
                   </span>
                   <span className="text-offwhite font-bold text-lg">
                     {todoInfo.updatedBy.timestamp
-                      ? new Date(todoInfo.updatedBy.timestamp.seconds * 1000).toLocaleString()
+                      ? new Date(
+                          todoInfo.updatedBy.timestamp.seconds * 1000
+                        ).toLocaleString()
                       : "N/A"}
                   </span>
                 </div>

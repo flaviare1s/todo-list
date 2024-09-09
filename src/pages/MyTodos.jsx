@@ -13,11 +13,11 @@ import { useEffect, useState, useRef, useContext } from "react";
 import { Loader } from "../components/Loader";
 import { UserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
-import { Modal, Button } from "react-bootstrap";
 import { onSnapshot, serverTimestamp } from "firebase/firestore";
 import { shareTodoWithEmail } from "../firebase/share";
 import { shareTodosWithEmail } from "../firebase/list";
 import { ShareModal } from "../components/ShareModal";
+import { ShareListModal } from "../components/ShareListModal";
 
 export const MyTodos = () => {
   const [todos, setTodos] = useState([]);
@@ -32,11 +32,7 @@ export const MyTodos = () => {
   const [selectedPermission, setSelectedPermission] = useState("");
   const editInputRef = useRef(null);
   const shareInputRef = useRef(null);
-  const {
-    register,
-    handleSubmit,
-    reset,
-  } = useForm();
+  const { register, handleSubmit, reset } = useForm();
   const user = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -377,26 +373,17 @@ export const MyTodos = () => {
         )}
       </section>
 
-      <Modal show={showModal} onHide={closeShareModal} className="text-center">
-        <Modal.Header closeButton>
-          <Modal.Title className="text-dark">Share Todos</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="text-dark">
-          <input
-            type="email"
-            value={shareEmail}
-            onChange={(e) => setShareEmail(e.target.value)}
-            placeholder="Enter email address"
-            className="form-control"
-          />
-          <Button className="mt-2" variant="dark" onClick={handleShareTodos}>
-            Share
-          </Button>
-        </Modal.Body>
-      </Modal>
+      <ShareListModal
+        title="Share List"
+        show={showModal}
+        onClose={closeShareModal}
+        shareEmail={shareEmail}
+        setShareEmail={setShareEmail}
+        handleShareTodos={handleShareTodos}
+      />
 
       <ShareModal
-        title='Share Todo'
+        title="Share Todo"
         show={showShareModal}
         onClose={() => setShowShareModal(false)}
         shareEmail={shareEmail}
