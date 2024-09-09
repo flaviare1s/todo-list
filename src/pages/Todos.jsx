@@ -240,7 +240,7 @@ export const Todos = () => {
   }
 
   return (
-    <section>
+    <section className="px-4">
       <NewTodo title="TODO" setTodos={setTodos} />
       <TodoHeader title="TODOS" />
       {sharedTodos.length > 0 ? (
