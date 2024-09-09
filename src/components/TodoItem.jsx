@@ -11,6 +11,7 @@ export const TodoItem = ({
   removeTodo,
   shareTodo,
   changeStatus,
+  handleKeyDown,
 }) => {
   return (
     <div className="p-3 border-b">
@@ -21,7 +22,7 @@ export const TodoItem = ({
               type="text"
               value={editTitle}
               onChange={(e) => setEditTitle(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && confirmEdit(todo.id)}
+              onKeyDown={(e) => handleKeyDown(e, todo.id) && confirmEdit(todo.id)}
               className="p-2 rounded focus:border-none-sm bg-inherit w-full"
             />
           ) : (

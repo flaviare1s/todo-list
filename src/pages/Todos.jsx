@@ -255,6 +255,7 @@ export const Todos = () => {
           removeTodo={removeTodo}
           shareTodo={shareTodo}
           changeStatus={changeStatus}
+          handleKeyDown={handleKeyDown}
         />
       ) : (
         <NoTodos />

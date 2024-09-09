@@ -17,6 +17,7 @@ import { ShareModal } from "../components/ShareModal";
 import { ShareListModal } from "../components/ShareListModal";
 import { NewTodo } from "../components/NewTodo";
 import { NoTodos } from "../components/NoTodos";
+import { TodoList } from "../components/TodoList";
 
 export const MyTodos = () => {
   const [todos, setTodos] = useState([]);
@@ -244,67 +245,19 @@ export const MyTodos = () => {
         {loading ? (
           <Loader />
         ) : todos.length > 0 ? (
-          <div className="flex flex-col border-2 border-offwhite rounded mx-auto sm:w-[60%] md:w-[50%] xl:w-[40%]">
-            {todos.map((todo) => (
-              <div className="p-3 border-b" key={todo.id}>
-                <div className="flex justify-between">
-                  {isEditing === todo.id ? (
-                    <input
-                      type="text"
-                      value={editTitle}
-                      onChange={(e) => setEditTitle(e.target.value)}
-                      onKeyDown={(e) => handleKeyDown(e, todo.id)}
-                      className="p-2 rounded focus:border-none-sm bg-inherit w-full"
-                      ref={editInputRef}
-                    />
-                  ) : (
-                    <p
-                      onClick={() => changeStatus(todo.id, todo.status)}
-                      className={`text-left cursor-pointer ${
-                        todo.status === "completed"
-                          ? "line-through text-very_light_gray"
-                          : ""
-                      }`}
-                    >
-                      {todo.title}
-                    </p>
-                  )}
-                  <div className="flex gap-2">
-                    {isEditing !== todo.id && (
-                      <button onClick={() => startEditing(todo)}>
-                        <span className="material-symbols-outlined">edit</span>
-                      </button>
-                    )}
-                    <button onClick={() => shareTodo(todo.id)}>
-                      <span className="material-symbols-outlined">share</span>
-                    </button>
-                    <button onClick={() => removeTodo(todo.id)}>
-                      <span className="material-symbols-outlined">close</span>
-                    </button>
-                  </div>
-                </div>
-                <div className="flex justify-end">
-                  {todo.sharedWith.length > 0 && (
-                    <div className="flex gap-2 items-center justify-center mt-2">
-                      <small className="text-light">Shared</small>
-                      {todo.sharedWith.map((user, index) => {
-                        console.log(user);
-                        return (
-                          <div key={index}>
-                            {user.permission === "read" ? (
-                              <span className="h-2 w-2 bg-yellow rounded-full block"></span>
-                            ) : (
-                              <span className="h-2 w-2 bg-green rounded-full block"></span>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
+          <TodoList
+            todos={todos}
+            isEditing={isEditing}
+            editTitle={editTitle}
+            setEditTitle={setEditTitle}
+            startEditing={startEditing}
+            confirmEdit={confirmEdit}
+            removeTodo={removeTodo}
+            shareTodo={shareTodo}
+            changeStatus={changeStatus}
+            editInputRef={editInputRef}
+            handleKeyDown={handleKeyDown}
+          />
         ) : (
           <NoTodos />
         )}
