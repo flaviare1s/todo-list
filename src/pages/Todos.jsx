@@ -21,6 +21,9 @@ import { shareTodoWithEmail } from "../firebase/share";
 import { ShareModal } from "../components/ShareModal";
 import { InfoModal } from "../components/InfoModal";
 import { NewTodo } from "../components/NewTodo";
+import { TodoHeader } from "../components/TodoHeader";
+import { TodoList } from "../components/TodoList";
+import { NoTodos } from "../components/NoTodos";
 
 const db = getFirestore();
 
@@ -284,92 +287,25 @@ export const Todos = () => {
 
   return (
     <section>
-      <NewTodo title='TODO' setTodos={setTodos} />
-      <section className="px-3">
-        <div className="w-full sm:w-[60%] md:w-[50%] xl:w-[40%]flex flex-col m-auto">
-          <div className="flex justify-center">
-            <h2 className="text-2xl font-bold p-3 text-center mt-3 mb-2">
-              TODOS
-            </h2>
-          </div>
-        </div>
-        {sharedTodos.length > 0 ? (
-          <div className="flex flex-col border-2 border-offwhite rounded mx-auto sm:w-[60%] md:w-[50%] xl:w-[40%]">
-            {sharedTodos.map((todo) => (
-              <div key={todo.id} className="p-3 border-b">
-                <div>
-                  <div className="flex flex-col sm:flex-row sm:justify-between mb-[-15px] sm:mb-0">
-                    {isEditing === todo.id ? (
-                      <input
-                        type="text"
-                        value={editTitle}
-                        onChange={(e) => setEditTitle(e.target.value)}
-                        onKeyDown={(e) => handleKeyDown(e, todo.id)}
-                        className="p-2 rounded focus:border-none-sm bg-inherit w-full"
-                        ref={editInputRef}
-                      />
-                    ) : (
-                      <p
-                        onClick={() => changeStatus(todo.id, todo.status)}
-                        className={`text-left cursor-pointer ${
-                          todo.status === "completed"
-                            ? "line-through text-very_light_gray"
-                            : ""
-                        }`}
-                      >
-                        {todo.title}
-                      </p>
-                    )}
-                    <div className="flex gap-3 sm:gap-1 ml-3 justify-end mt-4 sm:mt-0">
-                      {isEditing !== todo.id && (
-                        <button onClick={() => startEditing(todo)}>
-                          <span className="material-symbols-outlined">
-                            edit
-                          </span>
-                        </button>
-                      )}
-                      <button onClick={() => shareTodo(todo.id)}>
-                        <span className="material-symbols-outlined">share</span>
-                      </button>
-                      <button>
-                        <span
-                          onClick={() => showInfo(todo)}
-                          className="material-symbols-outlined"
-                        >
-                          info
-                        </span>
-                      </button>
-                      <button onClick={() => removeTodo(todo.id)}>
-                        <span className="material-symbols-outlined">close</span>
-                      </button>
-                    </div>
-                  </div>
-                  <div className="flex justify-end">
-                    {user.uid !== todo.userId &&
-                      todo.sharedWith.map((shared) => (
-                        <span
-                          key={shared.uid}
-                          className={
-                            shared.permission === "write"
-                              ? "h-2 w-2 bg-green rounded mb-[-10px] mr-[-10px]"
-                              : "h-2 w-2 bg-yellow rounded mb-[-10px] mr-[-10px]"
-                          }
-                        ></span>
-                      ))}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="flex flex-col justify-center items-center text-very_light_gray cursor-pointer">
-            <span className="material-symbols-outlined">receipt_long</span>
-            <p>No todos</p>
-          </div>
-        )}
-      </section>
+      <NewTodo title="TODO" setTodos={setTodos} />
+      <TodoHeader title="TODOS" />
+      {sharedTodos.length > 0 ? (
+        <TodoList
+          todos={sharedTodos}
+          isEditing={isEditing}
+          editTitle={editTitle}
+          setEditTitle={setEditTitle}
+          startEditing={startEditing}
+          confirmEdit={confirmEdit}
+          showInfo={showInfo}
+          removeTodo={removeTodo}
+          shareTodo={shareTodo}
+        />
+      ) : (
+        <NoTodos />
+      )}
       <ShareModal
-        title='Share Todo'
+        title="Share Todo"
         show={showShareModal}
         onClose={() => setShowShareModal(false)}
         shareEmail={shareEmail}
@@ -379,7 +315,7 @@ export const Todos = () => {
         handleShareTodo={handleShareTodo}
       />
       <InfoModal
-        title='Info'
+        title="Info"
         show={showInfoModal}
         onClose={() => setShowInfoModal(false)}
         todoInfo={todoInfo}
