@@ -1,3 +1,5 @@
+import { ButtonIcon } from "./ButtonIcon";
+
 /* eslint-disable react/prop-types */
 export const MyTodosItem = ({
   todo,
@@ -38,16 +40,10 @@ export const MyTodosItem = ({
         )}
         <div className="flex gap-2">
           {isEditing !== todo.id && (
-            <button onClick={() => startEditing(todo)}>
-              <span className="material-symbols-outlined">edit</span>
-            </button>
+            <ButtonIcon onClick={startEditing} todo={todo} title="edit" />
           )}
-          <button onClick={() => shareTodo(todo.id)}>
-            <span className="material-symbols-outlined">share</span>
-          </button>
-          <button onClick={() => removeTodo(todo.id)}>
-            <span className="material-symbols-outlined">close</span>
-          </button>
+          <ButtonIcon onClick={shareTodo} todo={todo.id} title="share" />
+          <ButtonIcon onClick={removeTodo} todo={todo.id} title="close" />
         </div>
       </div>
       <div className="flex justify-end">
