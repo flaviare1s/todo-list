@@ -1,6 +1,6 @@
 # TODO List
 
-Esse projeto é uma Todo List Colaborativa criada para o desafio que oferece Ingresso para Iniciantes na Carreira de Desenvolvimento
+Esse projeto é uma Todo List Colaborativa criada para o desafio do Frontend Day 2024.
 
 
 ## **Visão Geral**
