@@ -1,78 +1,231 @@
-# TODO List
+# TODO List 📝
 
-Esse projeto é uma Todo List Colaborativa criada para o desafio do Frontend Day 2024.
+<div align="center">
 
+[![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)](https://firebase.google.com/)
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
 
-## **Visão Geral**
+[🇧🇷 Português](README.md) | [🇺🇸 English](README-en.md)
 
-O aplicativo TODO List é uma solução colaborativa para gerenciamento de tarefas, permitindo a criação, edição e exclusão de tarefas por múltiplos usuários. A autenticação segura é gerenciada pelo Firebase, e a aplicação oferece uma interface responsiva construída com React e Tailwind. As tarefas são armazenadas no Firebase Firestore e a funcionalidade de compartilhamento permite que usuários monitorem alterações e recebam notificações em tempo real. 
+[Ver Demo](https://todo-list-web-9d1d7.web.app/) | [Reportar Bug](https://github.com/flaviare1s/todo-list/issues) | [Solicitar Funcionalidade](https://github.com/flaviare1s/todo-list/issues)
 
+</div>
 
-## **Tecnologias Utilizadas**
+---
 
-- **Frontend:**
-  - **React:** Biblioteca JavaScript para construção da interface do usuário.
-  - **Tailwind CSS:** Framework CSS para estilização e design responsivo.
-- **Backend:**
-  - **Firebase:** Plataforma para autenticação de usuários, armazenamento de dados e notificações em tempo real.
-  - **Firebase Firestore:** Banco de dados NoSQL para armazenamento das tarefas e histórico de alterações.
-- **Outras Tecnologias:**
-  - **React Hooks:** Para gerenciar estados e efeitos colaterais.
-  - **Firestore Listeners:** Para implementar notificações em tempo real.
+## **📖 Visão Geral**
 
+Uma aplicação de lista de tarefas colaborativa e moderna, desenvolvida para o **Frontend Day 2024**. Este projeto permite que múltiplos usuários criem, editem e compartilhem tarefas em tempo real, com autenticação segura e interface responsiva.
 
-## **Funcionalidades**
+### ✨ **Destaques**
 
-- **Autenticação:**
-  - **Cadastro de Usuários:** Permite que novos usuários se registrem usando email e senha.
-  - **Login de Usuários:** Funcionalidade de login para usuários existentes.
-  - **Login com Google:** Opção para login utilizando contas Google.
-  - **Redefinição de Senha:** Função para recuperação de senha em caso de esquecimento.
-  - **Logout:** Opção para sair da conta e encerrar a sessão do usuário.
+- 🔐 Autenticação segura com Firebase (Email/Senha e Google)
+- 🤝 Compartilhamento colaborativo de tarefas e listas
+- ⚡ Atualizações em tempo real
+- 📱 Interface responsiva e moderna
+- 🔔 Notificações de alterações em tempo real
 
-- **Gerenciamento de Tarefas:**
-  - **Criação de Tarefas:** Usuários podem adicionar novas tarefas à lista.
-  - **Edição de Tarefas:** Permite atualizar detalhes das tarefas existentes.
-  - **Exclusão de Tarefas:** Opção para remover tarefas da lista.
-  - **Mudança de Status:** Permite marcar tarefas como concluídas.
+---
 
-- **Funcionalidade de Compartilhamento:**
-  - **Compartilhamento de Tarefas Individuais:** Usuários podem compartilhar tarefas específicas com outros usuários, permitindo que os destinatários editem e excluam essas tarefas.
-  - **Compartilhamento de Lista de Tarefas:** Permite compartilhar toda a lista de tarefas em modo somente leitura com outros usuários, sem permitir alterações.
+## **🚀 Tecnologias Utilizadas**
 
-- **Atualização em Tempo Real:**
-  - **Notificações de Alterações:** As tarefas compartilhadas são atualizadas em tempo real, renderizando adições ou modificações feitas por outros participantes da lista e implementando notificações em tempo real.
-  
-Essas funcionalidades garantem uma experiência colaborativa e dinâmica, facilitando a gestão e o compartilhamento de tarefas entre os usuários.
+### **Frontend**
 
+- [React](https://reactjs.org/) - Biblioteca JavaScript para construção de interfaces
+- [Tailwind CSS](https://tailwindcss.com/) - Framework CSS utilitário
+- [Vite](https://vitejs.dev/) - Build tool e dev server
+- React Router - Navegação entre páginas
+- React Hooks - Gerenciamento de estado e efeitos
 
-## Instalação e Configuração:
+### **Backend & Infraestrutura**
 
-1. Clone o repositório
-  - Abra um terminal e execute o comando abaixo para clonar o repositório:
-  - git clone https://github.com/flaviare1s/todo-list.git
+- [Firebase Authentication](https://firebase.google.com/products/auth) - Autenticação de usuários
+- [Cloud Firestore](https://firebase.google.com/products/firestore) - Banco de dados NoSQL em tempo real
+- [Firebase Hosting](https://firebase.google.com/products/hosting) - Hospedagem web
+- Firestore Listeners - Notificações em tempo real
 
-2. Instale as dependências
-  - No diretório do projeto, execute o comando a seguir para instalar todas as dependências necessárias:
-  - npm install
+---
 
-3. Configuração do Firebase
-  - Crie um Projeto no Firebase: Acesse o Console do Firebase e crie um novo projeto, se ainda não tiver um.
-  - Obtenha os Dados da Configuração do SDK: No console do Firebase, vá para "Configurações do Projeto" (ícone de engrenagem no canto superior esquerdo) e, na aba "Geral", encontre a seção "Seus aplicativos". Selecione o ícone do aplicativo da Web para obter as credenciais de configuração do Firebase.
-  - Configure o Firebase no Projeto: Crie um arquivo chamado config.js na pasta src/firebase do projeto e cole os dados da configuração do SDK que você copiou.
+## **✨ Funcionalidades**
 
-4. Inicie o Servidor de Desenvolvimento
-  - Execute o comando a seguir para iniciar o servidor de desenvolvimento e acessar o aplicativo localmente:
-  - npm run dev
+### 🔐 **Autenticação**
 
+- ✅ Cadastro de usuários com email e senha
+- ✅ Login de usuários existentes
+- ✅ Login com Google (OAuth)
+- ✅ Redefinição de senha
+- ✅ Logout seguro
 
-## **Hospedagem**
-  - O aplicativo está hospedado e disponível em: https://todo-list-web-9d1d7.web.app/
+### 📋 **Gerenciamento de Tarefas**
 
+- ✅ Criar novas tarefas
+- ✅ Editar tarefas existentes
+- ✅ Excluir tarefas
+- ✅ Marcar tarefas como concluídas
+- ✅ Organização por listas
 
+### 🤝 **Compartilhamento Colaborativo**
 
+- ✅ **Compartilhamento de Tarefas Individuais**: Compartilhe tarefas específicas com permissões de edição
+- ✅ **Compartilhamento de Listas Completas**: Compartilhe listas inteiras em modo somente leitura
+- ✅ Gerenciamento de permissões (leitura/escrita)
 
-## Detalhes sobre o Desafio:
+### ⚡ **Tempo Real**
+
+- ✅ Atualizações instantâneas de tarefas compartilhadas
+- ✅ Notificações de alterações feitas por outros usuários
+- ✅ Sincronização automática entre dispositivos
+
+### 📊 **Histórico e Auditoria**
+
+- ✅ Registro de quem criou cada tarefa
+- ✅ Registro de quem editou cada tarefa
+- ✅ Timestamp de última alteração
+
+---
+
+## **⚙️ Instalação e Configuração**
+
+### **Pré-requisitos**
+
+- Node.js (v16 ou superior)
+- npm ou yarn
+- Conta no Firebase
+
+### **Passo a Passo**
+
+#### 1️⃣ **Clone o Repositório**
+
+```bash
+git clone https://github.com/flaviare1s/todo-list.git
+cd todo-list
+```
+
+#### 2️⃣ **Instale as Dependências**
+
+```bash
+npm install
+# ou
+yarn install
+```
+
+#### 3️⃣ **Configure o Firebase**
+
+1. Acesse o [Console do Firebase](https://console.firebase.google.com/)
+2. Crie um novo projeto ou use um existente
+3. Vá para **Configurações do Projeto** > **Seus aplicativos**
+   Este projeto foi desenvolvido como resposta ao desafio do **Frontend Day 2024**, que propunha a criação de um aplicativo de lista de tarefas colaborativo.
+
+### **🎯 Objetivo do Desafio**
+
+Desenvolver uma aplicação web completa de gerenciamento de tarefas com suporte a múltiplos usuários, compartilhamento e atualizações em tempo real.
+
+### **📋 Requisitos Implementados**
+
+#### ✅ Autenticação de Usuário
+
+- Firebase Authentication
+- Login e registro com email/senha
+- Login social com Google
+- Recuperação de senha
+
+#### ✅ Gerenciamento de Tarefas (CRUD)
+
+- Criar, editar e excluir tarefas
+- Marcar tarefas como concluídas
+- Armazenamento no Firestore
+- Interface clara e organizada
+
+#### ✅ Compartilhamento Colaborativo
+
+- Compartilhar listas e tarefas individuais
+- Permissões configuráveis (leitura/escrita)
+- Gerenciamento de acessos
+
+#### ✅ Interface Responsiva
+
+- Design moderno com Tailwind CSS
+- Feedback visual para todas as ações
+- Adaptável a diferentes dispositivos
+
+#### ✅ Tempo Real
+
+- Firestore Listeners para atualizações instantâneas
+- Notificações de alterações por outros usuários
+- Sincronização automática
+
+#### ✅ Histórico e Segurança
+
+- Registro de criação e edições
+- Timestamps de alterações
+- Firestore Security Rules implementadas
+- Validação de dados no frontend e backend
+
+---
+
+## **👨‍💻 Autor**
+
+Desenvolvido por [Flavia Reis](https://github.com/flaviare1s)
+
+---
+
+## **🤝 Contribuindo**
+
+Contribuições são bem-vindas! Sinta-se à vontade para:
+
+1. Fazer um fork do projeto
+2. Criar uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abrir um Pull Request
+
+---
+
+<div align="center">
+
+**⭐ Se este projeto foi útil para você, considere dar uma estrela!**
+
+[🇧🇷 Português](README.md) | [🇺🇸 English](README-en.md)
+
+## </div>
+
+## **📁 Estrutura do Projeto**
+
+```
+todo-list/
+├── src/
+│   ├── assets/           # Recursos estáticos
+│   ├── components/       # Componentes React reutilizáveis
+│   │   ├── Header.jsx
+│   │   ├── TodoItem.jsx
+│   │   ├── ShareModal.jsx
+│   │   └── ...
+│   ├── contexts/         # Context API do React
+│   │   └── UserContext.jsx
+│   ├── firebase/         # Configuração e funções do Firebase
+│   │   ├── auth.js
+│   │   ├── list.js
+│   │   ├── share.js
+│   │   └── todo.js
+│   ├── pages/            # Páginas da aplicação
+│   │   ├── Home.jsx
+│   │   ├── Login.jsx
+│   │   ├── Todos.jsx
+│   │   └── ...
+│   ├── App.jsx           # Componente principal
+│   └── main.jsx          # Ponto de entrada
+├── public/               # Arquivos públicos
+├── firebase.json         # Configuração do Firebase
+├── vite.config.js        # Configuração do Vite
+└── tailwind.config.js    # Configuração do Tailwind
+```
+
+---
+
+## **🎯 Sobre o Desafio Frontend Day 2024**
+
 ### **Desafio: Criar um Aplicativo de Lista de Tarefas Colaborativo**
 
 #### **Objetivo**
