@@ -42,11 +42,17 @@ section {
 .shared-read {
   background-color: rgb(255, 128, 223) !important;
   display: inline-block !important;
+  width: 0.5rem !important;
+  height: 0.5rem !important;
+  border-radius: 9999px !important;
 }
 
 .shared-write {
   background-color: rgb(128, 255, 255) !important;
   display: inline-block !important;
+  width: 0.5rem !important;
+  height: 0.5rem !important;
+  border-radius: 9999px !important;
 }
 
 .text-cyan {
@@ -73,6 +79,10 @@ select option {
 .modalInfo-body {
   background-color: hsl(0 0% 14%) !important;
   color: hsl(210 18% 96%) !important;
+}
+
+.modal-header .btn-close {
+  filter: invert(1) !important;
 }
 
 @keyframes fadeIn {
