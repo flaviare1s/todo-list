@@ -29,11 +29,10 @@ export const MyTodosItem = ({
         ) : (
           <p
             onClick={() => changeStatus(todo.id, todo.status)}
-            className={`text-left cursor-pointer ${
-              todo.status === "completed"
-                ? "line-through text-very_light_gray"
-                : ""
-            }`}
+            className={`text-left cursor-pointer ${todo.status === "completed"
+              ? "line-through text-very_light_gray"
+              : ""
+              }`}
           >
             {todo.title}
           </p>
@@ -49,13 +48,13 @@ export const MyTodosItem = ({
       <div className="flex justify-end">
         {todo.sharedWith.length > 0 && (
           <div className="flex gap-2 items-center justify-center mt-2">
-            <small className="text-light">Shared</small>
+            <small className="text-[hsl(210,14%,72%)]">Shared</small>
             {todo.sharedWith.map((user, index) => (
               <div key={index}>
                 {user.permission === "read" ? (
-                  <span className="h-2 w-2 bg-yellow rounded-full block"></span>
+                  <span className="h-2 w-2 rounded-full block" style={{ backgroundColor: 'rgb(255, 128, 223)' }}></span>
                 ) : (
-                  <span className="h-2 w-2 bg-green rounded-full block"></span>
+                  <span className="h-2 w-2 rounded-full block" style={{ backgroundColor: 'rgb(128, 255, 255)' }}></span>
                 )}
               </div>
             ))}

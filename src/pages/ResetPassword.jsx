@@ -21,7 +21,7 @@ export const ResetPassword = () => {
         <div className="my-2 flex flex-col">
           <label htmlFor="email">E-mail</label>
           <input
-            className="p-2 rounded bg-inherit text-offwhite border border-offwhite"
+            className="p-2 rounded bg-inherit text-text border border-text-muted"
             type="email"
             placeholder="E-mail"
             {...register("email", { required: "E-mail required" })}
@@ -33,12 +33,12 @@ export const ResetPassword = () => {
         <div>
           <button
             type="submit"
-            className="mt-1 w-100 p-2 rounded bg-dark_gray text-offwhite hover:bg-inherit hover:text-offwhite hover:border-2" 
+            className="mt-1 w-full p-2 rounded bg-[hsl(180,100%,60%)] text-[hsl(0,0%,8%)] hover:bg-[hsl(180,100%,80%)] hover:border-[hsl(180,100%,80%)] font-semibold transition-colors"
           >
             Recuperar Senha
           </button>
-          <Link to="/login" className="text-yellow-500 hover:text-opacity-50">
-            <small className="text-very_light_gray hover:text-offwhite">Login</small>
+          <Link to="/login" className="text-text-muted hover:text-primary">
+            <small className="text-text-muted hover:text-primary">Login</small>
           </Link>
         </div>
       </form>

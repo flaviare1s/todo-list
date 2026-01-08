@@ -33,11 +33,10 @@ export const TodoItem = ({
           ) : (
             <p
               onClick={() => changeStatus(todo.id, todo.status)}
-              className={`text-left cursor-pointer ${
-                todo.status === "completed"
-                  ? "line-through text-very_light_gray"
+              className={`text-left cursor-pointer ${todo.status === "completed"
+                  ? "line-through text-text-muted"
                   : ""
-              }`}
+                }`}
             >
               {todo.title}
             </p>
@@ -57,8 +56,8 @@ export const TodoItem = ({
               key={shared.uid}
               className={
                 shared.permission === "write"
-                  ? "h-2 w-2 bg-green rounded mb-[-10px] mr-[-10px]"
-                  : "h-2 w-2 bg-yellow rounded mb-[-10px] mr-[-10px]"
+                  ? "h-2 w-2 bg-success rounded mb-[-10px] mr-[-10px]"
+                  : "h-2 w-2 bg-warning rounded mb-[-10px] mr-[-10px]"
               }
             ></span>
           ))}

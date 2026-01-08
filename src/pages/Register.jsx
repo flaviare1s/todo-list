@@ -39,7 +39,7 @@ export const Register = () => {
         <div className="my-2 flex flex-col">
           <label htmlFor="name">Name</label>
           <input
-            className="p-2 rounded bg-inherit text-offwhite border border-offwhitek"
+            className="p-2 rounded bg-inherit text-text border border-text-muted"
             type="text"
             id="name"
             {...register("name", {
@@ -53,7 +53,7 @@ export const Register = () => {
         <div className="my-2 flex flex-col">
           <label htmlFor="email">E-mail</label>
           <input
-            className="p-2 rounded bg-inherit text-offwhite border border-offwhite"
+            className="p-2 rounded bg-inherit text-text border border-text-muted"
             type="email"
             id="email"
             {...register("email", {
@@ -71,7 +71,7 @@ export const Register = () => {
         <div className="mb-2 flex flex-col">
           <label htmlFor="password">Password</label>
           <input
-            className="p-2 rounded bg-inherit text-offwhite border border-offwhitek"
+            className="p-2 rounded bg-inherit text-text border border-text-muted"
             type="password"
             id="password"
             {...register("password", {
@@ -88,14 +88,14 @@ export const Register = () => {
         </div>
         <div className="mt-4 sm:flex sm:gap-2">
           <button
-            className="mt-1 w-100 p-2 rounded bg-dark_gray text-offwhite hover:bg-inherit hover:text-offwhite hover:border-2" 
+            className="mt-1 w-full p-2 rounded bg-[hsl(180,100%,60%)] text-[hsl(0,0%,8%)] hover:bg-[hsl(180,100%,80%)] hover:text-[hsl(210,18%,96%)] hover:border-2 hover:border-[hsl(180,100%,80%)] font-semibold transition-colors"
             type="submit"
           >
             Register
           </button>
           <button
             onClick={handleEntrarGoogle}
-            className="mt-1 w-100 flex justify-center gap-2 items-center border-2 p-2 rounded bg-offwhite text-black hover:bg-inherit hover:text-white"
+            className="mt-1 w-full flex justify-center gap-2 items-center border-2 border-[hsl(210,14%,72%)] p-2 rounded bg-[hsl(210,18%,96%)] text-[hsl(0,0%,8%)] hover:bg-transparent hover:text-[hsl(210,18%,96%)] font-semibold transition-colors"
             type="button"
           >
             <img className="w-6" src={logoGoogle} alt="Imagem do Google" />
@@ -103,10 +103,10 @@ export const Register = () => {
           </button>
         </div>
         <div className="d-flex flex-col gap-2 justify-content-between mt-2">
-          <small className="text-very_light_gray hover:text-offwhite">
+          <small className="text-text-muted hover:text-primary">
             Do you have an account? <Link to="/login">Login</Link>
           </small>
-          <small className="text-very_light_gray hover:text-offwhite">
+          <small className="text-text-muted hover:text-primary">
             Forgot your password? <Link to="/reset-password">Click here</Link>
           </small>
         </div>

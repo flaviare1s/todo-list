@@ -14,7 +14,7 @@ export const Home = () => {
 
   return (
     <main>
-      <h1 className="animated-title d-flex justify-content-center align-items-center vh-100 text-center text-5xl">
+      <h1 className="animated-title d-flex justify-content-center align-items-center vh-100 text-center text-5xl text-primary-dark">
         Welcome!
       </h1>
     </main>

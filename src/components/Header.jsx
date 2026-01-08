@@ -3,6 +3,7 @@ import { Container, Nav, Navbar } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import { logout } from "../firebase/auth";
+import { ListCheck } from "lucide-react";
 
 export const Header = () => {
   const user = useContext(UserContext);
@@ -17,7 +18,8 @@ export const Header = () => {
     <header className="w-screen header">
       <Navbar variant="dark" expand="sm" className="px-3">
         <Container fluid>
-          <Link className="text-xl font-bold" to="/">
+          <Link className="text-xl font-bold text-primary-dark flex gap-3 items-center" to="/">
+            <ListCheck />
             TODO LIST
           </Link>
           <Navbar.Toggle />
