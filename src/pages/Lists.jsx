@@ -36,17 +36,19 @@ export const Lists = () => {
   }
 
   function delList() {
-    const del = confirm("Are you sure you want to delete all todos?");
-    if (del) {
-      deleteList(user.uid)
-        .then(() => {
-          toast.success("All todos deleted!");
-          setSharedTodos([]);
-        })
-        .catch(() => {
-          toast.error("Failed to delete todos!");
-        });
-    }
+    setShowConfirmModal(true);
+  }
+
+  function confirmDeleteList() {
+    deleteList(user.uid)
+      .then(() => {
+        toast.success("All todos deleted!");
+        setSharedTodos([]);
+      })
+      .catch(() => {
+        toast.error("Failed to delete todos!");
+      });
+    setShowConfirmModal(false);
   }
 
   useEffect(() => {
@@ -63,6 +65,13 @@ export const Lists = () => {
       ) : (
         <NoTodos title="No shared lists" />
       )}
+      <ConfirmModal
+        show={showConfirmModal}
+        onClose={() => setShowConfirmModal(false)}
+        onConfirm={confirmDeleteList}
+        title="Delete All Todos"
+        message="Are you sure you want to delete all todos?"
+      />
     </section>
   );
 };

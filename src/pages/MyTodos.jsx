@@ -15,6 +15,7 @@ import { shareTodoWithEmail } from "../firebase/share";
 import { shareTodosWithEmail } from "../firebase/list";
 import { ShareModal } from "../components/ShareModal";
 import { ShareListModal } from "../components/ShareListModal";
+import { ConfirmModal } from "../components/ConfirmModal";
 import { NewTodo } from "../components/NewTodo";
 import { NoTodos } from "../components/NoTodos";
 import { TodoList } from "../components/TodoList";
@@ -102,9 +103,13 @@ export const MyTodos = () => {
       return;
     }
 
-    const del = confirm("Are you sure you want to delete this todo?");
-    if (del) {
-      deleteTodo(id, user)
+    setTodoToDelete(id);
+    setShowConfirmModal(true);
+  }
+
+  function confirmDelete() {
+    if (todoToDelete) {
+      deleteTodo(todoToDelete, user)
         .then(() => {
           toast.success("Todo deleted!");
         })
@@ -113,6 +118,8 @@ export const MyTodos = () => {
           toast.error("Failed to delete todo!");
         });
     }
+    setShowConfirmModal(false);
+    setTodoToDelete(null);
   }
 
   function openShareModal() {
@@ -271,6 +278,14 @@ export const MyTodos = () => {
         selectedPermission={selectedPermission}
         setSelectedPermission={setSelectedPermission}
         handleShareTodo={handleShareTodo}
+      />
+
+      <ConfirmModal
+        show={showConfirmModal}
+        onClose={() => setShowConfirmModal(false)}
+        onConfirm={confirmDelete}
+        title="Delete Todo"
+        message="Are you sure you want to delete this todo?"
       />
     </>
   );

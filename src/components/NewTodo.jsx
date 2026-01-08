@@ -55,7 +55,7 @@ export const NewTodo = ({ title, setTodos }) => {
     >
       <h1
         onClick={handleSubmit(createTodo)}
-        className="text-4xl font-bold p-3"
+        className="text-4xl font-bold p-3 text-primary-dark"
       >
         {title}
       </h1>

@@ -34,8 +34,8 @@ export const TodoItem = ({
             <p
               onClick={() => changeStatus(todo.id, todo.status)}
               className={`text-left cursor-pointer ${todo.status === "completed"
-                  ? "line-through text-text-muted"
-                  : ""
+                ? "line-through text-text-muted"
+                : ""
                 }`}
             >
               {todo.title}

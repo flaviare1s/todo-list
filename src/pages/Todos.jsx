@@ -13,6 +13,7 @@ import { UserContext } from "../contexts/UserContext";
 import { shareTodoWithEmail } from "../firebase/share";
 import { ShareModal } from "../components/ShareModal";
 import { InfoModal } from "../components/InfoModal";
+import { ConfirmModal } from "../components/ConfirmModal";
 import { NewTodo } from "../components/NewTodo";
 import { TodoHeader } from "../components/TodoHeader";
 import { TodoList } from "../components/TodoList";
@@ -36,6 +37,8 @@ export const Todos = () => {
   const [todoInfo, setTodoInfo] = useState(null);
   const [selectedPermission, setSelectedPermission] = useState("");
   const [notifiedTodoIds, setNotifiedTodoIds] = useState(new Set());
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [todoToDelete, setTodoToDelete] = useState(null);
   const editInputRef = useRef(null);
   const shareInputRef = useRef(null);
   const user = useContext(UserContext);
@@ -184,9 +187,13 @@ export const Todos = () => {
       return;
     }
 
-    const del = confirm("Are you sure you want to delete this todo?");
-    if (del) {
-      deleteTodo(id, user)
+    setTodoToDelete(id);
+    setShowConfirmModal(true);
+  }
+
+  function confirmDelete() {
+    if (todoToDelete) {
+      deleteTodo(todoToDelete, user)
         .then(() => {
           toast.success("Todo deleted!");
         })
@@ -195,6 +202,8 @@ export const Todos = () => {
           toast.error("You do not have permission to delete this todo.");
         });
     }
+    setShowConfirmModal(false);
+    setTodoToDelete(null);
   }
 
   function startEditing(todo) {
@@ -275,6 +284,13 @@ export const Todos = () => {
         show={showInfoModal}
         onClose={() => setShowInfoModal(false)}
         todoInfo={todoInfo}
+      />
+      <ConfirmModal
+        show={showConfirmModal}
+        onClose={() => setShowConfirmModal(false)}
+        onConfirm={confirmDelete}
+        title="Delete Todo"
+        message="Are you sure you want to delete this todo?"
       />
     </section>
   );
