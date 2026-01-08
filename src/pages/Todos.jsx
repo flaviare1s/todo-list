@@ -16,7 +16,9 @@ import { InfoModal } from "../components/InfoModal";
 import { ConfirmModal } from "../components/ConfirmModal";
 import { NewTodo } from "../components/NewTodo";
 import { TodoHeader } from "../components/TodoHeader";
-import { TodoList } from "../components/TodoList"; import { TodoFilter } from "./components/TodoFilter"; import { NoTodos } from "../components/NoTodos";
+import { TodoList } from "../components/TodoList";
+import { TodoFilter } from "../components/TodoFilter";
+import { NoTodos } from "../components/NoTodos";
 
 const db = getFirestore();
 
