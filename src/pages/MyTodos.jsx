@@ -19,6 +19,7 @@ import { ConfirmModal } from "../components/ConfirmModal";
 import { NewTodo } from "../components/NewTodo";
 import { NoTodos } from "../components/NoTodos";
 import { TodoList } from "../components/TodoList";
+import { TodoFilter } from "../components/TodoFilter";
 import { ShareListComponent } from "../components/ShareListComponent";
 
 export const MyTodos = () => {
@@ -32,6 +33,9 @@ export const MyTodos = () => {
   const [todoToShare, setTodoToShare] = useState(null);
   const [showShareModal, setShowShareModal] = useState(false);
   const [selectedPermission, setSelectedPermission] = useState("");
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [todoToDelete, setTodoToDelete] = useState(null);
+  const [filter, setFilter] = useState("all");
   const editInputRef = useRef(null);
   const shareInputRef = useRef(null);
   const user = useContext(UserContext);
@@ -234,16 +238,58 @@ export const MyTodos = () => {
     navigate("/login");
   }
 
+  // Ordenar e filtrar todos
+  const getFilteredAndSortedTodos = () => {
+    let filtered = [...todos];
+
+    // Aplicar filtros
+    switch (filter) {
+      case "active":
+        filtered = filtered.filter((todo) => todo.status === "active");
+        break;
+      case "completed":
+        filtered = filtered.filter((todo) => todo.status === "completed");
+        break;
+      case "shared":
+        filtered = filtered.filter(
+          (todo) => todo.sharedWith && todo.sharedWith.length > 0
+        );
+        break;
+      case "read":
+        filtered = filtered.filter((todo) =>
+          todo.sharedWith?.some((shared) => shared.permission === "read")
+        );
+        break;
+      case "write":
+        filtered = filtered.filter((todo) =>
+          todo.sharedWith?.some((shared) => shared.permission === "write")
+        );
+        break;
+      default:
+        break;
+    }
+
+    // Ordenar: não completos primeiro
+    return filtered.sort((a, b) => {
+      if (a.status === "active" && b.status === "completed") return -1;
+      if (a.status === "completed" && b.status === "active") return 1;
+      return 0;
+    });
+  };
+
+  const filteredTodos = getFilteredAndSortedTodos();
+
   return (
     <>
       <NewTodo title="TODO" setTodos={setTodos} />
       <section className="px-3">
         <ShareListComponent openShareModal={openShareModal} />
+        <TodoFilter filter={filter} setFilter={setFilter} />
         {loading ? (
           <Loader />
-        ) : todos.length > 0 ? (
+        ) : filteredTodos.length > 0 ? (
           <TodoList
-            todos={todos}
+            todos={filteredTodos}
             isEditing={isEditing}
             editTitle={editTitle}
             setEditTitle={setEditTitle}
