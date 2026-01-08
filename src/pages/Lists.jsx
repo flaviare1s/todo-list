@@ -8,10 +8,12 @@ import { UserContext } from "../contexts/UserContext";
 import { NoTodos } from "../components/NoTodos";
 import { ListsHeader } from "../components/ListsHeader";
 import { ListsList } from "../components/ListsList";
+import { ConfirmModal } from "../components/ConfirmModal";
 
 export const Lists = () => {
   const [sharedTodos, setSharedTodos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const user = useContext(UserContext);
 
   function listTodos() {
