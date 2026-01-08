@@ -41,10 +41,12 @@ section {
 
 .shared-read {
   background-color: rgb(255, 128, 223) !important;
+  display: inline-block !important;
 }
 
 .shared-write {
   background-color: rgb(128, 255, 255) !important;
+  display: inline-block !important;
 }
 
 .text-cyan {

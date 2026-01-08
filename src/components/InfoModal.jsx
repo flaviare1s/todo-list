@@ -6,7 +6,7 @@ export const InfoModal = ({ title, show, onClose, todoInfo }) => {
   return (
     <Modal show={show} onHide={onClose} className="text-center">
       <Modal.Header closeButton className="modalInfo-header border border-white/10 shadow-lg">
-        <Modal.Title className="text-dark modalInfo-title">{title}</Modal.Title>
+        <Modal.Title className="modalInfo-title">{title}</Modal.Title>
       </Modal.Header>
       <Modal.Body className="modalInfo-body border border-white/10 shadow-lg">
         {todoInfo ? (
