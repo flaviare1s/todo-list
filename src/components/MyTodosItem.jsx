@@ -52,9 +52,9 @@ export const MyTodosItem = ({
             {todo.sharedWith.map((user, index) => (
               <div key={index}>
                 {user.permission === "read" ? (
-                  <span className="h-2 w-2 rounded-full block" style={{ backgroundColor: 'rgb(255, 128, 223)' }}></span>
+                  <span className="h-2 w-2 rounded-full block shared-read"></span>
                 ) : (
-                  <span className="h-2 w-2 rounded-full block" style={{ backgroundColor: 'rgb(128, 255, 255)' }}></span>
+                  <span className="h-2 w-2 rounded-full block shared-write"></span>
                 )}
               </div>
             ))}

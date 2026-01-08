@@ -8,7 +8,7 @@
 }
 
 body {
-  background-color: hsl(0 0% 11%);
+  background-color: hsl(0 0% 14%);
   color: hsl(210 18% 96%);
   display: flex;
   flex-direction: column;
@@ -23,7 +23,7 @@ body {
 }
 
 .header {
-  background-color: hsl(0 0% 12%) !important;
+  background-color: hsl(0 0% 10%) !important;
 }
 
 .logout {
@@ -34,8 +34,29 @@ body {
   color: hsl(180 100% 80%) !important;
 }
 
-.modalInfo-header {
+.shared-read {
+  background-color: rgb(255, 128, 223) !important;
+}
+
+.shared-write {
+  background-color: rgb(128, 255, 255) !important;
+}
+
+.text-cyan {
+  color: rgb(128, 255, 255) !important;
+}
+
+.text-pink {
+  color: rgb(255, 128, 223) !important;
+}
+
+select option {
   background-color: hsl(0 0% 12%) !important;
+  color: hsl(210 18% 96%) !important;
+}
+
+.modalInfo-header {
+  background-color: hsl(0 0% 10%) !important;
 }
 
 .modalInfo-title {
@@ -43,7 +64,8 @@ body {
 }
 
 .modalInfo-body {
-  background-color: hsl(0 0% 8% 30%) !important;
+  background-color: hsl(0 0% 14%) !important;
+  color: hsl(210 18% 96%) !important;
 }
 
 @keyframes fadeIn {

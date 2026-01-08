@@ -8,18 +8,18 @@ export const InfoModal = ({ title, show, onClose, todoInfo }) => {
       <Modal.Header closeButton className="modalInfo-header border border-white/10 shadow-lg">
         <Modal.Title className="text-dark modalInfo-title">{title}</Modal.Title>
       </Modal.Header>
-      <Modal.Body className="text-dark modalInfo-body border border-white/10 shadow-lg">
+      <Modal.Body className="modalInfo-body border border-white/10 shadow-lg">
         {todoInfo ? (
           <div key={todoInfo.id} className="text-left">
             <div className="mb-2">
-              <span className="text-[hsl(180,100%,80%)] mr-2 font-bold">Created by:</span>
+              <span className="text-cyan mr-2 font-bold">Created by:</span>
               <span className="text-offwhite font-bold text-lg">
                 {todoInfo.ownerName} - {todoInfo.ownerEmail}
               </span>
             </div>
 
             <div className="mb-2">
-              <span className="text-[hsl(180,100%,80%)] mr-2 font-bold">Created At:</span>
+              <span className="text-cyan mr-2 font-bold">Created At:</span>
               <span className="text-offwhite font-bold text-lg">
                 {todoInfo.createdAt
                   ? new Date(todoInfo.createdAt.seconds * 1000).toLocaleString()
@@ -30,7 +30,7 @@ export const InfoModal = ({ title, show, onClose, todoInfo }) => {
             {todoInfo.updatedBy && (
               <div className="mb-2">
                 <div className="mb-2">
-                  <span className="text-[hsl(180,100%,80%)] mr-2 font-bold">
+                  <span className="text-cyan mr-2 font-bold">
                     Updated By:
                   </span>
                   <span className="text-offwhite font-bold text-lg">
@@ -38,7 +38,7 @@ export const InfoModal = ({ title, show, onClose, todoInfo }) => {
                   </span>
                 </div>
                 <div>
-                  <span className="text-[hsl(180,100%,80%)] mr-2 font-bold">
+                  <span className="text-cyan mr-2 font-bold">
                     Updated At:
                   </span>
                   <span className="text-offwhite font-bold text-lg">
@@ -53,7 +53,7 @@ export const InfoModal = ({ title, show, onClose, todoInfo }) => {
             )}
 
             <div className="mb-2">
-              <span className="text-[hsl(180,100%,80%)] mr-2 font-bold">Satus:</span>
+              <span className="text-cyan mr-2 font-bold">Satus:</span>
               <span className="text-offwhite font-bold text-lg">
                 {todoInfo.status}
               </span>
@@ -63,7 +63,7 @@ export const InfoModal = ({ title, show, onClose, todoInfo }) => {
               todoInfo.sharedWith.map((shared) => (
                 <div key={shared.uid} className="mb-2">
                   <div>
-                    <span className="text-[hsl(180,100%,80%)] mr-2 font-bold">
+                    <span className="text-cyan mr-2 font-bold">
                       Shared With:{" "}
                     </span>
                     <span className="text-offwhite font-bold text-lg">
@@ -74,8 +74,8 @@ export const InfoModal = ({ title, show, onClose, todoInfo }) => {
                     <span
                       className={
                         shared.permission === "write"
-                          ? "text-[hsl(180,100%,60%)] font-bold"
-                          : "text-[hsl(330,100%,75%)] font-bold"
+                          ? "text-cyan font-bold"
+                          : "text-pink font-bold"
                       }
                     >
                       {shared.permission === "write" ? "Write" : "Read only"}
