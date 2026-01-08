@@ -18,6 +18,11 @@ body {
   font-size: 18px;
 }
 
+section {
+  background-color: hsl(0 0% 16%) !important;
+  padding-bottom: 15px;
+}
+
 .animated-title {
   animation: fadeIn 3s ease-in-out;
 }
