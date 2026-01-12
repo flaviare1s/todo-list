@@ -299,7 +299,7 @@ export const Todos = () => {
   const filteredTodos = getFilteredAndSortedTodos();
 
   return (
-    <section className="px-3">
+    <section className="px-3 sm:px-0">
       <NewTodo title="TODO" setTodos={setTodos} />
       <TodoHeader title="TODOS" />
       <TodoFilter filter={filter} setFilter={setFilter} />

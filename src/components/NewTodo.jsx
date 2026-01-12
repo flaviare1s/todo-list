@@ -63,7 +63,7 @@ export const NewTodo = ({ title, setTodos }) => {
         type="text"
         id="title"
         placeholder="Click here to create a new todo"
-        className="p-3 rounded-sm bg-inherit w-full sm:w-[60%] md:w-[50%] xl:w-[40%] placeholder:text-center placeholder:text-text-muted"
+        className="p-3 rounded-md bg-inherit w-full sm:w-[60%] md:w-[50%] xl:w-[40%] placeholder:text-center placeholder:text-text-muted border-2 !border-primary-dark"
         {...register("title", { required: true })}
       />
     </form>
